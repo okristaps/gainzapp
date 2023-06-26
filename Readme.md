@@ -1,7 +1,5 @@
 # Gainzapp
 
-
-#
 ## Local dev
 ### Run this in a sequence from root:
 `cd backend && npm install && cd ../frontend && npm install` 
