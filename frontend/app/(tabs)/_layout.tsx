@@ -23,29 +23,27 @@ export default function TabLayout() {
 
   console.log("user", user);
 
-  if (!user) {
-    return (
-      <AuthManager>
-        <LoginForm />
-      </AuthManager>
-    );
-  }
-
   return (
     <AuthManager>
-      <Tabs
-        screenOptions={{
-          tabBarActiveTintColor: Colors[colorScheme ?? "light"].tint,
-        }}
-      >
-        <Tabs.Screen
-          name="two"
-          options={{
-            title: "Tab Two",
-            tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
+      {!user ? (
+        <LoginForm />
+      ) : (
+        <Tabs
+          screenOptions={{
+            tabBarActiveTintColor: Colors[colorScheme ?? "light"].tint,
           }}
-        />
-      </Tabs>
+        >
+          <Tabs.Screen
+            name="two"
+            options={{
+              title: "Tab Two",
+              tabBarIcon: ({ color }) => (
+                <TabBarIcon name="code" color={color} />
+              ),
+            }}
+          />
+        </Tabs>
+      )}
     </AuthManager>
   );
 }
