@@ -28,6 +28,8 @@ services:
       dockerfile: Dockerfile
     environment:
       - REACT_NATIVE_PACKAGER_HOSTNAME=${HOST_IP}
+    env_file:
+      - ./.env
     ports:
       - 19000:19000
       - 19001:19001
