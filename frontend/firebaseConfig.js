@@ -19,3 +19,5 @@ const app = initializeApp(firebaseConfig);
 // see the Firebase documentation: https://firebase.google.com/docs/web/setup#access-firebase
 
 const auth = getAuth(app);
+
+export default app;
