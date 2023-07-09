@@ -1,13 +1,12 @@
-import React, { createContext, useEffect, useState } from "react";
-import {
-  getAuth,
-  createUserWithEmailAndPassword,
-  signInWithEmailAndPassword,
-  signOut,
-  onAuthStateChanged,
-} from "firebase/auth";
-import app from "../firebaseConfig";
 import * as SecureStore from "expo-secure-store";
+import {
+  createUserWithEmailAndPassword,
+  getAuth,
+  onAuthStateChanged,
+  signInWithEmailAndPassword,
+} from "firebase/auth";
+import React, { createContext, useEffect, useState } from "react";
+import app from "../firebaseConfig";
 interface AuthManagerProps {
   children: React.ReactNode;
 }
@@ -56,10 +55,26 @@ const AuthManager: React.FC<AuthManagerProps> = ({ children }) => {
         const { uid, email } = user;
         const userData = { uid, email };
         setUser(userData);
+        saveUserSession(userData);
       } else {
         setUser(null);
+        clearUserSession();
       }
     });
+
+    const checkSavedSession = async () => {
+      try {
+        const savedSession = await SecureStore.getItemAsync("user");
+        if (savedSession) {
+          const userData: User = JSON.parse(savedSession);
+          setUser(userData);
+        }
+      } catch (error) {
+        console.log("Error retrieving saved session:", error);
+      }
+    };
+
+    checkSavedSession();
 
     return () => unsubscribe();
   }, []);
