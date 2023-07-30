@@ -1,5 +1,6 @@
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import { Tabs } from "expo-router";
+import React from "react";
 import { useColorScheme } from "react-native";
 
 import { useContext } from "react";
@@ -21,8 +22,6 @@ export default function TabLayout() {
   const colorScheme = useColorScheme();
   const { user } = useContext(AuthContext);
 
-  console.log("user", user);
-
   return (
     <AuthManager>
       {!user ? (
@@ -37,9 +36,7 @@ export default function TabLayout() {
             name="two"
             options={{
               title: "Tab Two",
-              tabBarIcon: ({ color }) => (
-                <TabBarIcon name="code" color={color} />
-              ),
+              tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
             }}
           />
         </Tabs>

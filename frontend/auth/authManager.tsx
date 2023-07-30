@@ -5,7 +5,7 @@ import {
   onAuthStateChanged,
   signInWithEmailAndPassword,
 } from "firebase/auth";
-import React, { createContext, useEffect, useState } from "react";
+import React, { createContext, useEffect, useMemo, useState } from "react";
 import app from "../firebaseConfig";
 interface AuthManagerProps {
   children: React.ReactNode;
@@ -29,55 +29,94 @@ export const AuthContext = createContext<AuthContext>({
   logOut: async () => {},
 });
 
-const saveUserSession = async (userData: User) => {
-  try {
-    await SecureStore.setItemAsync("user", JSON.stringify(userData));
-  } catch (error) {
-    console.log("Error saving user session:", error);
-  }
-};
-
-const clearUserSession = async () => {
-  try {
-    await SecureStore.deleteItemAsync("user");
-  } catch (error) {
-    console.log("Error clearing user session:", error);
-  }
-};
-
 const AuthManager: React.FC<AuthManagerProps> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
   const auth = getAuth(app);
 
   useEffect(() => {
+    const loadUserSession = async () => {
+      try {
+        const savedUserSession = await SecureStore.getItemAsync("userSession");
+        if (savedUserSession) {
+          const userData = JSON.parse(savedUserSession);
+          setUser({ uid: userData.uid, email: userData.email });
+        }
+      } catch (error) {
+        console.error("Error loading user session from SecureStore:", error);
+      }
+    };
+
+    loadUserSession();
+  }, []);
+
+  useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
         const { uid, email } = user;
-        const userData = { uid, email };
-        setUser(userData);
-        saveUserSession(userData);
+        setUser({ uid, email });
+        saveUserSession(user);
       } else {
         setUser(null);
         clearUserSession();
       }
     });
 
-    const checkSavedSession = async () => {
-      try {
-        const savedSession = await SecureStore.getItemAsync("user");
-        if (savedSession) {
-          const userData: User = JSON.parse(savedSession);
-          setUser(userData);
-        }
-      } catch (error) {
-        console.log("Error retrieving saved session:", error);
-      }
-    };
-
-    checkSavedSession();
-
     return () => unsubscribe();
   }, []);
+
+  const saveUserSession = async (userData) => {
+    try {
+      const { uid, email, stsTokenManager } = userData;
+      const userSessionData = {
+        uid,
+        email,
+        accessToken: stsTokenManager?.accessToken ?? "",
+      };
+      await SecureStore.setItemAsync("userSession", JSON.stringify(userSessionData));
+    } catch (error) {
+      console.error("Error saving user session to SecureStore:", error);
+    }
+  };
+
+  const clearUserSession = async () => {
+    try {
+      await SecureStore.deleteItemAsync("userSession");
+    } catch (error) {
+      console.error("Error clearing user session from SecureStore:", error);
+    }
+  };
+
+  const signUp = async (email: string, password: string) => {
+    try {
+      await createUserWithEmailAndPassword(auth, email, password).then((userCredential) => {
+        const { user } = userCredential;
+        // Save the user's UID, email, and session token
+        saveUserSession(user);
+      });
+    } catch (error) {
+      console.log("Sign up failed:", error);
+    }
+  };
+
+  const signIn = async (email: string, password: string) => {
+    try {
+      await signInWithEmailAndPassword(auth, email, password).then((userCredential) => {
+        const { user } = userCredential;
+        // Save the user's UID, email, and session token
+        saveUserSession(user);
+      });
+    } catch (error) {
+      console.error("Sign in failed:", error);
+    }
+  };
+
+  const logOut = async () => {
+    try {
+      clearUserSession();
+    } catch (error) {
+      console.log("Sign out failed:", error);
+    }
+  };
 
   useEffect(() => {
     const initialUser = auth.currentUser;
@@ -88,42 +127,16 @@ const AuthManager: React.FC<AuthManagerProps> = ({ children }) => {
     }
   }, [user]);
 
-  const signUp = async (email: string, password: string) => {
-    try {
-      await createUserWithEmailAndPassword(auth, email, password).then(
-        (userCredential) => {
-          saveUserSession(userCredential.user);
-        }
-      );
-    } catch (error) {
-      console.log("Sign up failed:", error);
-    }
-  };
-  const signIn = async (email: string, password: string) => {
-    try {
-      await signInWithEmailAndPassword(auth, email, password);
-    } catch (error) {}
-  };
+  const values: AuthContext = useMemo(() => {
+    return {
+      user,
+      signUp,
+      signIn,
+      logOut,
+    };
+  }, [user, signUp, signIn, logOut]);
 
-  const logOut = async () => {
-    try {
-      clearUserSession();
-      //   await signOut(user);
-    } catch (error) {
-      console.log("Sign out failed:", error);
-    }
-  };
-
-  const authContext: AuthContext = {
-    user,
-    signUp,
-    signIn,
-    logOut,
-  };
-
-  return (
-    <AuthContext.Provider value={authContext}>{children}</AuthContext.Provider>
-  );
+  return <AuthContext.Provider value={values}>{children}</AuthContext.Provider>;
 };
 
 export default AuthManager;

@@ -1,11 +1,9 @@
+import { ADMIN_PASSWORD, ADMIN_USERNAME } from "@env";
 import React, { useContext } from "react";
-import { View, TextInput, Button, StyleSheet, Text } from "react-native";
-import { useForm, Controller } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
+import { Button, StyleSheet, Text, TextInput, View } from "react-native";
 import { AuthContext } from "../../../auth/authManager";
-
-interface LoginFormProps {
-  // onLogin: (email: string, password: string) => void;
-}
+interface LoginFormProps {}
 
 interface FormData {
   email: string;
@@ -13,6 +11,8 @@ interface FormData {
 }
 
 const LoginForm: React.FC<LoginFormProps> = () => {
+  const isDevelopment = __DEV__;
+
   const {
     control,
     handleSubmit,
@@ -26,7 +26,6 @@ const LoginForm: React.FC<LoginFormProps> = () => {
 
   const handleSignIn = async (email: string, password: string) => {
     try {
-      console.log("aaaa");
       await signIn(email, password);
     } catch (error) {
       console.log("Sign in failed:", error);
@@ -50,7 +49,7 @@ const LoginForm: React.FC<LoginFormProps> = () => {
           required: "Email is required",
           pattern: { value: /^\S+@\S+$/i, message: "Invalid email" },
         }}
-        defaultValue=""
+        defaultValue={isDevelopment ? ADMIN_USERNAME ?? "" : ""}
       />
       {errors.email && <Text style={styles.error}>{errors.email.message}</Text>}
 
@@ -67,11 +66,9 @@ const LoginForm: React.FC<LoginFormProps> = () => {
         )}
         name="password"
         rules={{ required: "Password is required" }}
-        defaultValue=""
+        defaultValue={isDevelopment ? ADMIN_PASSWORD ?? "" : ""}
       />
-      {errors.password && (
-        <Text style={styles.error}>{errors.password.message}</Text>
-      )}
+      {errors.password && <Text style={styles.error}>{errors.password.message}</Text>}
 
       <Button title="Login" onPress={handleSubmit(onSubmit)} />
     </View>
