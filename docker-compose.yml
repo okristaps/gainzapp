@@ -21,6 +21,8 @@ services:
       - MONGO_DATABASE=${MONGO_DATABASE}
     volumes:
       - ./backend/src:/app/src
+    env_file:
+      - ./.env
 
   frontend:
     build:
