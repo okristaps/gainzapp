@@ -1,18 +1,21 @@
-import { StyleSheet } from "react-native";
-
-import EditScreenInfo from "../components/EditScreenInfo";
+import React, { useState } from "react";
+import { Button, StyleSheet } from "react-native";
+import { getAuth } from "firebase/auth";
+import * as SecureStore from "expo-secure-store";
 import { Text, View } from "../components/Themed";
 
 export default function TabTwoScreen() {
+  const [token, setToken] = useState("");
+
+  async function getToken() {
+    const tok = await SecureStore.getItemAsync("userSession");
+    console.log("tok", tok);
+  }
+
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Tab Two</Text>
-      <View
-        style={styles.separator}
-        lightColor="#eee"
-        darkColor="rgba(255,255,255,0.1)"
-      />
-      <EditScreenInfo path="app/(tabs)/two.tsx" />
+      <Button title="Get token" onPress={getToken} />
+      <Text> Token: {token} </Text>
     </View>
   );
 }
