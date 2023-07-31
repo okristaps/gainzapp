@@ -7,7 +7,7 @@ import {
 import { useFonts } from "expo-font";
 import { SplashScreen, Stack } from "expo-router";
 import { useContext, useEffect } from "react";
-import { useColorScheme } from "react-native";
+import { useColorScheme, View, Text } from "react-native";
 import AuthManager, { AuthContext } from "../auth/authManager";
 
 export {
@@ -22,7 +22,8 @@ export const unstable_settings = {
 
 export default function RootLayout() {
   const [loaded, error] = useFonts({
-    SpaceMono: require("../assets/fonts/SpaceMono-Regular.ttf"),
+    IstokWeb: require("../assets/fonts/IstokWeb-Regular.ttf"),
+    IstokWebBold: require("../assets/fonts/IstokWeb-Bold.ttf"),
     ...FontAwesome.font,
   });
 

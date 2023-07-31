@@ -1,5 +1,13 @@
 import React, { useContext } from "react";
-import { View, TextInput, Button, StyleSheet, Text } from "react-native";
+import {
+  View,
+  TextInput,
+  Button,
+  StyleSheet,
+  Text,
+  SafeAreaView,
+  TouchableOpacity,
+} from "react-native";
 import { useForm, Controller } from "react-hook-form";
 import { AuthContext } from "../../../auth/authManager";
 
@@ -35,12 +43,13 @@ const LoginForm: React.FC<LoginFormProps> = () => {
 
   return (
     <View style={styles.container}>
+      <Text style={styles.userText}>Username</Text>
       <Controller
         control={control}
         render={({ field: { onChange, value } }) => (
           <TextInput
             style={styles.input}
-            placeholder="Email"
+            placeholder="Username"
             value={value}
             onChangeText={onChange}
           />
@@ -54,6 +63,7 @@ const LoginForm: React.FC<LoginFormProps> = () => {
       />
       {errors.email && <Text style={styles.error}>{errors.email.message}</Text>}
 
+      <Text style={styles.userText}>Password</Text>
       <Controller
         control={control}
         render={({ field: { onChange, value } }) => (
@@ -69,28 +79,63 @@ const LoginForm: React.FC<LoginFormProps> = () => {
         rules={{ required: "Password is required" }}
         defaultValue=""
       />
+      <TouchableOpacity>
+        <Text style={styles.forgotPassButton}>Forgot Password?</Text>
+      </TouchableOpacity>
       {errors.password && (
         <Text style={styles.error}>{errors.password.message}</Text>
       )}
 
-      <Button title="Login" onPress={handleSubmit(onSubmit)} />
+      <View style={styles.loginContainer}>
+        <TouchableOpacity onPress={handleSubmit(onSubmit)}>
+          <Text style={styles.loginBtnText}>Sign In</Text>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     justifyContent: "center",
-    paddingHorizontal: 20,
+    paddingHorizontal: 40,
+  },
+  loginContainer: {
+    justifyContent: "center",
+    height: 50,
+    width: "100%",
+    borderRadius: 15,
+    alignSelf: "center",
+    backgroundColor: "#88BB46",
+    marginTop: 20,
+  },
+  userText: {
+    fontFamily: "IstokWeb",
+    color: "#A4A4A4",
+    marginBottom: 5,
+    marginLeft: 5,
+  },
+  loginBtnText: {
+    fontSize: 18,
+    color: "white",
+    textAlign: "center",
+    fontFamily: "IstokWeb",
   },
   input: {
-    height: 40,
-    borderColor: "gray",
+    height: 50,
+    backgroundColor: "#282C30",
+    fontFamily: "IstokWeb",
     color: "white",
     borderWidth: 1,
     marginBottom: 10,
+    borderRadius: 15,
     paddingHorizontal: 10,
+  },
+  forgotPassButton: {
+    textAlign: "right",
+    fontFamily: "IstokWeb",
+    color: "#A4A4A4",
+    marginRight: 5,
   },
   error: {
     color: "red",
