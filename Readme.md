@@ -18,8 +18,9 @@
 
 ## To start app - Run this in a sequence from root:
 ##### ! IF NO GAINZAPPBACKEND SUBMODULE ADDED
-- `cd frontend &&  docker compose up -d`
 - `cd frontend/src && npm install`
+- `cd frontend &&  docker compose up -d`
+
 ##### ! IF GAINZAPPBACKEND SUBMODULE IS ADDED
 - `cd backend && npm install && cd ../frontend/src && npm install` 
 - `cd backend &&  docker compose up -d && cd ../frontend && docker compose up -d`
