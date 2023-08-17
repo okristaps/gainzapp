@@ -2,6 +2,13 @@
 
 ## ENV FILE SETUP 
 
+##### /frontend 
+- `HOST_IP=my.ip.address`
+- `FIREBASE_API_KEY=firebaseapikey`
+- `ADMIN_USERNAME=username`
+- `ADMIN_PASSWORD=password`
+
+
 ##### /backend (if gainzappbackend submodule added)
 - `MONGO_PORT=27017`
 - `MONGO_DATABASE=mydatabase`
@@ -9,11 +16,6 @@
 - `FIREBASE_ADMIN_PRIVATE_KEY=adminprivatekey`
 - `FIREBASE_ADMIN_PRIVATE_KEY_ID=keyid`
 
-##### /frontend 
-- `HOST_IP=my.ip.address`
-- `FIREBASE_API_KEY=firebaseapikey`
-- `ADMIN_USERNAME=username`
-- `ADMIN_PASSWORD=password`
 
 
 ## To start app - Run this in a sequence from root:
