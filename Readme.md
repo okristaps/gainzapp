@@ -14,8 +14,8 @@
 ##### /frontend 
 `HOST_IP=my.ip.address`
 `FIREBASE_API_KEY=firebaseapikey`
-`ADMIN_USERNAME=okristaps1@gmail.com`
-`ADMIN_PASSWORD=test1239`
+`ADMIN_USERNAME=email/username`
+`ADMIN_PASSWORD=password`
 
 
 ### Run this in a sequence from root:
