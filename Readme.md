@@ -1,10 +1,11 @@
-# Gainzapp
+# Gainzapp backend
 
 ## Local dev
 
+
 ### ENV FILE SETUP 
 
-##### /backend 
+##### /backend (if submodule added)
 `MONGO_PORT=27017`
 `MONGO_DATABASE=mydatabase`
 `NODE_PORT=3000`
@@ -14,12 +15,16 @@
 ##### /frontend 
 `HOST_IP=my.ip.address`
 `FIREBASE_API_KEY=firebaseapikey`
-`ADMIN_USERNAME=email/username`
-`ADMIN_PASSWORD=password`
+`ADMIN_USERNAME=okristaps1@gmail.com`
+`ADMIN_PASSWORD=test1239`
 
 
 ### Run this in a sequence from root:
 `cd backend && npm install && cd ../frontend/src && npm install` 
+
+- If no GAINZAPPBACKEND submodule added
+`cd frontend &&  docker compose up -d`
+- If GAINZAPPBACKEND submodule added
 `cd backend &&  docker compose up -d && cd ../frontend && docker compose up -d`
 
 
