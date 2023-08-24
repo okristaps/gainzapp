@@ -4,6 +4,7 @@ import { useForm } from "react-hook-form";
 import { Button, StyleSheet, View } from "react-native";
 import { AuthContext } from "../../../auth/authManager";
 import { Input } from "../../../components/formInput";
+import { Text } from "../Themed";
 
 interface FormData {
   email: string;
@@ -25,21 +26,18 @@ const LoginForm: React.FC = () => {
 
   const isDevelopment = __DEV__;
   const [type, setType] = useState(FormType.LOGIN);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
   const { signIn, signUp } = useContext(AuthContext);
 
   const onSubmit = useCallback(
     async (data: FormData) => {
       try {
-        switch (type) {
-          case FormType.LOGIN:
-            await signIn(data.email, data.password);
-            break;
-          case FormType.REG:
-            await signUp(data.email, data.password);
-            break;
-        }
+        type === FormType.LOGIN
+          ? await signIn(data.email, data.password)
+          : await signUp(data.email, data.password);
       } catch (error) {
-        console.error("Error logging / registering ", error?.message);
+        setError(error?.message);
       }
     },
     [getValues, type, isValid, errors]
@@ -67,7 +65,7 @@ const LoginForm: React.FC = () => {
         placeholder={"Password"}
         defaultValue={"assad@asd.com"}
       />
-
+      {error && <Text style={styles.error}>{error}</Text>}
       <Button
         title={`${type === FormType.LOGIN ? "Sign in" : "Register"}`}
         onPress={handleSubmit(onSubmit)}
@@ -87,6 +85,10 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     paddingHorizontal: 20,
+  },
+  error: {
+    color: "red",
+    marginBottom: 10,
   },
 });
 
