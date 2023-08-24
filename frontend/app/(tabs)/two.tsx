@@ -1,11 +1,19 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { Button, StyleSheet } from "react-native";
 import { getAuth } from "firebase/auth";
 import * as SecureStore from "expo-secure-store";
 import { Text, View } from "../components/Themed";
+import { AuthContext } from "../../auth/authManager";
 
 export default function TabTwoScreen() {
   const [token, setToken] = useState("");
+
+  const { logOut, user } = useContext(AuthContext);
+  const logOutFunc = async () => {
+    await logOut();
+  };
+
+  console.log("user", user);
 
   async function getToken() {
     const tok = await SecureStore.getItemAsync("userSession");
@@ -15,6 +23,7 @@ export default function TabTwoScreen() {
   return (
     <View style={styles.container}>
       <Button title="Get token" onPress={getToken} />
+      <Button title="Log out" onPress={logOutFunc} />
       <Text> Token: {token} </Text>
     </View>
   );
