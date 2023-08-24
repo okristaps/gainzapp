@@ -4,6 +4,7 @@ import {
   getAuth,
   onAuthStateChanged,
   signInWithEmailAndPassword,
+  signOut,
 } from "firebase/auth";
 import React, { createContext, useEffect, useMemo, useState } from "react";
 import app from "../firebaseConfig";
@@ -52,8 +53,7 @@ const AuthManager: React.FC<AuthManagerProps> = ({ children }) => {
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
-        const { uid, email } = user;
-        setUser({ uid, email });
+        setUser(user);
         saveUserSession(user);
       } else {
         setUser(null);
@@ -86,33 +86,37 @@ const AuthManager: React.FC<AuthManagerProps> = ({ children }) => {
     }
   };
 
-  const signUp = async (email: string, password: string) => {
-    try {
-      await createUserWithEmailAndPassword(auth, email, password).then((userCredential) => {
-        const { user } = userCredential;
-        // Save the user's UID, email, and session token
-        saveUserSession(user);
-      });
-    } catch (error) {
-      console.log("Sign up failed:", error);
-    }
+  const signUp = (email: string, password: string) => {
+    return new Promise<void>((resolve, reject) => {
+      createUserWithEmailAndPassword(auth, email, password)
+        .then((userCredential) => {
+          const { user } = userCredential;
+          saveUserSession(user);
+          resolve();
+        })
+        .catch((error) => {
+          reject(error);
+        });
+    });
   };
 
-  const signIn = async (email: string, password: string) => {
-    try {
-      await signInWithEmailAndPassword(auth, email, password).then((userCredential) => {
-        const { user } = userCredential;
-        // Save the user's UID, email, and session token
-        saveUserSession(user);
-      });
-    } catch (error) {
-      console.error("Sign in failed:", error);
-    }
+  const signIn = (email: string, password: string) => {
+    return new Promise<void>((resolve, reject) => {
+      signInWithEmailAndPassword(auth, email, password)
+        .then((userCredential) => {
+          const { user } = userCredential;
+          saveUserSession(user);
+          resolve();
+        })
+        .catch((error) => {
+          reject(error);
+        });
+    });
   };
 
   const logOut = async () => {
     try {
-      clearUserSession();
+      await signOut(auth);
     } catch (error) {
       console.log("Sign out failed:", error);
     }
@@ -121,9 +125,7 @@ const AuthManager: React.FC<AuthManagerProps> = ({ children }) => {
   useEffect(() => {
     const initialUser = auth.currentUser;
     if (initialUser && !user) {
-      const { uid, email } = initialUser;
-      const userData = { uid, email };
-      setUser(userData);
+      setUser(initialUser);
     }
   }, [user]);
 

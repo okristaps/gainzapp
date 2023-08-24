@@ -1,76 +1,81 @@
 import { ADMIN_PASSWORD, ADMIN_USERNAME } from "@env";
-import React, { useContext } from "react";
-import { Controller, useForm } from "react-hook-form";
-import { Button, StyleSheet, Text, TextInput, View } from "react-native";
+import React, { useCallback, useContext, useState } from "react";
+import { useForm } from "react-hook-form";
+import { Button, StyleSheet, View } from "react-native";
 import { AuthContext } from "../../../auth/authManager";
-interface LoginFormProps {}
+import { Input } from "../../../components/formInput";
+import { Text } from "../Themed";
 
 interface FormData {
   email: string;
   password: string;
 }
 
-const LoginForm: React.FC<LoginFormProps> = () => {
-  const isDevelopment = __DEV__;
+enum FormType {
+  REG = "REG",
+  LOGIN = "LOGIN",
+}
 
+const LoginForm: React.FC = () => {
   const {
     control,
     handleSubmit,
-    formState: { errors },
+    getValues,
+    formState: { errors, isValid },
   } = useForm<FormData>();
 
-  const { signIn } = useContext(AuthContext);
-  const onSubmit = (data: FormData) => {
-    handleSignIn(data.email, data.password);
-  };
+  const isDevelopment = __DEV__;
+  const [type, setType] = useState(FormType.LOGIN);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+  const { signIn, signUp } = useContext(AuthContext);
 
-  const handleSignIn = async (email: string, password: string) => {
-    try {
-      await signIn(email, password);
-    } catch (error) {
-      console.log("Sign in failed:", error);
-    }
-  };
+  const onSubmit = useCallback(
+    async (data: FormData) => {
+      try {
+        type === FormType.LOGIN
+          ? await signIn(data.email, data.password)
+          : await signUp(data.email, data.password);
+      } catch (error) {
+        setError(error?.message);
+      }
+    },
+    [getValues, type, isValid, errors]
+  );
 
   return (
     <View style={styles.container}>
-      <Controller
+      <Input
+        name={"email"}
         control={control}
-        render={({ field: { onChange, value } }) => (
-          <TextInput
-            style={styles.input}
-            placeholder="Email"
-            value={value}
-            onChangeText={onChange}
-          />
-        )}
-        name="email"
+        errors={errors}
         rules={{
           required: "Email is required",
           pattern: { value: /^\S+@\S+$/i, message: "Invalid email" },
         }}
-        defaultValue={isDevelopment ? ADMIN_USERNAME ?? "" : ""}
+        defaultValue={"assad@asd.com"}
+        placeholder={"Email"}
       />
-      {errors.email && <Text style={styles.error}>{errors.email.message}</Text>}
 
-      <Controller
+      <Input
+        name={"password"}
         control={control}
-        render={({ field: { onChange, value } }) => (
-          <TextInput
-            style={styles.input}
-            placeholder="Password"
-            secureTextEntry
-            value={value}
-            onChangeText={onChange}
-          />
-        )}
-        name="password"
+        errors={errors}
         rules={{ required: "Password is required" }}
-        defaultValue={isDevelopment ? ADMIN_PASSWORD ?? "" : ""}
+        placeholder={"Password"}
+        defaultValue={"assad@asd.com"}
       />
-      {errors.password && <Text style={styles.error}>{errors.password.message}</Text>}
-
-      <Button title="Login" onPress={handleSubmit(onSubmit)} />
+      {error && <Text style={styles.error}>{error}</Text>}
+      <Button
+        title={`${type === FormType.LOGIN ? "Sign in" : "Register"}`}
+        onPress={handleSubmit(onSubmit)}
+      />
+      <View style={{ marginTop: 50 }}>
+        <Button
+          title={`${type === FormType.REG ? "Back to Sign in" : "Register"}`}
+          onPress={() => setType(type === FormType.REG ? FormType.LOGIN : FormType.REG)}
+        />
+      </View>
     </View>
   );
 };
@@ -80,14 +85,6 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     paddingHorizontal: 20,
-  },
-  input: {
-    height: 40,
-    borderColor: "gray",
-    color: "white",
-    borderWidth: 1,
-    marginBottom: 10,
-    paddingHorizontal: 10,
   },
   error: {
     color: "red",
