@@ -3,7 +3,6 @@
 ## ENV FILE SETUP 
 
 ##### /frontend 
-- `HOST_IP=my.ip.address`
 - `FIREBASE_API_KEY=firebaseapikey`
 - `ADMIN_USERNAME=username`
 - `ADMIN_PASSWORD=password`
@@ -16,15 +15,12 @@
 - `FIREBASE_ADMIN_PRIVATE_KEY=adminprivatekey`
 - `FIREBASE_ADMIN_PRIVATE_KEY_ID=keyid`
 
-
-
 ## To start app - Run this in a sequence from root:
 ##### ! IF NO GAINZAPPBACKEND SUBMODULE ADDED
-- `cd frontend/src && npm install`
-- `cd frontend &&  docker compose up -d`
+- `cd frontend && npm install && expo install && expo start`
 
 ##### ! IF GAINZAPPBACKEND SUBMODULE IS ADDED
-- `cd backend && npm install && cd ../frontend/src && npm install` 
+- `cd backend && npm install && cd ../frontend && npm install && expo install && expo start` 
 - `cd backend &&  docker compose up -d && cd ../frontend && docker compose up -d`
 
 
