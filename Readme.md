@@ -20,8 +20,9 @@
 - `cd frontend && npm install && expo install && expo start`
 
 ##### ! IF GAINZAPPBACKEND SUBMODULE IS ADDED
-- `cd backend && npm install && cd ../frontend && npm install && expo install && expo start` 
-- `cd backend &&  docker compose up -d && cd ../frontend && docker compose up -d`
+- `cd backend && npm install && cd ../frontend && npm install && expo install`
+- `cd frontend && expo start` 
+- `cd backend &&  docker compose up -d`
 
 
 ##### To open project in the local browser: `[http://localhost:19000]`
