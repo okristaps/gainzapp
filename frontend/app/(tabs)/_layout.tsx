@@ -38,10 +38,10 @@ const NavTabs = () => {
 
 export default function TabLayout() {
   const colorScheme = useColorScheme();
-  const { user, loading } = useContext(AuthContext);
+  const { user } = useContext(AuthContext);
 
   if (!user) {
-    return loading ? <Loader /> : <LoginForm />;
+    return <LoginForm />;
   }
 
   return (
