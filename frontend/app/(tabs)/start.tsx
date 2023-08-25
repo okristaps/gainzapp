@@ -2,10 +2,10 @@ import React from "react";
 import { StyleSheet } from "react-native";
 import { Text, View } from "../components/Themed";
 
-export default function TabThreeScreen() {
+export default function TabStartScreen() {
   return (
     <View style={styles.container}>
-      <Text> Screen three</Text>
+      <Text> START </Text>
     </View>
   );
 }

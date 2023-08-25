@@ -21,7 +21,6 @@ interface AuthContext {
   signIn: (email: string, password: string) => Promise<void>;
   logOut: () => Promise<void>;
   auth: Auth;
-  loading: boolean;
 }
 
 export const AuthContext = createContext<AuthContext>({
@@ -30,11 +29,9 @@ export const AuthContext = createContext<AuthContext>({
   signIn: async () => {},
   logOut: async () => {},
   auth: getAuth(app),
-  loading: true,
 });
 
 const AuthManager: React.FC<AuthManagerProps> = ({ children }) => {
-  const [loading, setLoading] = useState(true);
   const [user, setUser] = useState<User | null>(null);
   const auth = getAuth(app);
 
@@ -49,7 +46,6 @@ const AuthManager: React.FC<AuthManagerProps> = ({ children }) => {
       } catch (error) {
         console.error("Error loading user session from SecureStore:", error);
       }
-      setLoading(false);
     };
 
     loadUserSession();
@@ -131,7 +127,7 @@ const AuthManager: React.FC<AuthManagerProps> = ({ children }) => {
       logOut,
       auth,
     };
-  }, [user, signUp, signIn, logOut, auth, loading]);
+  }, [user, signUp, signIn, logOut, auth]);
 
   return <AuthContext.Provider value={values}>{children}</AuthContext.Provider>;
 };

@@ -1,6 +1,6 @@
 import { User, onAuthStateChanged, sendEmailVerification } from "firebase/auth";
 import React, { useContext, useEffect, useState } from "react";
-import { Text, TouchableOpacity, View } from "react-native";
+import { ActivityIndicator, Text, TouchableOpacity, View } from "react-native";
 import Modal from "react-native-modal";
 import { AuthContext } from "../../auth/authManager";
 
@@ -11,6 +11,7 @@ interface ModalProps {
 const ConfirmEmailModal: React.FC<ModalProps> = ({ user }) => {
   const { auth } = useContext(AuthContext);
   const [visible, setVisible] = useState(!user?.emailVerified);
+  const [error, setError] = useState("");
   const [verificationSent, setVerificationSent] = useState(false);
 
   const sendVerificationEmail = async () => {
@@ -18,8 +19,9 @@ const ConfirmEmailModal: React.FC<ModalProps> = ({ user }) => {
       try {
         await sendEmailVerification(user);
         setVerificationSent(true);
+        setError("");
       } catch (error) {
-        console.error("Error sending verification email:", error);
+        setError(error.message);
       }
     }
   };
@@ -29,8 +31,8 @@ const ConfirmEmailModal: React.FC<ModalProps> = ({ user }) => {
       user?.reload();
       const unsubscribe = onAuthStateChanged(auth, (user) => {
         if (user?.emailVerified) {
-          setVisible(false);
           unsubscribe();
+          setVisible(false);
         }
       });
     }
@@ -58,14 +60,32 @@ const ConfirmEmailModal: React.FC<ModalProps> = ({ user }) => {
         </Text>
         {user && !user.emailVerified && (
           <>
-            <Text>
-              {verificationSent
-                ? "Verification email has been sent. Please check your inbox."
-                : "Your email is not verified. Click below to send a verification email."}
-            </Text>
-            <TouchableOpacity onPress={listenForEmailVerification} style={{ marginTop: 20 }}>
-              <Text style={{ color: "blue" }}>Check Email Verification</Text>
-            </TouchableOpacity>
+            {!verificationSent && !error && (
+              <View>
+                <Text>Sending verification email ... </Text>
+                <View style={{ display: "flex", alignItems: "center", marginTop: 20 }}>
+                  <ActivityIndicator />
+                </View>
+              </View>
+            )}
+
+            {verificationSent && !error && (
+              <View>
+                <Text>Verification email has been sent. Please check your inbox.</Text>
+
+                <TouchableOpacity onPress={listenForEmailVerification} style={{ marginTop: 20 }}>
+                  <Text style={{ color: "blue" }}>Check Email Verification</Text>
+                </TouchableOpacity>
+              </View>
+            )}
+            {error && (
+              <View>
+                <Text style={{ color: "red" }}>{error}</Text>
+                <TouchableOpacity onPress={sendVerificationEmail} style={{ marginTop: 20 }}>
+                  <Text style={{ color: "blue" }}>Send verification email again</Text>
+                </TouchableOpacity>
+              </View>
+            )}
           </>
         )}
         {user?.emailVerified && <Text>Your email has been verified.</Text>}
