@@ -1,6 +1,6 @@
 import React, { useCallback, useContext, useState } from "react";
 import { useForm } from "react-hook-form";
-import { Button, StyleSheet, View } from "react-native";
+import { ActivityIndicator, Button, StyleSheet, View } from "react-native";
 import { AuthContext } from "../../../auth/authManager";
 import { Input } from "../../../components/formInput";
 import { Text } from "../Themed";
@@ -31,6 +31,7 @@ const LoginForm: React.FC = () => {
 
   const onSubmit = useCallback(
     async (data: FormData) => {
+      setLoading(true);
       try {
         type === FormType.LOGIN
           ? await signIn(data.email, data.password)
@@ -38,7 +39,9 @@ const LoginForm: React.FC = () => {
       } catch (error) {
         setError(error?.message);
       }
+      setLoading(false);
     },
+
     [getValues, type, isValid, errors]
   );
 
@@ -65,6 +68,7 @@ const LoginForm: React.FC = () => {
         defaultValue={"test1239"}
       />
       {error && <Text style={styles.error}>{error}</Text>}
+      {loading && <ActivityIndicator size="large" color="green" style={{ marginTop: 20 }} />}
       <Button
         title={`${type === FormType.LOGIN ? "Sign in" : "Register"}`}
         onPress={handleSubmit(onSubmit)}

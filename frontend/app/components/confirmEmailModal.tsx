@@ -1,6 +1,6 @@
 import { User, onAuthStateChanged, sendEmailVerification } from "firebase/auth";
 import React, { useContext, useEffect, useState } from "react";
-import { Text, TouchableOpacity, View } from "react-native";
+import { ActivityIndicator, Text, TouchableOpacity, View } from "react-native";
 import Modal from "react-native-modal";
 import { AuthContext } from "../../auth/authManager";
 
@@ -11,6 +11,7 @@ interface ModalProps {
 const ConfirmEmailModal: React.FC<ModalProps> = ({ user }) => {
   const { auth } = useContext(AuthContext);
   const [visible, setVisible] = useState(!user?.emailVerified);
+  const [error, setError] = useState("");
   const [verificationSent, setVerificationSent] = useState(false);
 
   const sendVerificationEmail = async () => {
@@ -19,7 +20,7 @@ const ConfirmEmailModal: React.FC<ModalProps> = ({ user }) => {
         await sendEmailVerification(user);
         setVerificationSent(true);
       } catch (error) {
-        console.error("Error sending verification email:", error);
+        setError(error);
       }
     }
   };
@@ -59,13 +60,16 @@ const ConfirmEmailModal: React.FC<ModalProps> = ({ user }) => {
         {user && !user.emailVerified && (
           <>
             <Text>
-              {verificationSent
-                ? "Verification email has been sent. Please check your inbox."
-                : "Your email is not verified. Click below to send a verification email."}
+              {verificationSent ? (
+                "Verification email has been sent. Please check your inbox."
+              ) : (
+                <ActivityIndicator />
+              )}
             </Text>
-            <TouchableOpacity onPress={listenForEmailVerification} style={{ marginTop: 20 }}>
+            {error && <Text style={{ color: "red" }}>{error}</Text>}
+            {/* <TouchableOpacity onPress={listenForEmailVerification} style={{ marginTop: 20 }}>
               <Text style={{ color: "blue" }}>Check Email Verification</Text>
-            </TouchableOpacity>
+            </TouchableOpacity> */}
           </>
         )}
         {user?.emailVerified && <Text>Your email has been verified.</Text>}

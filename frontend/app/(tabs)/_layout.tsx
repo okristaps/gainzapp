@@ -1,13 +1,13 @@
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import { Tabs } from "expo-router";
-import React from "react";
+import React, { useContext } from "react";
 import { useColorScheme } from "react-native";
-import { useContext } from "react";
 import { AuthContext } from "../../auth/authManager";
 import LoginForm from "../components/loginform/loginform";
-import Colors from "../constants/Colors";
-
 import ConfirmEmailModal from "../components/confirmEmailModal";
+import { tabs } from "./helpers/tabs";
+import { Text, View } from "../components/Themed";
+import Loader from "../components/loader/loader";
 
 /**
  * You can explore the built-in icon families and icons on the web at https://icons.expo.fyi/
@@ -19,34 +19,34 @@ function TabBarIcon(props: {
   return <FontAwesome size={28} style={{ marginBottom: -3 }} {...props} />;
 }
 
+const NavTabs = () => {
+  return (
+    <Tabs>
+      {tabs.map((tab) => (
+        <Tabs.Screen
+          key={tab.name}
+          name={tab.name}
+          options={{
+            title: tab.title,
+            tabBarIcon: ({ color }) => <TabBarIcon name={tab?.icon} color={color} />,
+          }}
+        />
+      ))}
+    </Tabs>
+  );
+};
+
 export default function TabLayout() {
   const colorScheme = useColorScheme();
-  const { user } = useContext(AuthContext);
+  const { user, loading } = useContext(AuthContext);
 
-  return !user ? (
-    <LoginForm />
-  ) : (
+  if (!user) {
+    return loading ? <Loader /> : <LoginForm />;
+  }
+
+  return (
     <>
-      <Tabs
-        screenOptions={{
-          tabBarActiveTintColor: Colors[colorScheme ?? "light"].tint,
-        }}
-      >
-        <Tabs.Screen
-          name="index"
-          options={{
-            title: "Tab Two",
-            tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
-          }}
-        />
-        <Tabs.Screen
-          name="three"
-          options={{
-            title: "three",
-            tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
-          }}
-        />
-      </Tabs>
+      <NavTabs />
       {!user?.emailVerified && <ConfirmEmailModal user={user} />}
     </>
   );
