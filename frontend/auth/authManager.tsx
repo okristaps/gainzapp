@@ -1,5 +1,8 @@
 import * as SecureStore from "expo-secure-store";
 import {
+  Auth,
+  User,
+  UserCredential,
   createUserWithEmailAndPassword,
   getAuth,
   onAuthStateChanged,
@@ -12,15 +15,13 @@ interface AuthManagerProps {
   children: React.ReactNode;
 }
 
-interface User {
-  uid: string;
-  email: string | null;
-}
 interface AuthContext {
   user: User | null;
   signUp: (email: string, password: string) => Promise<void>;
   signIn: (email: string, password: string) => Promise<void>;
   logOut: () => Promise<void>;
+  auth: Auth;
+  loading: boolean;
 }
 
 export const AuthContext = createContext<AuthContext>({
@@ -28,9 +29,12 @@ export const AuthContext = createContext<AuthContext>({
   signUp: async () => {},
   signIn: async () => {},
   logOut: async () => {},
+  auth: getAuth(app),
+  loading: true,
 });
 
 const AuthManager: React.FC<AuthManagerProps> = ({ children }) => {
+  const [loading, setLoading] = useState(true);
   const [user, setUser] = useState<User | null>(null);
   const auth = getAuth(app);
 
@@ -40,11 +44,12 @@ const AuthManager: React.FC<AuthManagerProps> = ({ children }) => {
         const savedUserSession = await SecureStore.getItemAsync("userSession");
         if (savedUserSession) {
           const userData = JSON.parse(savedUserSession);
-          setUser({ uid: userData.uid, email: userData.email });
+          setUser(userData);
         }
       } catch (error) {
         console.error("Error loading user session from SecureStore:", error);
       }
+      setLoading(false);
     };
 
     loadUserSession();
@@ -64,15 +69,9 @@ const AuthManager: React.FC<AuthManagerProps> = ({ children }) => {
     return () => unsubscribe();
   }, []);
 
-  const saveUserSession = async (userData) => {
+  const saveUserSession = async (userData: User) => {
     try {
-      const { uid, email, stsTokenManager } = userData;
-      const userSessionData = {
-        uid,
-        email,
-        accessToken: stsTokenManager?.accessToken ?? "",
-      };
-      await SecureStore.setItemAsync("userSession", JSON.stringify(userSessionData));
+      await SecureStore.setItemAsync("userSession", JSON.stringify(userData));
     } catch (error) {
       console.error("Error saving user session to SecureStore:", error);
     }
@@ -86,18 +85,13 @@ const AuthManager: React.FC<AuthManagerProps> = ({ children }) => {
     }
   };
 
-  const signUp = (email: string, password: string) => {
-    return new Promise<void>((resolve, reject) => {
-      createUserWithEmailAndPassword(auth, email, password)
-        .then((userCredential) => {
-          const { user } = userCredential;
-          saveUserSession(user);
-          resolve();
-        })
-        .catch((error) => {
-          reject(error);
-        });
-    });
+  const signUp = async (email: string, password: string): Promise<UserCredential> => {
+    try {
+      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      return userCredential;
+    } catch (error) {
+      throw error;
+    }
   };
 
   const signIn = (email: string, password: string) => {
@@ -135,8 +129,9 @@ const AuthManager: React.FC<AuthManagerProps> = ({ children }) => {
       signUp,
       signIn,
       logOut,
+      auth,
     };
-  }, [user, signUp, signIn, logOut]);
+  }, [user, signUp, signIn, logOut, auth, loading]);
 
   return <AuthContext.Provider value={values}>{children}</AuthContext.Provider>;
 };
