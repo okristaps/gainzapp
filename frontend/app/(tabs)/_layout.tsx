@@ -3,11 +3,9 @@ import { Tabs } from "expo-router";
 import React, { useContext } from "react";
 import { useColorScheme } from "react-native";
 import { AuthContext } from "../../auth/authManager";
-import LoginForm from "../components/loginform/loginform";
 import ConfirmEmailModal from "../components/confirmEmailModal";
+import LoginForm from "../components/loginform/loginform";
 import { tabs } from "./helpers/tabs";
-import { Text, View } from "../components/Themed";
-import Loader from "../components/loader/loader";
 
 /**
  * You can explore the built-in icon families and icons on the web at https://icons.expo.fyi/
