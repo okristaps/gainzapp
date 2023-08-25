@@ -1,4 +1,3 @@
-import { ADMIN_PASSWORD, ADMIN_USERNAME } from "@env";
 import React, { useCallback, useContext, useState } from "react";
 import { useForm } from "react-hook-form";
 import { Button, StyleSheet, View } from "react-native";
@@ -25,9 +24,9 @@ const LoginForm: React.FC = () => {
   } = useForm<FormData>();
 
   const isDevelopment = __DEV__;
-  const [type, setType] = useState(FormType.LOGIN);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
+  const [type, setType] = useState<string>(FormType.LOGIN);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [error, setError] = useState<string>("");
   const { signIn, signUp } = useContext(AuthContext);
 
   const onSubmit = useCallback(
@@ -53,7 +52,7 @@ const LoginForm: React.FC = () => {
           required: "Email is required",
           pattern: { value: /^\S+@\S+$/i, message: "Invalid email" },
         }}
-        defaultValue={"assad@asd.com"}
+        defaultValue={"okristaps1@yopmail.com"}
         placeholder={"Email"}
       />
 
@@ -63,7 +62,7 @@ const LoginForm: React.FC = () => {
         errors={errors}
         rules={{ required: "Password is required" }}
         placeholder={"Password"}
-        defaultValue={"assad@asd.com"}
+        defaultValue={"test1239"}
       />
       {error && <Text style={styles.error}>{error}</Text>}
       <Button

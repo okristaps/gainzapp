@@ -13,11 +13,10 @@ export default function TabTwoScreen() {
     await logOut();
   };
 
-  console.log("user", user);
+  console.log("userVerifiedScreenTwo", user?.emailVerified);
 
   async function getToken() {
     const tok = await SecureStore.getItemAsync("userSession");
-    console.log("tok", tok);
   }
 
   return (
