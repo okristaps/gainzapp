@@ -1,19 +1,18 @@
+import { User, onAuthStateChanged, sendEmailVerification } from "firebase/auth";
 import React, { useContext, useEffect, useState } from "react";
-import { View, Text, TouchableOpacity } from "react-native";
+import { Text, TouchableOpacity, View } from "react-native";
 import Modal from "react-native-modal";
-
-import { User, onAuthStateChanged, sendEmailVerification, getAuth } from "firebase/auth";
 import { AuthContext } from "../../auth/authManager";
 
 interface ModalProps {
-  user: User | null; // Firebase user object
+  user: User | null;
 }
 
 const ConfirmEmailModal: React.FC<ModalProps> = ({ user }) => {
   const { auth } = useContext(AuthContext);
   const [visible, setVisible] = useState(!user?.emailVerified);
   const [verificationSent, setVerificationSent] = useState(false);
-  console.log("1");
+
   const sendVerificationEmail = async () => {
     if (user && !user?.emailVerified) {
       try {

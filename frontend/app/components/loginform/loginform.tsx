@@ -1,4 +1,3 @@
-import { ADMIN_PASSWORD, ADMIN_USERNAME } from "@env";
 import React, { useCallback, useContext, useState } from "react";
 import { useForm } from "react-hook-form";
 import { Button, StyleSheet, View } from "react-native";
