@@ -19,8 +19,9 @@ const ConfirmEmailModal: React.FC<ModalProps> = ({ user }) => {
       try {
         await sendEmailVerification(user);
         setVerificationSent(true);
+        setError("");
       } catch (error) {
-        setError(error);
+        setError(error.message);
       }
     }
   };
@@ -30,8 +31,8 @@ const ConfirmEmailModal: React.FC<ModalProps> = ({ user }) => {
       user?.reload();
       const unsubscribe = onAuthStateChanged(auth, (user) => {
         if (user?.emailVerified) {
-          setVisible(false);
           unsubscribe();
+          setVisible(false);
         }
       });
     }
@@ -59,17 +60,32 @@ const ConfirmEmailModal: React.FC<ModalProps> = ({ user }) => {
         </Text>
         {user && !user.emailVerified && (
           <>
-            <Text>
-              {verificationSent ? (
-                "Verification email has been sent. Please check your inbox."
-              ) : (
-                <ActivityIndicator />
-              )}
-            </Text>
-            {error && <Text style={{ color: "red" }}>{error}</Text>}
-            {/* <TouchableOpacity onPress={listenForEmailVerification} style={{ marginTop: 20 }}>
-              <Text style={{ color: "blue" }}>Check Email Verification</Text>
-            </TouchableOpacity> */}
+            {!verificationSent && !error && (
+              <View>
+                <Text>Sending verification email ... </Text>
+                <View style={{ display: "flex", alignItems: "center", marginTop: 20 }}>
+                  <ActivityIndicator />
+                </View>
+              </View>
+            )}
+
+            {verificationSent && !error && (
+              <View>
+                <Text>Verification email has been sent. Please check your inbox.</Text>
+
+                <TouchableOpacity onPress={listenForEmailVerification} style={{ marginTop: 20 }}>
+                  <Text style={{ color: "blue" }}>Check Email Verification</Text>
+                </TouchableOpacity>
+              </View>
+            )}
+            {error && (
+              <View>
+                <Text style={{ color: "red" }}>{error}</Text>
+                <TouchableOpacity onPress={sendVerificationEmail} style={{ marginTop: 20 }}>
+                  <Text style={{ color: "blue" }}>Send verification email again</Text>
+                </TouchableOpacity>
+              </View>
+            )}
           </>
         )}
         {user?.emailVerified && <Text>Your email has been verified.</Text>}
