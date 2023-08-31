@@ -1,6 +1,6 @@
 {
   "extends": "expo/tsconfig.base",
-  "include": ["src", "types", "declarations.d.ts"],
+  "include": ["src", "types", "declarations.d.ts", "app", "custom.d.ts"],
   "compilerOptions": {
     "strict": true,
     "typeRoots": ["./types"],
