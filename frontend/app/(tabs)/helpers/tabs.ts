@@ -1,28 +1,30 @@
+import Dashboard from "../../../src/assets/dashboard.svg";
+
 export const tabs = [
   {
     name: "index",
     title: "Dashboard",
-    icon: "code",
+    icon: Dashboard,
   },
 
-  {
-    name: "workouts",
-    title: "Workouts",
-    icon: "code",
-  },
-  {
-    name: "start",
-    title: "Start",
-    icon: "code",
-  },
-  {
-    name: "logs",
-    title: "Logs",
-    icon: "code",
-  },
-  {
-    name: "more",
-    title: "More",
-    icon: "code",
-  },
+  // {
+  //   name: "workouts",
+  //   title: "Workouts",
+  //   icon: "workouts",
+  // },
+  // {
+  //   name: "start",
+  //   title: "Start",
+  //   icon: "start",
+  // },
+  // {
+  //   name: "logs",
+  //   title: "Logs",
+  //   icon: "logs",
+  // },
+  // {
+  //   name: "more",
+  //   title: "More",
+  //   icon: "more",
+  // },
 ];

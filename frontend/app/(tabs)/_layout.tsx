@@ -1,20 +1,26 @@
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import { Tabs } from "expo-router";
 import React, { useContext } from "react";
-import { useColorScheme } from "react-native";
 import { AuthContext } from "../../auth/authManager";
+import "../../src/global.css";
 import ConfirmEmailModal from "../components/confirmEmailModal";
 import LoginForm from "../components/loginform/loginform";
 import { tabs } from "./helpers/tabs";
-
+// import Dashboard from "../../src/assets/dashboard.svg";
+import { View } from "../components/Themed";
 /**
  * You can explore the built-in icon families and icons on the web at https://icons.expo.fyi/
  */
+
 function TabBarIcon(props: {
   name: React.ComponentProps<typeof FontAwesome>["name"];
   color: string;
 }) {
-  return <FontAwesome size={28} style={{ marginBottom: -3 }} {...props} />;
+  return (
+    <View>
+      <Dashboard />
+    </View>
+  );
 }
 
 const NavTabs = () => {
@@ -25,8 +31,10 @@ const NavTabs = () => {
           key={tab.name}
           name={tab.name}
           options={{
+            tabBarStyle: { backgroundColor: "#1E0000" },
+            tabBarActiveTintColor: "#88BB46",
             title: tab.title,
-            tabBarIcon: ({ color }) => <TabBarIcon name={tab?.icon} color={color} />,
+            // tabBarIcon: ({ color }) => <TabBarIcon icon={tab.icon} color={color} />,
           }}
         />
       ))}
@@ -35,7 +43,6 @@ const NavTabs = () => {
 };
 
 export default function TabLayout() {
-  const colorScheme = useColorScheme();
   const { user } = useContext(AuthContext);
 
   if (!user) {

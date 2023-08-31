@@ -18,7 +18,7 @@ export default function TabTwoScreen() {
   }
 
   return (
-    <View style={styles.container}>
+    <View className="bg-gray-300 min-h-screen min-w-full">
       <Button title="Get token" onPress={getToken} />
       <Button title="Log out" onPress={logOutFunc} />
       <Text> Token: {token} </Text>
@@ -26,19 +26,19 @@ export default function TabTwoScreen() {
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  title: {
-    fontSize: 20,
-    fontWeight: "bold",
-  },
-  separator: {
-    marginVertical: 30,
-    height: 1,
-    width: "80%",
-  },
-});
+// const styles = StyleSheet.create({
+//   container: {
+//     flex: 1,
+//     alignItems: "center",
+//     justifyContent: "center",
+//   },
+//   title: {
+//     fontSize: 20,
+//     fontWeight: "bold",
+//   },
+//   separator: {
+//     marginVertical: 30,
+//     height: 1,
+//     width: "80%",
+//   },
+// });
