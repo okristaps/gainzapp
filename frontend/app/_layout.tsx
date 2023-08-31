@@ -5,7 +5,6 @@ import { SplashScreen, Stack } from "expo-router";
 import React, { useEffect } from "react";
 import { useColorScheme } from "react-native";
 import AuthManager from "../auth/authManager";
-
 export { ErrorBoundary } from "expo-router";
 
 export default function RootLayout() {
@@ -29,14 +28,12 @@ export default function RootLayout() {
 function RootLayoutNav() {
   const colorScheme = useColorScheme();
   return (
-    <>
-      <AuthManager>
-        <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
-          <Stack>
-            <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-          </Stack>
-        </ThemeProvider>
-      </AuthManager>
-    </>
+    <AuthManager>
+      <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
+        <Stack>
+          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+        </Stack>
+      </ThemeProvider>
+    </AuthManager>
   );
 }
