@@ -1,8 +1,7 @@
 import { LinearGradient } from "expo-linear-gradient";
 import React, { useState } from "react";
 import { Control, Controller } from "react-hook-form";
-import { StyleSheet, TextInput, TouchableOpacity, View } from "react-native";
-import { Text } from "../app/components/Themed";
+import { TextInput, TouchableOpacity, View, Text } from "react-native";
 import Eye from "../src/assets/images/eye.svg";
 import Key from "../src/assets/images/key.svg";
 import User from "../src/assets/images/usr.svg";

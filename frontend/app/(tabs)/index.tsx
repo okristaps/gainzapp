@@ -1,9 +1,9 @@
 import * as SecureStore from "expo-secure-store";
 import React, { useContext, useState } from "react";
-import { Button } from "react-native";
+import { Button, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { AuthContext } from "../../auth/authManager";
-import { Text, View } from "../components/Themed";
+
 import Wrapper from "../components/layout/wrapper";
 export default function TabTwoScreen() {
   const [token, setToken] = useState("");

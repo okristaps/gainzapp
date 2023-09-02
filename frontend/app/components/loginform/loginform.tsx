@@ -1,11 +1,10 @@
 import React, { useCallback, useContext, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { ActivityIndicator, Button, TouchableOpacity, View } from "react-native";
+import { TouchableOpacity, View, Text } from "react-native";
 import { AuthContext } from "../../../auth/authManager";
 import { Input } from "../../../components/formInput";
-import { Text } from "../Themed";
-import Wrapper from "../layout/wrapper";
 import { PirmaryButton } from "../common/primarybutton";
+import Wrapper from "../layout/wrapper";
 
 interface FormData {
   email: string;
