@@ -1,6 +1,6 @@
 import React from "react";
-import { StyleSheet } from "react-native";
-import { Text, View } from "../components/Themed";
+import { Text } from "react-native";
+import { StyleSheet, View } from "react-native";
 
 export default function TabMoreScreen() {
   return (

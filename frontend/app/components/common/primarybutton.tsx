@@ -1,6 +1,6 @@
-import React from "react";
 import { LinearGradient } from "expo-linear-gradient";
-import { ActivityIndicator, Text, Touchable, TouchableOpacity } from "react-native";
+import React from "react";
+import { ActivityIndicator, Text, TouchableOpacity } from "react-native";
 
 interface Props {
   text?: string;
