@@ -1,9 +1,11 @@
-import React, { useCallback, useContext, useState } from "react";
+import React, { useCallback, useContext, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { ActivityIndicator, Button, StyleSheet, View } from "react-native";
+import { ActivityIndicator, Button, TouchableOpacity, View } from "react-native";
 import { AuthContext } from "../../../auth/authManager";
 import { Input } from "../../../components/formInput";
 import { Text } from "../Themed";
+import Wrapper from "../layout/wrapper";
+import { PirmaryButton } from "../common/primarybutton";
 
 interface FormData {
   email: string;
@@ -20,10 +22,11 @@ const LoginForm: React.FC = () => {
     control,
     handleSubmit,
     getValues,
+    reset,
     formState: { errors, isValid },
   } = useForm<FormData>();
 
-  const isDevelopment = __DEV__;
+  // const isDevelopment = __DEV__;
   const [type, setType] = useState<string>(FormType.LOGIN);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string>("");
@@ -45,54 +48,80 @@ const LoginForm: React.FC = () => {
     [getValues, type, isValid, errors]
   );
 
-  return (
-    <View style={styles.container}>
-      <Input
-        name={"email"}
-        control={control}
-        errors={errors}
-        rules={{
-          required: "Email is required",
-          pattern: { value: /^\S+@\S+$/i, message: "Invalid email" },
-        }}
-        defaultValue={"okristaps1@yopmail.com"}
-        placeholder={"Email"}
-      />
+  useEffect(() => {
+    reset();
+  }, [type]);
 
+  return (
+    <Wrapper>
+      <Text className="mt-[40px]  text-title text-center font-bold "> Gainzapp </Text>
+      <Text className=" text-[22px] mt-[20px]  mb-[84px] font-medium text-center text-input">
+        {`${type === FormType.LOGIN ? "Sign in" : "Register"}`}
+      </Text>
+
+      <View className="mb-[10px]">
+        <Input
+          type="emailAddress"
+          showTitle={true}
+          name={"email"}
+          control={control}
+          errors={errors}
+          rules={{
+            required: "Email is required",
+            pattern: { value: /^\S+@\S+$/i, message: "Invalid email" },
+          }}
+          placeholder={"Email"}
+        />
+      </View>
       <Input
+        showTitle={true}
         name={"password"}
+        type={"password"}
         control={control}
         errors={errors}
         rules={{ required: "Password is required" }}
         placeholder={"Password"}
-        defaultValue={"test1239"}
       />
-      {error && <Text style={styles.error}>{error}</Text>}
-      {loading && <ActivityIndicator size="large" color="green" style={{ marginTop: 20 }} />}
-      <Button
-        title={`${type === FormType.LOGIN ? "Sign in" : "Register"}`}
+      {Boolean(error) && <Text className="text-primary  text-danger mt-[10px]">{error}</Text>}
+      <ForgotPassword />
+
+      <PirmaryButton
+        loading={loading}
+        text={`${type === FormType.LOGIN ? "Sign in" : "Register"}`}
         onPress={handleSubmit(onSubmit)}
       />
-      <View style={{ marginTop: 50 }}>
-        <Button
-          title={`${type === FormType.REG ? "Back to Sign in" : "Register"}`}
-          onPress={() => setType(type === FormType.REG ? FormType.LOGIN : FormType.REG)}
-        />
-      </View>
+      <Register type={type} setType={setType} />
+    </Wrapper>
+  );
+};
+
+const Register = ({ setType, type }) => {
+  return (
+    <View className="flex mt-[30px]">
+      <Text className="text-center text-input">
+        {" "}
+        {`${type === FormType.REG ? "Already have an account?" : "Don’t have an account?  "}`}{" "}
+      </Text>
+      <TouchableOpacity
+        className="mt-[4px]"
+        onPress={() => setType(type === FormType.REG ? FormType.LOGIN : FormType.REG)}
+      >
+        <Text className="text-center text-success text-12 font-medium">
+          {`${type === FormType.REG ? "Back to Sign in" : "Register"}`}
+        </Text>
+      </TouchableOpacity>
     </View>
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: "center",
-    paddingHorizontal: 20,
-  },
-  error: {
-    color: "red",
-    marginBottom: 10,
-  },
-});
+const ForgotPassword = () => {
+  return (
+    <View className="flex-row items-end justify-end mt-[16px] mb-[22px]">
+      <TouchableOpacity>
+        <Text className="text-base text-input">Forgot password?</Text>
+      </TouchableOpacity>
+    </View>
+  );
+};
 
 export default LoginForm;
