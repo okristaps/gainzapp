@@ -7,7 +7,7 @@ export { ErrorBoundary } from "expo-router";
 
 export default function RootLayout() {
   const [loaded, error] = useFonts({
-    Isotok: require("../assets/fonts/IstokWeb-Regular.ttf"),
+    Isotok: require("../src/assets/fonts/IstokWeb-Regular.ttf"),
     ...FontAwesome.font,
   });
 
