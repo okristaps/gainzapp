@@ -1,10 +1,10 @@
-import React, { useContext, useState } from "react";
-import { Button, StyleSheet } from "react-native";
-import { getAuth } from "firebase/auth";
 import * as SecureStore from "expo-secure-store";
-import { Text, View } from "../components/Themed";
+import React, { useContext, useState } from "react";
+import { Button } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 import { AuthContext } from "../../auth/authManager";
-
+import { Text, View } from "../components/Themed";
+import Wrapper from "../components/layout/wrapper";
 export default function TabTwoScreen() {
   const [token, setToken] = useState("");
 
@@ -18,27 +18,15 @@ export default function TabTwoScreen() {
   }
 
   return (
-    <View className="bg-gray-300 min-h-screen min-w-full">
-      <Button title="Get token" onPress={getToken} />
-      <Button title="Log out" onPress={logOutFunc} />
-      <Text> Token: {token} </Text>
-    </View>
+    <Wrapper>
+      <View>
+        <Text className="text-slate-800"> asdasdsa</Text>
+      </View>
+      <SafeAreaView>
+        <Button title="Get token" onPress={getToken} />
+        <Button title="Log out" onPress={logOutFunc} />
+        <Text> Token: {token} </Text>
+      </SafeAreaView>
+    </Wrapper>
   );
 }
-
-// const styles = StyleSheet.create({
-//   container: {
-//     flex: 1,
-//     alignItems: "center",
-//     justifyContent: "center",
-//   },
-//   title: {
-//     fontSize: 20,
-//     fontWeight: "bold",
-//   },
-//   separator: {
-//     marginVertical: 30,
-//     height: 1,
-//     width: "80%",
-//   },
-// });

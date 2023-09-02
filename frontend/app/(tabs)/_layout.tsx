@@ -1,7 +1,6 @@
 import { Tabs } from "expo-router";
 import React, { useContext } from "react";
 import { AuthContext } from "../../auth/authManager";
-import "../../src/global.css";
 import ConfirmEmailModal from "../components/confirmEmailModal";
 import LoginForm from "../components/loginform/loginform";
 import { tabs } from "./helpers/tabs";
@@ -14,9 +13,10 @@ const NavTabs = () => {
           key={tab.name}
           name={tab.name}
           options={{
-            tabBarStyle: { backgroundColor: "#1E0000" },
+            tabBarStyle: { backgroundColor: "#1E0000", borderTopWidth: 0 },
             tabBarActiveTintColor: "#88BB46",
             tabBarInactiveTintColor: "#FFFFFF",
+            headerShown: false,
             title: tab.title,
             tabBarIcon: ({ color }) => <tab.icon stroke={color} />,
           }}
