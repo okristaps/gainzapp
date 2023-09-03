@@ -1,11 +1,11 @@
-import React, { useCallback, useContext, useEffect, useState } from "react";
+import React, { memo, useCallback, useContext, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { TouchableOpacity, View, Text } from "react-native";
+import { Text, TouchableOpacity, View } from "react-native";
+import * as Animatable from "react-native-animatable";
 import { AuthContext } from "../../../auth/authManager";
 import { Input } from "../../../components/formInput";
 import { PirmaryButton } from "../common/primarybutton";
 import Wrapper from "../layout/wrapper";
-
 interface FormData {
   email: string;
   password: string;
@@ -53,13 +53,21 @@ const LoginForm: React.FC = () => {
     reset();
   }, [type]);
 
+  const Action = memo(() => {
+    return (
+      <Animatable.Text
+        animation={"pulse"}
+        className=" text-[22px] mt-[20px]  mb-[84px] font-medium text-center text-input"
+      >
+        {`${type === FormType.LOGIN ? "Sign in" : "Register"}`}
+      </Animatable.Text>
+    );
+  });
+
   return (
     <Wrapper>
       <Text className="mt-[40px]  text-title text-center text-white font-bold "> Gainzapp </Text>
-      <Text className=" text-[22px] mt-[20px]  mb-[84px] font-medium text-center text-input">
-        {`${type === FormType.LOGIN ? "Sign in" : "Register"}`}
-      </Text>
-
+      <Action />
       <View className="mb-[10px]">
         <Input
           type="emailAddress"
@@ -84,7 +92,11 @@ const LoginForm: React.FC = () => {
         placeholder={"Password"}
       />
       {type === FormType.REG && (
-        <View className="mt-[10px] mb-[30px]">
+        <Animatable.View
+          className="mt-[10px] mb-[30px]"
+          duration={700}
+          animation={type === FormType.REG ? "fadeInRight" : "slideInRight"}
+        >
           <Input
             showTitle={true}
             name={"confirmPassword"}
@@ -97,17 +109,24 @@ const LoginForm: React.FC = () => {
             }}
             placeholder={"Confirm password"}
           />
-        </View>
+        </Animatable.View>
       )}
       {Boolean(error) && <Text className="text-primary  text-danger mt-[10px]">{error}</Text>}
-      {type === FormType.LOGIN && <ForgotPassword />}
-
-      <PirmaryButton
-        loading={loading}
-        text={`${type === FormType.LOGIN ? "Sign in" : "Register"}`}
-        onPress={handleSubmit(onSubmit)}
-      />
-      <Register type={type} setType={setType} />
+      {type === FormType.LOGIN && (
+        <Animatable.View duration={2000} animation={"bounceInRight"}>
+          <ForgotPassword />
+        </Animatable.View>
+      )}
+      <Animatable.View animation={type === FormType.REG ? "slideInLeft" : "slideInRight"}>
+        <PirmaryButton
+          loading={loading}
+          text={`${type === FormType.LOGIN ? "Sign in" : "Register"}`}
+          onPress={handleSubmit(onSubmit)}
+        />
+      </Animatable.View>
+      <Animatable.View animation={type === FormType.REG ? "slideInRight" : "slideInLeft"}>
+        <Register type={type} setType={setType} />
+      </Animatable.View>
     </Wrapper>
   );
 };
