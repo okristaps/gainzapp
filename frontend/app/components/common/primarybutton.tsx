@@ -1,3 +1,4 @@
+import colors from "constants/colors";
 import { LinearGradient } from "expo-linear-gradient";
 import React from "react";
 import { ActivityIndicator, Text, TouchableOpacity } from "react-native";
@@ -13,7 +14,7 @@ const PirmaryButton: React.FC<Props> = ({ text, onPress, loading }) => {
     <TouchableOpacity onPress={onPress}>
       <LinearGradient
         className="h-[50px] bg-input rounded-[15px] flex  justify-center"
-        colors={["rgb(136,187,70)", "rgb(181,255,146)"]}
+        colors={colors.buttonGradient}
         start={{ x: 0, y: 1 }}
         end={{ x: 1, y: 0 }}
       >
@@ -31,7 +32,7 @@ const PirmaryButtonEmpty: React.FC<Props> = ({ text, onPress }) => {
   return (
     <TouchableOpacity
       onPress={onPress}
-      className="h-[50px] border border-success rounded-[15px] flex  justify-center "
+      className="h-[50px] border border-success rounded-[15px] flex  justify-center"
     >
       <Text className="text-center text-success text-18">{text}</Text>
     </TouchableOpacity>
