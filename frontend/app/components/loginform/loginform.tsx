@@ -22,6 +22,7 @@ const LoginForm: React.FC = () => {
     handleSubmit,
     getValues,
     reset,
+    watch,
     formState: { errors, isValid },
   } = useForm<FormData>();
 
@@ -46,6 +47,7 @@ const LoginForm: React.FC = () => {
 
     [getValues, type, isValid, errors]
   );
+  const password = watch("password", "");
 
   useEffect(() => {
     reset();
@@ -53,7 +55,7 @@ const LoginForm: React.FC = () => {
 
   return (
     <Wrapper>
-      <Text className="mt-[40px]  text-title text-center font-bold "> Gainzapp </Text>
+      <Text className="mt-[40px]  text-title text-center text-white font-bold "> Gainzapp </Text>
       <Text className=" text-[22px] mt-[20px]  mb-[84px] font-medium text-center text-input">
         {`${type === FormType.LOGIN ? "Sign in" : "Register"}`}
       </Text>
@@ -81,6 +83,22 @@ const LoginForm: React.FC = () => {
         rules={{ required: "Password is required" }}
         placeholder={"Password"}
       />
+      {type === FormType.REG && (
+        <View className="mt-[10px]">
+          <Input
+            showTitle={true}
+            name={"confirmPassword"}
+            type={"password"}
+            control={control}
+            errors={errors}
+            rules={{
+              required: "Confirm password is required",
+              validate: (value) => value === password || "Passwords do not match",
+            }}
+            placeholder={"Confirm password"}
+          />
+        </View>
+      )}
       {Boolean(error) && <Text className="text-primary  text-danger mt-[10px]">{error}</Text>}
       <ForgotPassword />
 
