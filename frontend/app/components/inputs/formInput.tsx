@@ -1,11 +1,12 @@
 import { LinearGradient } from "expo-linear-gradient";
 import React, { useState } from "react";
 import { Control, Controller } from "react-hook-form";
-import { TextInput, TouchableOpacity, View, Text } from "react-native";
+import { Text, TextInput, TouchableOpacity, View } from "react-native";
+import colors from "constants/colors";
 
 import Eye from "assets/images/eye.svg";
 import Key from "assets/images/key.svg";
-import User from "assets/images/usr.svg";
+import Email from "assets/images/msg.svg";
 
 interface InputProps {
   control: Control<any, any>;
@@ -39,17 +40,17 @@ export const Input: React.FC<InputProps> = ({
           <LinearGradient
             start={{ x: 0, y: 0 }}
             end={{ x: 0, y: 0 }}
-            colors={["rgba(0, 0, 0, 0.15)", "#282C30"]}
-            className="h-[48px]  pl-[18px] pr-[13px]  rounded-[12px] flex flex-row items-center justify-between"
+            colors={colors.inputGradient}
+            className="h-[48px]  pl-[18px] pr-[13px] rounded-[12px] flex flex-row items-center justify-between"
           >
             <View className="flex-row">
-              {type === "emailAddress" && <User />}
+              {type === "emailAddress" && <Email />}
               {type === "password" && <Key />}
               <TextInput
                 aria-hidden={true}
                 secureTextEntry={showPassword}
                 className={`h-[100%] w-[250px] color-input text-base pr-[13px] ml-[14px] mt-[2px]  `}
-                placeholder={placeholder || ""}
+                placeholder={placeholder ?? ""}
                 value={value}
                 onChangeText={onChange}
               />

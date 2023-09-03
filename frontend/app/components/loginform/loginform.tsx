@@ -1,20 +1,13 @@
-import React, { memo, useCallback, useContext, useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
-import { TouchableOpacity, View, Text } from "react-native";
 import { AuthContext } from "auth/authManager";
 import { PirmaryButton } from "components/common/primarybutton";
-import Wrapper from "components/layout/wrapper";
 import { Input } from "components/inputs/formInput";
-
-interface FormData {
-  email: string;
-  password: string;
-}
-
-enum FormType {
-  REG = "REG",
-  LOGIN = "LOGIN",
-}
+import Wrapper from "components/layout/wrapper";
+import React, { memo, useCallback, useContext, useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
+import { Text, View } from "react-native";
+import * as Animatable from "react-native-animatable";
+import { ForgotPassword, OtherMethods, Register } from "./components";
+import { FormData, FormType } from "./types";
 
 const LoginForm: React.FC = () => {
   const {
@@ -39,7 +32,7 @@ const LoginForm: React.FC = () => {
         type === FormType.LOGIN
           ? await signIn(data.email, data.password)
           : await signUp(data.email, data.password);
-      } catch (error) {
+      } catch (error: any) {
         setError(error?.message);
       }
       setLoading(false);
@@ -57,7 +50,7 @@ const LoginForm: React.FC = () => {
     return (
       <Animatable.Text
         animation={"pulse"}
-        className=" text-[22px] mt-[20px]  mb-[84px] font-medium text-center text-input"
+        className=" text-[22px] mt-[20px]  mb-[54px] font-medium text-center text-input"
       >
         {`${type === FormType.LOGIN ? "Sign in" : "Register"}`}
       </Animatable.Text>
@@ -105,7 +98,7 @@ const LoginForm: React.FC = () => {
             errors={errors}
             rules={{
               required: "Confirm password is required",
-              validate: (value) => value === password || "Passwords do not match",
+              validate: (value: string) => value === password || "Passwords do not match",
             }}
             placeholder={"Confirm password"}
           />
@@ -123,40 +116,12 @@ const LoginForm: React.FC = () => {
           text={`${type === FormType.LOGIN ? "Sign in" : "Register"}`}
           onPress={handleSubmit(onSubmit)}
         />
+        <OtherMethods type={type} />
       </Animatable.View>
       <Animatable.View animation={type === FormType.REG ? "slideInRight" : "slideInLeft"}>
         <Register type={type} setType={setType} />
       </Animatable.View>
     </Wrapper>
-  );
-};
-
-const Register = ({ setType, type }) => {
-  return (
-    <View className="flex mt-[30px]">
-      <Text className="text-center text-input">
-        {" "}
-        {`${type === FormType.REG ? "Already have an account?" : "Don’t have an account?  "}`}{" "}
-      </Text>
-      <TouchableOpacity
-        className="mt-[4px]"
-        onPress={() => setType(type === FormType.REG ? FormType.LOGIN : FormType.REG)}
-      >
-        <Text className="text-center text-success text-12 font-medium">
-          {`${type === FormType.REG ? "Back to Sign in" : "Register"}`}
-        </Text>
-      </TouchableOpacity>
-    </View>
-  );
-};
-
-const ForgotPassword = () => {
-  return (
-    <View className="flex-row items-end justify-end mt-[16px] mb-[22px]">
-      <TouchableOpacity>
-        <Text className="text-base text-input">Forgot password?</Text>
-      </TouchableOpacity>
-    </View>
   );
 };
 

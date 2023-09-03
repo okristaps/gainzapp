@@ -23,6 +23,7 @@ module.exports = function (api) {
         "module-resolver",
         {
           alias: {
+            constants: "./constants",
             assets: "./src/assets",
             components: "./app/components",
             tabs: "./app/tabs",
