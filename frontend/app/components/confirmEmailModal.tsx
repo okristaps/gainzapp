@@ -13,7 +13,6 @@ const ConfirmEmailModal: React.FC<ModalProps> = ({ user }) => {
   const [visible, setVisible] = useState(!user?.emailVerified);
   const [error, setError] = useState("");
   const [verificationSent, setVerificationSent] = useState(false);
-  console.log("auth", auth);
 
   const sendVerificationEmail = async () => {
     if (user && !user?.emailVerified) {
