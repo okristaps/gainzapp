@@ -19,6 +19,18 @@ module.exports = function (api) {
           verbose: false,
         },
       ],
+      [
+        "module-resolver",
+        {
+          alias: {
+            assets: "./src/assets",
+            components: "./app/components",
+            tabs: "./app/tabs",
+            auth: "./auth",
+            firebaseConfig: "./firebaseConfig.js",
+          },
+        },
+      ],
     ],
   };
 };

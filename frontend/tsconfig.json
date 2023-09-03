@@ -4,5 +4,12 @@
   "compilerOptions": {
     "strict": true,
     "typeRoots": ["./types"],
+    "paths": {
+      "components/*": ["./app/components/*"],
+      "assets/*": ["./app/assets/*"],
+      "tabs/*": ["./app/(tabs)/*"],
+      "auth/*": ["./auth/*"],
+      "firebaseConfig/*": ["./firebaseConfig.js"],
+    },
   }
 }
