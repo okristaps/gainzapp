@@ -84,7 +84,7 @@ const LoginForm: React.FC = () => {
         placeholder={"Password"}
       />
       {type === FormType.REG && (
-        <View className="mt-[10px]">
+        <View className="mt-[10px] mb-[30px]">
           <Input
             showTitle={true}
             name={"confirmPassword"}
@@ -100,7 +100,7 @@ const LoginForm: React.FC = () => {
         </View>
       )}
       {Boolean(error) && <Text className="text-primary  text-danger mt-[10px]">{error}</Text>}
-      <ForgotPassword />
+      {type === FormType.LOGIN && <ForgotPassword />}
 
       <PirmaryButton
         loading={loading}
