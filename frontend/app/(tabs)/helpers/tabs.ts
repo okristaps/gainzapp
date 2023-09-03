@@ -1,8 +1,8 @@
-import Dashboard from "../../../src/assets/images/dashboard.svg";
-import Workouts from "../../../src/assets/images/workouts.svg";
-import Start from "../../../src/assets/images/start.svg";
-import Logs from "../../../src/assets/images/logs.svg";
-import More from "../../../src/assets/images/more.svg";
+import Dashboard from "assets/images/dashboard.svg";
+import Workouts from "assets/images/workouts.svg";
+import Start from "assets/images/start.svg";
+import Logs from "assets/images/logs.svg";
+import More from "assets/images/more.svg";
 
 export const tabs = [
   {

@@ -1,11 +1,11 @@
 import React, { memo, useCallback, useContext, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { Text, TouchableOpacity, View } from "react-native";
-import * as Animatable from "react-native-animatable";
-import { AuthContext } from "../../../auth/authManager";
-import { Input } from "../../../components/formInput";
-import { PirmaryButton } from "../common/primarybutton";
-import Wrapper from "../layout/wrapper";
+import { TouchableOpacity, View, Text } from "react-native";
+import { AuthContext } from "auth/authManager";
+import { PirmaryButton } from "components/common/primarybutton";
+import Wrapper from "components/layout/wrapper";
+import { Input } from "components/inputs/formInput";
+
 interface FormData {
   email: string;
   password: string;
