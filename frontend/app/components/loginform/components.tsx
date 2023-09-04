@@ -1,7 +1,7 @@
 import colors from "constants/colors";
 import { LinearGradient } from "expo-linear-gradient";
 import React from "react";
-import { Text, TouchableOpacity, View } from "react-native";
+import { Dimensions, Text, TouchableOpacity, View } from "react-native";
 import { loginMethods } from "./helpers";
 import { DividerProps, FormType, OtherMetProps, RegisterProps } from "./types";
 
@@ -32,14 +32,17 @@ const OtherBtn: React.FC<Props> = ({ onPress, type }) => {
   );
 };
 
-const Divider: React.FC<DividerProps> = ({ text }) => {
+const Divider: React.FC<DividerProps> = ({ text, textSize, extraClassName }) => {
+  const arrowWidth = Dimensions.get("window").width / 5;
   return (
-    <View className="mt-[22px] flex flex-row items-center  justify-center">
+    <View className={`flex flex-row items-center  justify-center ${extraClassName}`}>
       <View className="rotate-180">
-        <DividerSVG />
+        <DividerSVG width={arrowWidth} />
       </View>
-      <Text className="font-regular text-white text-[11px] px-[7px]">{text} </Text>
-      <DividerSVG />
+      <Text className={`font-regular text-white text-[${textSize ?? "11px"}] px-[7px]`}>
+        {text}{" "}
+      </Text>
+      <DividerSVG width={arrowWidth} />
     </View>
   );
 };
@@ -47,7 +50,10 @@ const Divider: React.FC<DividerProps> = ({ text }) => {
 const OtherMethods: React.FC<OtherMetProps> = ({ type }) => {
   return (
     <View className="flex w-100% items-center">
-      <Divider text={type === FormType.REG ? " Or register with" : "Or sign in with"} />
+      <Divider
+        extraClassName={"mt-[22px]"}
+        text={type === FormType.REG ? " Or register with" : "Or sign in with"}
+      />
       <View className="mt-[20px] flex flex-row w-[202px] justify-between ">
         {loginMethods.map((type: string) => (
           <OtherBtn type={type} key={type} />
@@ -75,10 +81,10 @@ const Register: React.FC<RegisterProps> = ({ setType, type }) => {
   );
 };
 
-const ForgotPassword = () => {
+const ForgotPassword = ({ onPress }) => {
   return (
     <View className="flex-row items-end justify-end mt-[16px] mb-[22px]">
-      <TouchableOpacity>
+      <TouchableOpacity onPress={onPress}>
         <Text className="text-base text-input">Forgot password?</Text>
       </TouchableOpacity>
     </View>

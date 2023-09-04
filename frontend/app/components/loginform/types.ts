@@ -1,6 +1,7 @@
 export enum FormType {
   REG = "REG",
   LOGIN = "LOGIN",
+  RESET = "RESET",
 }
 
 export interface FormData {
@@ -10,6 +11,8 @@ export interface FormData {
 
 export interface DividerProps {
   text: string;
+  textSize?: number;
+  extraClassName?: string;
 }
 
 export interface OtherMetProps {
