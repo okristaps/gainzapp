@@ -8,6 +8,7 @@ module.exports = {
       },
       backgroundColor: {
         input: "#282C30",
+        default: "#1E1E1E",
       },
       colors: {
         primary: "#FFFFFF",
@@ -25,6 +26,8 @@ module.exports = {
         18: "18px",
         20: "20px",
         25: "25px",
+        27: "27px",
+        28: "28px",
         title: "29px",
       },
     },

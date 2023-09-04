@@ -28,13 +28,17 @@ const PirmaryButton: React.FC<Props> = ({ text, onPress, loading }) => {
   );
 };
 
-const PirmaryButtonEmpty: React.FC<Props> = ({ text, onPress }) => {
+const PirmaryButtonEmpty: React.FC<Props> = ({ text, onPress, loading }) => {
   return (
     <TouchableOpacity
       onPress={onPress}
       className="h-[50px] border border-success rounded-[15px] flex  justify-center"
     >
-      <Text className="text-center text-success text-18">{text}</Text>
+      {loading ? (
+        <ActivityIndicator size="large" color={"#7F8489"} />
+      ) : (
+        <Text className="text-center text-success text-18">{text}</Text>
+      )}
     </TouchableOpacity>
   );
 };
