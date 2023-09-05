@@ -15,13 +15,16 @@
 - `FIREBASE_ADMIN_PRIVATE_KEY=adminprivatekey`
 - `FIREBASE_ADMIN_PRIVATE_KEY_ID=keyid`
 
-## To start app - Run this in a sequence from root:
+## To start app - Run this in a sequence from  ./frontend :
 ##### ! IF NO GAINZAPPBACKEND SUBMODULE ADDED
-- `cd frontend && npm install && expo install && expo start`
+- `cd frontend && npm install && expo install`
+- `cd ios && pod install`
+- `npx expo run:ios`
 
 ##### ! IF GAINZAPPBACKEND SUBMODULE IS ADDED
 - `cd backend && npm install && cd ../frontend && npm install && expo install`
-- `cd frontend && expo start` 
+- `cd ios && pod install`
+- ./frontend `npx expo run:ios`
 - `cd backend &&  docker compose up -d`
 
 
