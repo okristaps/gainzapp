@@ -3,6 +3,7 @@ import { FIREBASE_API_KEY } from "@env";
 
 import { getAuth } from "firebase/auth";
 
+// console.log("FIREBASE_API_KEY", FIREBASE_API_KEY);
 // Initialize Firebase
 const firebaseConfig = {
   apiKey: FIREBASE_API_KEY,

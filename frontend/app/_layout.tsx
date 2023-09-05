@@ -17,7 +17,7 @@ export default function RootLayout() {
 
   return (
     <>
-      {!loaded && <SplashScreen />}
+      {/* {!loaded && <SplashScreen />} */}
       {loaded && <RootLayoutNav />}
     </>
   );
