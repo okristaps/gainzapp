@@ -2,6 +2,7 @@ import { GoogleSignin } from "@react-native-google-signin/google-signin";
 import * as SecureStore from "expo-secure-store";
 import {
   Auth,
+  FacebookAuthProvider,
   GoogleAuthProvider,
   User,
   UserCredential,
@@ -15,6 +16,8 @@ import {
 import React, { createContext, useEffect, useMemo, useState } from "react";
 import app from "../firebaseConfig";
 
+import { LoginManager, AccessToken } from "react-native-fbsdk-next";
+
 interface AuthManagerProps {
   children: React.ReactNode;
 }
@@ -22,6 +25,7 @@ interface AuthManagerProps {
 interface AuthContext {
   user: User | null;
   googleSignIn: () => Promise<void>;
+  signInWithFB: () => Promise<void>;
   signUp: (email: string, password: string) => Promise<void>;
   signIn: (email: string, password: string) => Promise<void>;
   logOut: () => Promise<void>;
@@ -30,6 +34,7 @@ interface AuthContext {
 
 export const AuthContext = createContext<AuthContext>({
   user: null,
+  signInWithFB: async () => {},
   signUp: async () => {},
   signIn: async () => {},
   logOut: async () => {},
@@ -101,11 +106,32 @@ const AuthManager: React.FC<AuthManagerProps> = ({ children }) => {
       await GoogleSignin.hasPlayServices({ showPlayServicesUpdateDialog: true });
       const { idToken } = await GoogleSignin.signIn();
       const googleCredential = GoogleAuthProvider.credential(idToken);
-      await signInWithCredential(auth, googleCredential).then((res) => console.log("res", res));
+      await signInWithCredential(auth, googleCredential);
     } catch (error) {
       console.error("Google sign-in error:", error);
     }
   }
+
+  const signInWithFB = async () => {
+    const result = await LoginManager.logInWithPermissions(["public_profile", "email"]);
+    if (result?.isCancelled) {
+      throw "User cancelled the login process";
+    }
+    // Once signed in, get the users AccesToken
+    const data = await AccessToken.getCurrentAccessToken();
+    if (!data) {
+      throw "Something went wrong obtaining access token";
+    }
+
+    const facebookAuthProvider = FacebookAuthProvider.credential(data.accessToken);
+    console.log("facebookAuthProvider", facebookAuthProvider);
+
+    signInWithCredential(auth, facebookAuthProvider)
+      .then(() => {})
+      .catch((error) => {
+        console.log(error);
+      });
+  };
 
   const signIn = (email: string, password: string) => {
     return new Promise<void>((resolve, reject) => {
@@ -143,6 +169,7 @@ const AuthManager: React.FC<AuthManagerProps> = ({ children }) => {
       signIn,
       logOut,
       googleSignIn,
+      signInWithFB,
       auth,
     };
   }, [user, signUp, signIn, logOut, auth]);

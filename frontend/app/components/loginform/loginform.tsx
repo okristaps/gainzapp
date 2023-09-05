@@ -25,7 +25,7 @@ const LoginForm: React.FC = () => {
   const [visible, setVisible] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string>("");
-  const { signIn, signUp, googleSignIn } = useContext(AuthContext);
+  const { signIn, signUp, googleSignIn, signInWithFB } = useContext(AuthContext);
 
   const onSubmit = useCallback(
     async (data: FormData) => {
@@ -47,6 +47,19 @@ const LoginForm: React.FC = () => {
   useEffect(() => {
     reset();
   }, [type]);
+
+  const handleOtherMethods = (type: string) => {
+    switch (type) {
+      case "google":
+        googleSignIn();
+        break;
+      case "facebook":
+        signInWithFB();
+        break;
+      default:
+        break;
+    }
+  };
 
   const Action = memo(() => {
     return (
@@ -77,7 +90,7 @@ const LoginForm: React.FC = () => {
           text={`${type === FormType.LOGIN ? "Sign in" : "Register"}`}
           onPress={handleSubmit(onSubmit)}
         />
-        <OtherMethods onPress={googleSignIn} type={type} />
+        <OtherMethods onPress={handleOtherMethods} type={type} />
       </Animatable.View>
       <Animatable.View animation={type === FormType.REG ? "slideInRight" : "slideInLeft"}>
         <Register type={type} setType={setType} />

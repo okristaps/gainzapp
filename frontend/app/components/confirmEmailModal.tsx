@@ -71,7 +71,9 @@ const ConfirmEmailModal: React.FC<ModalProps> = ({ user }) => {
 
             {verificationSent && !error && (
               <View>
-                <Text>Verification email has been sent. Please check your inbox.</Text>
+                <Text>
+                  Verification email has been sent to {user?.email} Please check your inbox.
+                </Text>
 
                 <TouchableOpacity onPress={listenForEmailVerification} style={{ marginTop: 20 }}>
                   <Text style={{ color: "blue" }}>Check Email Verification</Text>
@@ -80,7 +82,10 @@ const ConfirmEmailModal: React.FC<ModalProps> = ({ user }) => {
             )}
             {error && (
               <View>
-                <Text style={{ color: "red" }}>{error}</Text>
+                <Text style={{ color: "red" }}>
+                  {error}
+                  {user?.email}
+                </Text>
                 <TouchableOpacity onPress={sendVerificationEmail} style={{ marginTop: 20 }}>
                   <Text style={{ color: "blue" }}>Send verification email again</Text>
                 </TouchableOpacity>

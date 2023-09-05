@@ -32,7 +32,18 @@
     },
     "plugins": [
       "expo-router",
-      "@react-native-google-signin/google-signin"
+      "@react-native-google-signin/google-signin",
+      [
+        "react-native-fbsdk-next",
+        {
+          "appID": "1361828924685068",
+          "clientToken": "546e1b4d550badf2e6241e959583cdc8",
+          "displayName": "Gainzapp",
+          "advertiserIDCollectionEnabled": false,
+          "autoLogAppEventsEnabled": false,
+          "isAutoInitEnabled": true        
+        }
+      ]
     ]
   }
 }
