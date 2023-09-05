@@ -25,7 +25,7 @@ const LoginForm: React.FC = () => {
   const [visible, setVisible] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string>("");
-  const { signIn, signUp } = useContext(AuthContext);
+  const { signIn, signUp, googleSignIn } = useContext(AuthContext);
 
   const onSubmit = useCallback(
     async (data: FormData) => {
@@ -77,7 +77,7 @@ const LoginForm: React.FC = () => {
           text={`${type === FormType.LOGIN ? "Sign in" : "Register"}`}
           onPress={handleSubmit(onSubmit)}
         />
-        <OtherMethods type={type} />
+        <OtherMethods onPress={googleSignIn} type={type} />
       </Animatable.View>
       <Animatable.View animation={type === FormType.REG ? "slideInRight" : "slideInLeft"}>
         <Register type={type} setType={setType} />

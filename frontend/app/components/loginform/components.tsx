@@ -47,7 +47,7 @@ const Divider: React.FC<DividerProps> = ({ text, textSize, extraClassName }) => 
   );
 };
 
-const OtherMethods: React.FC<OtherMetProps> = ({ type }) => {
+const OtherMethods: React.FC<OtherMetProps> = ({ onPress, type }) => {
   return (
     <View className="flex w-100% items-center">
       <Divider
@@ -56,7 +56,7 @@ const OtherMethods: React.FC<OtherMetProps> = ({ type }) => {
       />
       <View className="mt-[20px] flex flex-row w-[202px] justify-between ">
         {loginMethods.map((type: string) => (
-          <OtherBtn type={type} key={type} />
+          <OtherBtn onPress={() => onPress(type)} type={type} key={type} />
         ))}
       </View>
     </View>
