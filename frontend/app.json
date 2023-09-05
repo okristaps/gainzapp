@@ -12,13 +12,12 @@
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
-    
     "assetBundlePatterns": [
       "**/*"
     ],
     "ios": {
       "supportsTablet": true,
-  
+      "bundleIdentifier": "y"
     },
     "android": {
       "adaptiveIcon": {
