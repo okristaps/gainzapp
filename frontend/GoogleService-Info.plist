@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>75694328412-6r78sjah2if97bmkmb08t8rn1l8tik95.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.75694328412-6r78sjah2if97bmkmb08t8rn1l8tik95</string>
+	<key>API_KEY</key>
+	<string>AIzaSyB3qOf558WUjH92wfEcRZ1WUMQ-jjkP-F4</string>
+	<key>GCM_SENDER_ID</key>
+	<string>75694328412</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.gainzapp</string>
+	<key>PROJECT_ID</key>
+	<string>gainzapp-392017</string>
+	<key>STORAGE_BUCKET</key>
+	<string>gainzapp-392017.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:75694328412:ios:dc1a902f31708b1a03b499</string>
+	<key>DATABASE_URL</key>
+	<string>https://gainzapp-392017-default-rtdb.europe-west1.firebasedatabase.app</string>
+</dict>
+</plist>

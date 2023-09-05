@@ -1,22 +1,27 @@
+import { GoogleSignin } from "@react-native-google-signin/google-signin";
 import * as SecureStore from "expo-secure-store";
 import {
   Auth,
+  GoogleAuthProvider,
   User,
   UserCredential,
   createUserWithEmailAndPassword,
   getAuth,
   onAuthStateChanged,
+  signInWithCredential,
   signInWithEmailAndPassword,
   signOut,
 } from "firebase/auth";
 import React, { createContext, useEffect, useMemo, useState } from "react";
 import app from "../firebaseConfig";
+
 interface AuthManagerProps {
   children: React.ReactNode;
 }
 
 interface AuthContext {
   user: User | null;
+  googleSignIn: () => Promise<void>;
   signUp: (email: string, password: string) => Promise<void>;
   signIn: (email: string, password: string) => Promise<void>;
   logOut: () => Promise<void>;
@@ -28,6 +33,7 @@ export const AuthContext = createContext<AuthContext>({
   signUp: async () => {},
   signIn: async () => {},
   logOut: async () => {},
+  googleSignIn: async () => {},
   auth: getAuth(app),
 });
 
@@ -54,7 +60,6 @@ const AuthManager: React.FC<AuthManagerProps> = ({ children }) => {
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
-        setUser(user);
         saveUserSession(user);
       } else {
         setUser(null);
@@ -68,6 +73,7 @@ const AuthManager: React.FC<AuthManagerProps> = ({ children }) => {
   const saveUserSession = async (userData: User) => {
     try {
       await SecureStore.setItemAsync("userSession", JSON.stringify(userData));
+      setUser(userData);
     } catch (error) {
       console.error("Error saving user session to SecureStore:", error);
     }
@@ -89,6 +95,17 @@ const AuthManager: React.FC<AuthManagerProps> = ({ children }) => {
       throw error;
     }
   };
+
+  async function googleSignIn() {
+    try {
+      await GoogleSignin.hasPlayServices({ showPlayServicesUpdateDialog: true });
+      const { idToken } = await GoogleSignin.signIn();
+      const googleCredential = GoogleAuthProvider.credential(idToken);
+      await signInWithCredential(auth, googleCredential).then((res) => console.log("res", res));
+    } catch (error) {
+      console.error("Google sign-in error:", error);
+    }
+  }
 
   const signIn = (email: string, password: string) => {
     return new Promise<void>((resolve, reject) => {
@@ -125,6 +142,7 @@ const AuthManager: React.FC<AuthManagerProps> = ({ children }) => {
       signUp,
       signIn,
       logOut,
+      googleSignIn,
       auth,
     };
   }, [user, signUp, signIn, logOut, auth]);
