@@ -17,6 +17,7 @@ export interface DividerProps {
 
 export interface OtherMetProps {
   type: string;
+  onPress?: (type: string) => void;
 }
 
 export interface RegisterProps extends OtherMetProps {
