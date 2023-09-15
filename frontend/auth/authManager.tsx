@@ -1,5 +1,4 @@
 import { GoogleSignin } from "@react-native-google-signin/google-signin";
-import * as SecureStore from "expo-secure-store";
 import {
   Auth,
   FacebookAuthProvider,
@@ -14,9 +13,11 @@ import {
   signOut,
 } from "firebase/auth";
 import React, { createContext, useEffect, useMemo, useState } from "react";
+import { getBe, putBe } from "../api/index";
 import app from "../firebaseConfig";
 
-import { LoginManager, AccessToken } from "react-native-fbsdk-next";
+import { AccessToken, LoginManager } from "react-native-fbsdk-next";
+import { MongoUser, MongoUserBody } from "../types";
 
 interface AuthManagerProps {
   children: React.ReactNode;
@@ -24,6 +25,7 @@ interface AuthManagerProps {
 
 interface AuthContext {
   user: User | null;
+  userData: MongoUser | null;
   googleSignIn: () => Promise<void>;
   signInWithFB: () => Promise<void>;
   signUp: (email: string, password: string) => Promise<void>;
@@ -40,27 +42,13 @@ export const AuthContext = createContext<AuthContext>({
   logOut: async () => {},
   googleSignIn: async () => {},
   auth: getAuth(app),
+  userData: null,
 });
 
 const AuthManager: React.FC<AuthManagerProps> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
+  const [userData, setUserData] = useState<MongoUser | null>(null);
   const auth = getAuth(app);
-
-  useEffect(() => {
-    const loadUserSession = async () => {
-      try {
-        const savedUserSession = await SecureStore.getItemAsync("userSession");
-        if (savedUserSession) {
-          const userData = JSON.parse(savedUserSession);
-          setUser(userData);
-        }
-      } catch (error) {
-        console.error("Error loading user session from SecureStore:", error);
-      }
-    };
-
-    loadUserSession();
-  }, []);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
@@ -68,7 +56,6 @@ const AuthManager: React.FC<AuthManagerProps> = ({ children }) => {
         saveUserSession(user);
       } else {
         setUser(null);
-        clearUserSession();
       }
     });
 
@@ -77,29 +64,29 @@ const AuthManager: React.FC<AuthManagerProps> = ({ children }) => {
 
   const saveUserSession = async (userData: User) => {
     try {
-      await SecureStore.setItemAsync("userSession", JSON.stringify(userData));
+      const regUser = await getBe({ path: `/users/${userData.uid}` }).then((res) => res.user);
+
+      if (!regUser?.uid) {
+        const body: MongoUserBody = {
+          uid: userData.uid,
+          email: userData.email,
+          displayName: userData?.displayName,
+          photoURL: userData?.photoURL,
+        };
+
+        await putBe({ path: `/users`, body }).then((res: MongoUser) => setUserData(res));
+      } else {
+        setUserData(regUser);
+      }
+
       setUser(userData);
     } catch (error) {
-      console.error("Error saving user session to SecureStore:", error);
+      console.error("Error saving user session:", error);
     }
   };
 
-  const clearUserSession = async () => {
-    try {
-      await SecureStore.deleteItemAsync("userSession");
-    } catch (error) {
-      console.error("Error clearing user session from SecureStore:", error);
-    }
-  };
-
-  const signUp = async (email: string, password: string): Promise<UserCredential> => {
-    try {
-      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-      return userCredential;
-    } catch (error) {
-      throw error;
-    }
-  };
+  const signUp = async (email: string, password: string): Promise<UserCredential> =>
+    await createUserWithEmailAndPassword(auth, email, password);
 
   async function googleSignIn() {
     try {
@@ -115,16 +102,15 @@ const AuthManager: React.FC<AuthManagerProps> = ({ children }) => {
   const signInWithFB = async () => {
     const result = await LoginManager.logInWithPermissions(["public_profile", "email"]);
     if (result?.isCancelled) {
-      throw "User cancelled the login process";
+      throw new Error("User cancelled the login process");
     }
-    // Once signed in, get the users AccesToken
+
     const data = await AccessToken.getCurrentAccessToken();
     if (!data) {
-      throw "Something went wrong obtaining access token";
+      throw new Error("Something went wrong obtaining access token");
     }
 
     const facebookAuthProvider = FacebookAuthProvider.credential(data.accessToken);
-    console.log("facebookAuthProvider", facebookAuthProvider);
 
     signInWithCredential(auth, facebookAuthProvider)
       .then(() => {})
@@ -171,8 +157,9 @@ const AuthManager: React.FC<AuthManagerProps> = ({ children }) => {
       googleSignIn,
       signInWithFB,
       auth,
+      userData,
     };
-  }, [user, signUp, signIn, logOut, auth]);
+  }, [user, signUp, signIn, logOut, auth, userData]);
 
   return <AuthContext.Provider value={values}>{children}</AuthContext.Provider>;
 };
