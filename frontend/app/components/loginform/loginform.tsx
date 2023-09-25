@@ -90,7 +90,7 @@ const LoginForm: React.FC = () => {
           text={`${type === FormType.LOGIN ? "Sign in" : "Register"}`}
           onPress={handleSubmit(onSubmit)}
         />
-        <OtherMethods onPress={handleOtherMethods} type={type} />
+        {/* <OtherMethods onPress={handleOtherMethods} type={type} /> */}
       </Animatable.View>
       <Animatable.View animation={type === FormType.REG ? "slideInRight" : "slideInLeft"}>
         <Register type={type} setType={setType} />

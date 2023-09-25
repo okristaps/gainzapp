@@ -1,4 +1,4 @@
-import { GoogleSignin } from "@react-native-google-signin/google-signin";
+// import { GoogleSignin } from "@react-native-google-signin/google-signin";
 import {
   Auth,
   FacebookAuthProvider,
@@ -16,7 +16,7 @@ import React, { createContext, useEffect, useMemo, useState } from "react";
 import { getBe, putBe } from "../api/index";
 import app from "../firebaseConfig";
 
-import { AccessToken, LoginManager } from "react-native-fbsdk-next";
+// import { AccessToken, LoginManager } from "react-native-fbsdk-next";
 import { MongoUser, MongoUserBody } from "../types";
 
 interface AuthManagerProps {
@@ -89,14 +89,14 @@ const AuthManager: React.FC<AuthManagerProps> = ({ children }) => {
     await createUserWithEmailAndPassword(auth, email, password);
 
   async function googleSignIn() {
-    try {
-      await GoogleSignin.hasPlayServices({ showPlayServicesUpdateDialog: true });
-      const { idToken } = await GoogleSignin.signIn();
-      const googleCredential = GoogleAuthProvider.credential(idToken);
-      await signInWithCredential(auth, googleCredential);
-    } catch (error) {
-      console.error("Google sign-in error:", error);
-    }
+    // try {
+    //   await GoogleSignin.hasPlayServices({ showPlayServicesUpdateDialog: true });
+    //   const { idToken } = await GoogleSignin.signIn();
+    //   const googleCredential = GoogleAuthProvider.credential(idToken);
+    //   await signInWithCredential(auth, googleCredential);
+    // } catch (error) {
+    //   console.error("Google sign-in error:", error);
+    // }
   }
 
   const signInWithFB = async () => {
