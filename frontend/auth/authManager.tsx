@@ -121,15 +121,9 @@ const AuthManager: React.FC<AuthManagerProps> = ({ children }) => {
 
   const signIn = (email: string, password: string) => {
     return new Promise<void>((resolve, reject) => {
-      signInWithEmailAndPassword(auth, email, password)
-        .then((userCredential) => {
-          const { user } = userCredential;
-          saveUserSession(user);
-          resolve();
-        })
-        .catch((error) => {
-          reject(error);
-        });
+      signInWithEmailAndPassword(auth, email, password).catch((error) => {
+        reject(error);
+      });
     });
   };
 
