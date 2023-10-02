@@ -2,7 +2,7 @@ import { User, onAuthStateChanged, sendEmailVerification } from "firebase/auth";
 import React, { useContext, useEffect, useState } from "react";
 import { ActivityIndicator, Text, TouchableOpacity, View } from "react-native";
 import Modal from "react-native-modal";
-import { AuthContext } from "../../auth/authManager";
+import { AuthContext } from "../../../auth/authManager";
 
 interface ModalProps {
   user: User | null;

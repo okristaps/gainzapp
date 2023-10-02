@@ -1,19 +1,14 @@
 import React, { memo, useCallback, useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { Text, View } from "react-native";
-import Modal from "react-native-modal";
 import FormItems from "./formItems";
 import { FormType } from "./types";
 
 import { PirmaryButtonEmpty } from "components/common/primarybutton";
-import ModalHeader from "components/modals/components/modalHeader";
 
+import ModalWrapper from "components/modals/components/modalWrapper";
 import { getAuth, sendPasswordResetEmail } from "firebase/auth";
 import app from "../../../firebaseConfig";
-
-interface Data {
-  email: string;
-}
 
 interface ModalProps {
   visible: boolean;
@@ -75,59 +70,38 @@ const ResetPasswordModal: React.FC<ModalProps> = ({ visible, setVisible }) => {
         Please, enter your email address. You will receive link to create a new password via email.
       </Text>
     );
-  }, [state?.success]);
+  }, [state]);
 
   return (
-    <Modal
-      isVisible={visible}
-      hasBackdrop={true}
-      backdropOpacity={0.94}
-      style={{ margin: 0 }}
-      onSwipeComplete={() => setVisible(false)}
-      swipeDirection="down"
-      swipeThreshold={100}
-      onModalHide={() => setState(initial)}
-      avoidKeyboard={true}
-    >
-      <View className="flex-1 justify-end">
-        <View
-          className={`pl-[23px] pr-[23px] pt-[23px] pb-[40px] rounded-tl-[20px] rounded-tr-[20px] bg-default`}
-        >
-          <ModalHeader
-            onClosePress={() => {
-              setVisible(false);
-            }}
-          />
-          <Message />
+    <ModalWrapper visible={visible} setVisible={setVisible} onModalHide={() => setState(initial)}>
+      <Message />
 
-          {!state.success && (
-            <View className="mt-[10px]">
-              <FormItems
-                emailRef={textInputRef}
-                hideEmail={state.success}
-                hidePwd={true}
-                error={state.error}
-                control={control}
-                type={type}
-                errors={errors}
-              />
-            </View>
-          )}
-          {state.error && (
-            <View>
-              <Text className="text-danger text-center mb-[10px]">{state.error?.message}</Text>
-            </View>
-          )}
-          {!state.success && (
-            <PirmaryButtonEmpty
-              loading={state.isLoading}
-              text="Reset password"
-              onPress={handleSubmit(handlePasswordReset)}
-            />
-          )}
+      {!state.success && (
+        <View className="mt-[10px]">
+          <FormItems
+            emailRef={textInputRef}
+            hideEmail={state.success}
+            hidePwd={true}
+            error={state.error}
+            control={control}
+            type={type}
+            errors={errors}
+          />
         </View>
-      </View>
-    </Modal>
+      )}
+      {state.error && (
+        <View>
+          <Text className="text-danger text-center mb-[10px]">{state.error?.message}</Text>
+        </View>
+      )}
+      {!state.success && (
+        <PirmaryButtonEmpty
+          loading={state.isLoading}
+          text="Reset password"
+          onPress={handleSubmit(handlePasswordReset)}
+        />
+      )}
+    </ModalWrapper>
   );
 };
 

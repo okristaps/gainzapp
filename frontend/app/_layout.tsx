@@ -1,8 +1,8 @@
 import FontAwesome from "@expo/vector-icons/FontAwesome";
-import { useFonts } from "expo-font";
-import { SplashScreen, Stack } from "expo-router";
-import React, { useEffect } from "react";
 import AuthManager from "auth/authManager";
+import { useFonts } from "expo-font";
+import { Stack } from "expo-router";
+import React, { useEffect } from "react";
 export { ErrorBoundary } from "expo-router";
 
 export default function RootLayout() {

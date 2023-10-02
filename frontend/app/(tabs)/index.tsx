@@ -19,9 +19,6 @@ export default function TabTwoScreen() {
 
   return (
     <Wrapper>
-      <View>
-        <Text className="text-slate-800"> asdasdsa</Text>
-      </View>
       <SafeAreaView>
         <Button title="Get token" onPress={getToken} />
         <Button title="Log out" onPress={logOutFunc} />

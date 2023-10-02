@@ -1,7 +1,7 @@
 import { Tabs } from "expo-router";
 import React, { useContext } from "react";
 import { AuthContext } from "auth/authManager";
-import ConfirmEmailModal from "components/confirmEmailModal";
+import ConfirmEmailModal from "components/modals/confirmEmailModal";
 import LoginForm from "components/loginform/loginform";
 import { tabs } from "./helpers/tabs";
 
