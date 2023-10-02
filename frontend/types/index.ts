@@ -8,7 +8,7 @@ export interface MongoUserBody {
   weight?: number | null;
   age?: number | null;
   metric_units?: boolean | null;
-  displayName?: string | null;
+  display_name?: string | null;
   photoURL?: string | null;
 }
 
