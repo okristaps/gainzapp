@@ -8,9 +8,15 @@ interface Props {
   onBackPress?: () => void;
   onClosePress: () => void;
   showBack?: boolean;
+  text?: string;
 }
 
-const ModalHeader: React.FC<Props> = ({ showBack, onBackPress, onClosePress }) => {
+const ModalHeader: React.FC<Props> = ({
+  showBack,
+  onBackPress,
+  onClosePress,
+  text = "Reset password",
+}) => {
   return (
     <View className="flex width-[100%] flex-row justify-between items-center">
       {showBack ? (
@@ -20,7 +26,7 @@ const ModalHeader: React.FC<Props> = ({ showBack, onBackPress, onClosePress }) =
       ) : (
         <View className="w-[24px] h-[24px]" />
       )}
-      <Divider text="Reset password" textSize={28} />
+      <Divider text={text} textSize={28} />
       <TouchableOpacity onPress={onClosePress}>
         <Close fill="#ffffff" />
       </TouchableOpacity>

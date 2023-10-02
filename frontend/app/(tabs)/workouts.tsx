@@ -1,18 +1,11 @@
+import Wrapper from "components/layout/wrapper";
 import React from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { Text } from "react-native";
 
 export default function TabWorkoutsScreen() {
   return (
-    <View style={styles.container}>
-      <Text> Workouts</Text>
-    </View>
+    <Wrapper>
+      <Text className="text-white"> Workouts</Text>
+    </Wrapper>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-});

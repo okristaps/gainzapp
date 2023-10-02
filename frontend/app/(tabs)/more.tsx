@@ -1,18 +1,11 @@
+import Wrapper from "components/layout/wrapper";
 import React from "react";
-import { Text, StyleSheet, View } from "react-native";
+import { Text } from "react-native";
 
 export default function TabMoreScreen() {
   return (
-    <View style={styles.container}>
-      <Text> More </Text>
-    </View>
+    <Wrapper>
+      <Text className="text-white"> More </Text>
+    </Wrapper>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-});
