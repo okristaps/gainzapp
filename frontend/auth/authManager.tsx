@@ -70,7 +70,7 @@ const AuthManager: React.FC<AuthManagerProps> = ({ children }) => {
         const body: MongoUserBody = {
           uid: userData.uid,
           email: userData.email,
-          displayName: userData?.displayName,
+          display_name: userData?.displayName,
           photoURL: userData?.photoURL,
         };
 

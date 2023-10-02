@@ -5,7 +5,12 @@ import React from "react";
 export default function TabWorkoutsScreen() {
   return (
     <Wrapper>
-      <Header />
+      <Header
+        iconRight={{
+          text: "Filter",
+          items: "end",
+        }}
+      />
     </Wrapper>
   );
 }

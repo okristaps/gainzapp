@@ -28,7 +28,7 @@ const NavTabs = () => {
 
 export default function TabLayout() {
   const { user } = useContext(AuthContext);
-
+  console.log("user", user);
   if (!user) {
     return <LoginForm />;
   }
