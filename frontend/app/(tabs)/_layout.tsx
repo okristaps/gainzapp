@@ -1,8 +1,8 @@
-import { Tabs } from "expo-router";
-import React, { useContext } from "react";
 import { AuthContext } from "auth/authManager";
-import ConfirmEmailModal from "components/modals/confirmEmailModal";
 import LoginForm from "components/loginform/loginform";
+import ConfirmEmailModal from "components/modals/confirmEmailModal";
+import { Tabs } from "expo-router";
+import React, { useContext, useEffect } from "react";
 import { tabs } from "./helpers/tabs";
 
 const NavTabs = () => {
@@ -28,7 +28,7 @@ const NavTabs = () => {
 
 export default function TabLayout() {
   const { user } = useContext(AuthContext);
-  console.log("user", user);
+
   if (!user) {
     return <LoginForm />;
   }

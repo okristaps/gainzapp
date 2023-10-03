@@ -9,7 +9,7 @@ import { TouchableOpacity, Text } from "react-native";
 import { View } from "react-native";
 
 interface Props {
-  text?: string;
+  text?: string | null;
   hideText?: boolean;
   items?: string;
   onPress?: () => void;
