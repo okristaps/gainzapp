@@ -9,6 +9,7 @@ module.exports = {
       backgroundColor: {
         input: "#282C30",
         default: "#1E1E1E",
+        success: "#88BB46",
       },
       colors: {
         primary: "#FFFFFF",
@@ -23,6 +24,7 @@ module.exports = {
         xs: "5px",
         10: "10px",
         base: "14px",
+        15: "15px",
         18: "18px",
         20: "20px",
         25: "25px",

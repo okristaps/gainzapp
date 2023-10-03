@@ -1,12 +1,11 @@
-import { LinearGradient } from "expo-linear-gradient";
 import React, { forwardRef, useState } from "react";
 import { Control, Controller } from "react-hook-form";
 import { Text, TextInput, TouchableOpacity, View } from "react-native";
-import colors from "constants/colors";
 
 import Eye from "assets/images/eye.svg";
 import Key from "assets/images/key.svg";
 import Email from "assets/images/msg.svg";
+import InputGradient from "./inputGradient";
 
 interface InputProps {
   control: Control<any, any>;
@@ -29,12 +28,7 @@ export const Input: React.FC<InputProps> = forwardRef(
         <Controller
           control={control}
           render={({ field: { onChange, value } }) => (
-            <LinearGradient
-              start={{ x: 0, y: 0 }}
-              end={{ x: 0, y: 0 }}
-              colors={colors.inputGradient}
-              className="h-[48px]  pl-[18px] pr-[13px] rounded-[12px] flex flex-row items-center justify-between"
-            >
+            <InputGradient>
               <View className="flex-row">
                 {type === "emailAddress" && <Email />}
                 {type === "password" && <Key />}
@@ -51,7 +45,7 @@ export const Input: React.FC<InputProps> = forwardRef(
               {type === "password" && (
                 <TogglePassword onPress={() => setShowPassword((show) => !show)} />
               )}
-            </LinearGradient>
+            </InputGradient>
           )}
           name={name}
           rules={rules}
