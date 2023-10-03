@@ -30,6 +30,7 @@ module.exports = function (api) {
             tabs: "./app/tabs",
             auth: "./auth",
             firebaseConfig: "./firebaseConfig.js",
+            api: "./api",
           },
         },
       ],

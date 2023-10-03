@@ -1,8 +1,8 @@
-import { Tabs } from "expo-router";
-import React, { useContext } from "react";
 import { AuthContext } from "auth/authManager";
-import ConfirmEmailModal from "components/modals/confirmEmailModal";
 import LoginForm from "components/loginform/loginform";
+import ConfirmEmailModal from "components/modals/confirmEmailModal";
+import { Tabs } from "expo-router";
+import React, { useContext, useEffect } from "react";
 import { tabs } from "./helpers/tabs";
 
 const NavTabs = () => {

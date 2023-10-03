@@ -11,6 +11,7 @@
       "auth/*": ["./auth/*"],
       "firebaseConfig/*": ["./firebaseConfig.js"],
       "constants/*": ["./constants/*"],
+      "api/*": ["./api/*"],
     },
   }
 }

@@ -31,7 +31,7 @@ export default function TabWorkoutsScreen() {
         type="search"
       />
       <Divider text="Workouts list" textSize={28} extraClassName="mt-[25px]" />
-      <WorkoutsFlatlist />
+      <WorkoutsFlatlist searchText={searchText} custom={!value} />
     </Wrapper>
   );
 }

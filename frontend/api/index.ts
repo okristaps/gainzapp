@@ -3,7 +3,7 @@ import getFirebaseAccessToken from "../auth/auth";
 
 interface GetBeParams {
   path: string;
-  params?: Record<string, string>;
+  params?: any;
 }
 
 interface PostBeParams {
@@ -38,9 +38,18 @@ const getBe = async ({ path, params }: GetBeParams): Promise<any> => {
       },
     });
 
-    const data = await response.json();
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
 
-    return data;
+    const contentType = response.headers.get("content-type");
+
+    if (contentType && contentType.includes("application/json")) {
+      const data = await response.json();
+      return data;
+    } else {
+      throw new Error("Non-JSON response received");
+    }
   } catch (error) {
     throw error;
   }

@@ -1,7 +1,7 @@
 import React from "react";
 
-import Wrapper from "../components/layout/wrapper";
-import Dashboard from "../screens/dashboard";
+import Dashboard from "../../screens/dashboard";
+import Wrapper from "components/layout/wrapper";
 export default function DashboardScreen() {
   return (
     <Wrapper>

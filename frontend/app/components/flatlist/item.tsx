@@ -4,8 +4,8 @@ import { shortenText } from "components/helpers";
 import Thing from "assets/images/thing.svg";
 
 interface ListItem {
-  id: string;
-  text: string;
+  _id: string;
+  name: string;
 }
 
 const RenderItem = ({
@@ -26,6 +26,7 @@ const RenderItem = ({
 
   return (
     <TouchableOpacity
+      key={item?._id}
       className={`flex flex-col border-secondary border-[1px] rounded-[12px] px-[15px]
         h-[${opened ? "140px" : "40px"}]
         `}
@@ -38,7 +39,7 @@ const RenderItem = ({
       >
         <View className="flex-row items-center">
           {customIconLeft}
-          <Text className="text-white font-bold text-15">{shortenText(item.text, 33)}</Text>
+          <Text className="text-white font-bold text-15">{shortenText(item?.name, 33)}</Text>
         </View>
         <View className="h-[100%] w-[20px] flex justify-center self-end ">
           {customIconRight ?? (
