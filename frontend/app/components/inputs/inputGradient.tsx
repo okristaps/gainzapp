@@ -1,5 +1,6 @@
 import { LinearGradient } from "expo-linear-gradient";
 import colors from "constants/colors";
+import FlatlistComponent from "components/flatlist/flatlist";
 
 interface Props {
   children: React.ReactNode;

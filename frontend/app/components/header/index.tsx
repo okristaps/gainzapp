@@ -2,9 +2,10 @@ import React from "react";
 
 import { Text, View } from "react-native";
 import IconButton from "./iconsHandle";
+import { shortenText } from "components/helpers";
 
 interface IconProps {
-  text: string;
+  text: string | null;
   items?: "start" | "end";
   hideText?: boolean;
   onPress?: () => void;
@@ -27,21 +28,14 @@ const Header: React.FC<HeaderProps> = ({
   justify = "between",
   titleLength = 20,
 }) => {
-  const shortenText = (text: string) => {
-    if (text.length > titleLength) {
-      return text.slice(0, 17) + "...";
-    }
-    return text;
-  };
-
   return (
     <View className={`flex w-[100%] h-[66px] flex-row justify-${justify}  items-center`}>
-      {customChildren ? (
-        customChildren
-      ) : (
+      {customChildren ?? (
         <>
           <View className="w-[50px]">{iconLeft && <IconButton {...iconLeft} />}</View>
-          <Text className="text-secondary text-[22px] font-medium">{shortenText(title)}</Text>
+          <Text className="text-secondary text-[22px] font-medium">
+            {shortenText(title, titleLength)}
+          </Text>
           <View className="w-[50px]">{iconRight && <IconButton {...iconRight} />}</View>
         </>
       )}

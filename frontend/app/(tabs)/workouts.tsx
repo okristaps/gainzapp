@@ -1,4 +1,6 @@
 import CustomSwitch from "components/common/switch";
+import WorkoutsFlatlist from "components/flatlist/workoutsFlatlist";
+
 import Header from "components/header";
 import { Input } from "components/inputs/input";
 import Wrapper from "components/layout/wrapper";
@@ -12,6 +14,9 @@ export default function TabWorkoutsScreen() {
   return (
     <Wrapper>
       <Header
+        iconLeft={{
+          text: !value ? "Create" : null,
+        }}
         iconRight={{
           text: "Filter",
           items: "end",
@@ -26,6 +31,7 @@ export default function TabWorkoutsScreen() {
         type="search"
       />
       <Divider text="Workouts list" textSize={28} extraClassName="mt-[25px]" />
+      <WorkoutsFlatlist />
     </Wrapper>
   );
 }
