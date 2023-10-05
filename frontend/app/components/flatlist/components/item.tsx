@@ -27,7 +27,7 @@ const RenderItem = ({
   return (
     <TouchableOpacity
       key={item?._id}
-      className={`flex flex-col border-secondary border-[1px] rounded-[12px] px-[15px]
+      className={`flex flex-col border-secondary border-[1px] rounded-[12px] pl-[15px] pr-[12.5px]
         h-[${opened ? "140px" : "40px"}]
         `}
       onPress={handlePress}

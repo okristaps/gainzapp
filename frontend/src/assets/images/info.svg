@@ -1,5 +1,15 @@
-<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-<circle cx="10" cy="10" r="7.5" stroke="#F2DFDF" stroke-width="2"/>
-<path d="M10.4167 6.24967C10.4167 6.47979 10.2301 6.66634 9.99999 6.66634C9.76988 6.66634 9.58333 6.47979 9.58333 6.24967C9.58333 6.01956 9.76988 5.83301 9.99999 5.83301C10.2301 5.83301 10.4167 6.01956 10.4167 6.24967Z" fill="#F2DFDF" stroke="#F2DFDF"/>
-<path d="M10 14.1663V8.33301" stroke="#F2DFDF" stroke-width="2"/>
+<svg
+  width="20"
+  height="20"
+  viewBox="0 0 20 20"
+  fill="none"
+  xmlns="http://www.w3.org/2000/svg"
+>
+<circle cx="10" cy="10" r="7.5" stroke="#F2DFDF" stroke-width="2" />
+<path
+    d="M10.4167 6.24967C10.4167 6.47979 10.2301 6.66634 9.99999 6.66634C9.76988 6.66634 9.58333 6.47979 9.58333 6.24967C9.58333 6.01956 9.76988 5.83301 9.99999 5.83301C10.2301 5.83301 10.4167 6.01956 10.4167 6.24967Z"
+    fill="#F2DFDF"
+    stroke="#F2DFDF"
+  />
+<path d="M10 14.1663V8.33301" stroke="#F2DFDF" stroke-width="2" />
 </svg>

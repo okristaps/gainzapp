@@ -1,13 +1,11 @@
 import { AuthContext } from "auth/authManager";
 import React, { useContext } from "react";
-import { Image } from "react-native";
-import { View, Text, TouchableOpacity } from "react-native";
+import { Image, Text, TouchableOpacity, View } from "react-native";
 
 const ProfilePicture: React.FC = () => {
   const { userData } = useContext(AuthContext);
-  const initials = userData?.display_name
-    ? userData?.display_name.substring(0, 1).toUpperCase()
-    : "";
+  const name = userData?.display_name ?? userData?.email ?? "";
+  const initials = name.substring(0, 1).toUpperCase();
 
   return (
     <TouchableOpacity>

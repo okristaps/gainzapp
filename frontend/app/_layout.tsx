@@ -1,11 +1,11 @@
 import FontAwesome from "@expo/vector-icons/FontAwesome";
+import { QueryClient, QueryClientProvider, focusManager } from "@tanstack/react-query";
 import AuthManager from "auth/authManager";
 import { useFonts } from "expo-font";
 import { Stack } from "expo-router";
 import React, { useEffect } from "react";
+import { AppState, AppStateStatus, Platform } from "react-native";
 export { ErrorBoundary } from "expo-router";
-import { QueryClient, QueryClientProvider, focusManager } from "@tanstack/react-query";
-import { AppState, Platform, AppStateStatus } from "react-native";
 
 export default function RootLayout() {
   const [loaded, error] = useFonts({
@@ -43,7 +43,6 @@ function RootLayoutNav() {
       <QueryClientProvider client={queryClient}>
         <Stack>
           <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-          {/* <Stack.Screen name="(logstest)" /> */}
         </Stack>
       </QueryClientProvider>
     </AuthManager>

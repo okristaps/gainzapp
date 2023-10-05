@@ -15,3 +15,18 @@ export interface MongoUserBody {
 export interface MongoUser extends MongoUserBody {
   _id: string;
 }
+
+export interface Workout {
+  _id: string;
+  name: string;
+  description: string[];
+  forces: string[];
+  equipment: string[];
+  instructions: string[];
+  exercises: ExerciseIdentifier[];
+}
+
+export interface ExerciseIdentifier {
+  _id: string;
+  name: string;
+}

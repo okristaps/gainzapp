@@ -1,2 +1,4 @@
 import { PirmaryButton, PirmaryButtonEmpty } from "./primarybutton";
-export default { PirmaryButton, PirmaryButtonEmpty };
+import SecondaryTitle from "./secondaryTitle";
+import InfoContainer from "./infoContainer";
+export default { PirmaryButton, PirmaryButtonEmpty, SecondaryTitle, InfoContainer };
