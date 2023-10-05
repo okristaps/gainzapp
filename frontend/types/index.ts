@@ -30,3 +30,17 @@ export interface ExerciseIdentifier {
   _id: string;
   name: string;
 }
+
+export interface Exercise {
+  _id: string;
+  name: string;
+  description: string[];
+  force: string;
+  level: string;
+  mechanic: string;
+  equipment: string;
+  primaryMuscles: string[];
+  secondaryMuscles: string[];
+  category: string;
+  instructions: string[];
+}

@@ -12,6 +12,7 @@
       "firebaseConfig/*": ["./firebaseConfig.js"],
       "constants/*": ["./constants/*"],
       "api/*": ["./api/*"],
+      "types/*": ["./types/*"],
     },
   }
 }

@@ -31,6 +31,7 @@ module.exports = function (api) {
             auth: "./auth",
             firebaseConfig: "./firebaseConfig.js",
             api: "./api",
+            types: "./types",
           },
         },
       ],

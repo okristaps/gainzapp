@@ -6,12 +6,15 @@ import { RenderItem } from "components/flatlist/components";
 import Header from "components/header";
 import Wrapper from "components/layout/wrapper";
 import { router, useLocalSearchParams } from "expo-router";
-import React from "react";
+import React, { useState } from "react";
 
 import Info from "assets/images/info.svg";
-import InfoContainer from "components/common/infoContainer";
+import { InfoContainer } from "components/common/infoContainer";
+import ExerciseModal from "components/modals/exerciseModal/exerciseModal";
+import { Exercise } from "../../../types";
 
 export default function TabLogsScreen() {
+  const [exercise, setExercise] = useState<Exercise | null>();
   const { id } = useLocalSearchParams<{ id: string }>();
 
   const { isLoading, data } = useQuery({
@@ -35,7 +38,18 @@ export default function TabLogsScreen() {
         title="Excercises"
         data={data?.exercises}
         isLoading={isLoading}
-        renderItem={(item) => <RenderItem item={item.item} customIconRight={<Info />} />}
+        renderItem={(item) => (
+          <RenderItem
+            item={item.item}
+            customIconRight={<Info />}
+            onPress={() => setExercise(item.item)}
+          />
+        )}
+      />
+      <ExerciseModal
+        visible={Boolean(exercise)}
+        setVisible={() => setExercise(null)}
+        exercise={exercise}
       />
     </Wrapper>
   );

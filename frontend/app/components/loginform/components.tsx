@@ -39,7 +39,11 @@ const Divider: React.FC<DividerProps> = ({ text, textSize, extraClassName }) => 
       <View className="rotate-180">
         <DividerSVG width={arrowWidth} />
       </View>
-      <Text className={`font-regular text-white text-[${textSize ?? "11px"}] px-[7px]`}>
+      <Text
+        className={`font-regular text-white text-[${
+          textSize ?? "11px"
+        }] px-[7px] max-w-[150px] break-all text-center`}
+      >
         {text}{" "}
       </Text>
       <DividerSVG width={arrowWidth} />
