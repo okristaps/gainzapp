@@ -5,7 +5,7 @@ import ModalHeader from "components/modals/components/modalHeader";
 
 interface ModalProps {
   visible: boolean;
-  setVisible: (visible: boolean) => void;
+  setVisible?: (visible: boolean) => void;
   title?: string;
   children?: React.ReactNode;
   onModalHide?: () => void;
@@ -23,7 +23,7 @@ const ModalWrapper: React.FC<ModalProps> = ({
       isVisible={visible}
       hasBackdrop={true}
       backdropOpacity={0.94}
-      style={{ margin: 0 }}
+      style={{ margin: 0, marginTop: "15%" }}
       onSwipeComplete={() => setVisible(false)}
       swipeDirection="down"
       onModalHide={onModalHide}
