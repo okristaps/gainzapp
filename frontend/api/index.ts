@@ -33,6 +33,7 @@ const getBe = async ({ path, params }: GetBeParams): Promise<any> => {
     const response = await fetch(`${API_URL}${path}${queryString}`, {
       method: "GET",
       headers: {
+        Accept: "application/json",
         "Content-Type": "application/json",
         Authorization: token ? `Bearer ${token}` : "",
       },
@@ -62,6 +63,7 @@ const postBe = async ({ path, body }: PostBeParams): Promise<any> => {
     const response = await fetch(`${API_URL}${path}`, {
       method: "POST",
       headers: {
+        Accept: "application/json",
         "Content-Type": "application/json",
         Authorization: token ? `Bearer ${token}` : "",
       },
@@ -82,6 +84,7 @@ const putBe = async ({ path, body }: PutBeParams): Promise<any> => {
     const response = await fetch(`${API_URL}${path}`, {
       method: "PUT",
       headers: {
+        Accept: "application/json",
         "Content-Type": "application/json",
         Authorization: token ? `Bearer ${token}` : "",
       },
@@ -102,6 +105,7 @@ const deleteBe = async ({ path }: DeleteBeParams): Promise<void> => {
     const response = await fetch(`${API_URL}${path}`, {
       method: "DELETE",
       headers: {
+        Accept: "application/json",
         "Content-Type": "application/json",
         Authorization: token ? `Bearer ${token}` : "",
       },
