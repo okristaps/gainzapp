@@ -1,11 +1,13 @@
 import React, { useState } from "react";
-import { TouchableOpacity, View, Text, StyleSheet } from "react-native";
+import { TouchableOpacity, View, Text } from "react-native";
+
+const days = ["M", "T", "W", "T", "F", "S", "S"];
 
 const WeekButtons = () => {
-  const days = ["M", "T", "W", "T", "F", "S", "S"];
-
   //TODO: Make day selection show the correspoding graphs etc.
-  const [selectedDays, setSelectedDays] = useState(Array(7).fill(false));
+  const [selectedDays, setSelectedDays] = useState<Boolean[]>(
+    Array(7).fill(false)
+  );
 
   const toggleDay = (index) => {
     const newSelectedDays = [...selectedDays];
@@ -21,11 +23,11 @@ const WeekButtons = () => {
           className={`w-10 h-10 justify-center items-center ${
             selectedDays[index]
               ? "border border-success bg-success"
-              : "border border-gray-300"
+              : "border border-primary"
           } rounded`}
           onPress={() => toggleDay(index)}
         >
-          <Text className="text-sm font-bold text-gray-300">{day}</Text>
+          <Text className="text-sm font-bold text-primary">{day}</Text>
         </TouchableOpacity>
       ))}
     </View>
