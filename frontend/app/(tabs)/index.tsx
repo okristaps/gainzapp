@@ -2,6 +2,7 @@ import Header from "components/header";
 import ProfilePicture from "components/header/profile";
 import WeekNavigation from "components/header/weekSwitch";
 import Wrapper from "components/layout/wrapper";
+import WeekButtons from "components/weekButtons/weekButtons";
 import React from "react";
 import { View } from "react-native";
 
@@ -18,6 +19,7 @@ const Dashboard = () => {
           </>
         }
       />
+      <WeekButtons />
     </Wrapper>
   );
 };
