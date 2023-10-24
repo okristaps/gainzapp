@@ -1,6 +1,6 @@
 import { API_URL } from "@env";
 import getFirebaseAccessToken from "../auth/auth";
-
+console.log("API_URL", API_URL);
 interface GetBeParams {
   path: string;
   params?: any;

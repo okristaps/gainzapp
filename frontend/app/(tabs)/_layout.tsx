@@ -4,6 +4,7 @@ import ConfirmEmailModal from "components/modals/confirmEmailModal";
 import { Tabs } from "expo-router";
 import React, { useContext, useEffect } from "react";
 import { tabs } from "./helpers/tabs";
+import { getAuth } from "firebase/auth";
 
 const NavTabs = () => {
   return (
@@ -27,16 +28,18 @@ const NavTabs = () => {
 };
 
 export default function TabLayout() {
-  const { user } = useContext(AuthContext);
+  const { userData } = useContext(AuthContext);
+  const auth = getAuth();
+  const user = auth.currentUser;
 
-  if (!user) {
+  if (!userData) {
     return <LoginForm />;
   }
 
   return (
     <>
       <NavTabs />
-      {!user?.emailVerified && <ConfirmEmailModal user={user} />}
+      {!user?.emailVerified && <ConfirmEmailModal user={user} auth={auth} />}
     </>
   );
 }
