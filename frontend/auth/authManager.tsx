@@ -1,52 +1,34 @@
-import { GoogleSignin } from "@react-native-google-signin/google-signin";
-import {
-  Auth,
-  FacebookAuthProvider,
-  GoogleAuthProvider,
-  User,
-  UserCredential,
-  createUserWithEmailAndPassword,
-  getAuth,
-  onAuthStateChanged,
-  signInWithCredential,
-  signInWithEmailAndPassword,
-  signOut,
-} from "firebase/auth";
+import { Auth, User, getAuth, onAuthStateChanged } from "firebase/auth";
 import React, { createContext, useEffect, useMemo, useState } from "react";
 import { getBe, putBe } from "../api/index";
 import app from "../firebaseConfig";
-
-import { AccessToken, LoginManager } from "react-native-fbsdk-next";
 import { MongoUser, MongoUserBody } from "../types";
+import { googleSignIn, logOut, signIn, signInWithFB, signUp } from "./helpers";
 
 interface AuthManagerProps {
   children: React.ReactNode;
 }
 
 interface AuthContext {
-  user: User | null;
   userData: MongoUser | null;
-  googleSignIn: () => Promise<void>;
-  signInWithFB: () => Promise<void>;
-  signUp: (email: string, password: string) => Promise<void>;
-  signIn: (email: string, password: string) => Promise<void>;
-  logOut: () => Promise<void>;
-  auth: Auth;
+  googleSignIn: () => void;
+  signInWithFB: () => void;
+  signUp: (email: string, password: string) => void;
+  signIn: (email: string, password: string) => void;
+  logOut: () => void;
 }
 
 export const AuthContext = createContext<AuthContext>({
-  user: null,
   signInWithFB: async () => {},
   signUp: async () => {},
   signIn: async () => {},
   logOut: async () => {},
   googleSignIn: async () => {},
-  auth: getAuth(app),
+
   userData: null,
 });
 
 const AuthManager: React.FC<AuthManagerProps> = ({ children }) => {
-  const [user, setUser] = useState<User | null>(null);
   const [userData, setUserData] = useState<MongoUser | null>(null);
   const auth = getAuth(app);
 
@@ -55,7 +37,7 @@ const AuthManager: React.FC<AuthManagerProps> = ({ children }) => {
       if (user) {
         saveUserSession(user);
       } else {
-        setUser(null);
+        setUserData(null);
       }
     });
 
@@ -65,7 +47,6 @@ const AuthManager: React.FC<AuthManagerProps> = ({ children }) => {
   const saveUserSession = async (userData: User) => {
     try {
       const regUser = await getBe({ path: `/users/${userData.uid}` }).then((res) => res.user);
-
       if (!regUser?.uid) {
         const body: MongoUserBody = {
           uid: userData.uid,
@@ -78,82 +59,21 @@ const AuthManager: React.FC<AuthManagerProps> = ({ children }) => {
       } else {
         setUserData(regUser);
       }
-
-      setUser(userData);
     } catch (error) {
       console.error("Error saving user session:", error);
     }
   };
 
-  const signUp = async (email: string, password: string): Promise<UserCredential> =>
-    await createUserWithEmailAndPassword(auth, email, password);
-
-  async function googleSignIn() {
-    try {
-      await GoogleSignin.hasPlayServices({ showPlayServicesUpdateDialog: true });
-      const { idToken } = await GoogleSignin.signIn();
-      const googleCredential = GoogleAuthProvider.credential(idToken);
-      await signInWithCredential(auth, googleCredential);
-    } catch (error) {
-      console.error("Google sign-in error:", error);
-    }
-  }
-
-  const signInWithFB = async () => {
-    const result = await LoginManager.logInWithPermissions(["public_profile", "email"]);
-    if (result?.isCancelled) {
-      throw new Error("User cancelled the login process");
-    }
-
-    const data = await AccessToken.getCurrentAccessToken();
-    if (!data) {
-      throw new Error("Something went wrong obtaining access token");
-    }
-
-    const facebookAuthProvider = FacebookAuthProvider.credential(data.accessToken);
-
-    signInWithCredential(auth, facebookAuthProvider)
-      .then(() => {})
-      .catch((error) => {
-        console.log(error);
-      });
-  };
-
-  const signIn = (email: string, password: string) => {
-    return new Promise<void>((resolve, reject) => {
-      signInWithEmailAndPassword(auth, email, password).catch((error) => {
-        reject(error);
-      });
-    });
-  };
-
-  const logOut = async () => {
-    try {
-      await signOut(auth);
-    } catch (error) {
-      console.log("Sign out failed:", error);
-    }
-  };
-
-  useEffect(() => {
-    const initialUser = auth.currentUser;
-    if (initialUser && !user) {
-      setUser(initialUser);
-    }
-  }, [user]);
-
   const values: AuthContext = useMemo(() => {
     return {
-      user,
-      signUp,
-      signIn,
-      logOut,
-      googleSignIn,
-      signInWithFB,
-      auth,
       userData,
+      signUp: (email, password) => signUp(auth, email, password),
+      signIn: (email, password) => signIn(auth, email, password),
+      logOut: () => logOut(auth),
+      googleSignIn: () => googleSignIn(auth),
+      signInWithFB: () => signInWithFB(auth),
     };
-  }, [user, signUp, signIn, logOut, auth, userData]);
+  }, [signUp, signIn, logOut, userData]);
 
   return <AuthContext.Provider value={values}>{children}</AuthContext.Provider>;
 };
