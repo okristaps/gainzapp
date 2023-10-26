@@ -1,12 +1,11 @@
 import React from "react";
 
-import ArrowLeft from "assets/images/arrleft.svg";
-import Filter from "assets/images/filter.svg";
-import Edit from "assets/images/edit.svg";
 import Add from "assets/images/add.svg";
+import ArrowLeft from "assets/images/arrleft.svg";
+import Edit from "assets/images/edit.svg";
+import Filter from "assets/images/filter.svg";
 
-import { TouchableOpacity, Text } from "react-native";
-import { View } from "react-native";
+import { Text, TouchableOpacity, View } from "react-native";
 
 interface Props {
   text?: string | null;
@@ -15,20 +14,16 @@ interface Props {
   onPress?: () => void;
 }
 
-const Icon = ({ name }) => {
+const Icon = ({ name }: { name: string }) => {
   switch (name) {
     case "Back":
       return <ArrowLeft />;
-      break;
     case "Filter":
       return <Filter />;
-      break;
     case "Edit":
       return <Edit />;
-      break;
     case "Create":
       return <Add />;
-      break;
     default:
       break;
   }

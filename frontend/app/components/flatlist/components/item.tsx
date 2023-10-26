@@ -14,12 +14,14 @@ const RenderItem = ({
   customIconLeft,
   children,
   onPress,
+  handleInfoPress,
 }: {
   item: ListItem;
   onPress?: () => void;
   customIconRight?: React.ReactNode;
   customIconLeft?: React.ReactNode;
   children?: React.ReactNode;
+  handleInfoPress?: () => void;
 }) => {
   const [opened, setOpened] = React.useState(false);
   const handlePress = () => (children ? setOpened((opened) => !opened) : onPress?.());
@@ -27,7 +29,7 @@ const RenderItem = ({
   return (
     <TouchableOpacity
       key={item?._id}
-      className={`flex flex-col border-secondary border-[1px] rounded-[12px] pl-[15px] pr-[12.5px]
+      className={`flex w-[100%] flex-col border-secondary border-[1px] rounded-[12px] pl-[15px] pr-[12.5px]
         h-[${opened ? "140px" : "40px"}]
         `}
       onPress={handlePress}
@@ -41,13 +43,16 @@ const RenderItem = ({
           {customIconLeft}
           <Text className="text-white font-bold text-15">{shortenText(item?.name, 33)}</Text>
         </View>
-        <View className="h-[100%] w-[20px] flex justify-center self-end ">
+        <TouchableOpacity
+          onPress={handleInfoPress}
+          className="h-[100%] w-[30px] pl-[10px] flex justify-center self-end "
+        >
           {customIconRight ?? (
             <View className={opened ? "-rotate-90 mb-[10px] ml-[5px]" : "rotate-180"}>
               <Thing stroke="white" />
             </View>
           )}
-        </View>
+        </TouchableOpacity>
       </View>
 
       {opened && children}

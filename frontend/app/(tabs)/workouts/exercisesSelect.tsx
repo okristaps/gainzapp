@@ -1,41 +1,45 @@
 import { useQuery } from "@tanstack/react-query";
 import { getBe } from "api/index";
-import CustomSwitch from "components/common/switch";
+import SecondaryTitle from "components/common/secondaryTitle";
 import { DefaultFlatlist } from "components/flatlist";
 import { RenderItem } from "components/flatlist/components";
 import useDebounce from "components/flatlist/helpers/searchDebounce";
 
+import Info from "assets/images/info.svg";
 import Header from "components/header";
 import { Input } from "components/inputs/input";
 import Wrapper from "components/layout/wrapper";
-import { Divider } from "components/loginform/components";
 import { router } from "expo-router";
 import React, { useState } from "react";
 
-export default function TabWorkoutsScreen() {
+export default function TabExercisesSelect() {
   const [searchText, setSearchText] = useState("");
-  const [isCustom, setIsCustom] = useState(true);
   const debouncedSearchText = useDebounce(searchText, 300);
 
   const { isLoading, data } = useQuery({
     retry: false,
-    queryKey: ["workouts", debouncedSearchText, isCustom],
+    queryKey: ["exercises", debouncedSearchText],
     queryFn: async () =>
       await getBe({
-        path: `/workouts/all${!isCustom ? "/custom" : ""}`,
-        params: { perPage: 12, name: debouncedSearchText },
+        path: `/exercises/strength`,
+        params: { perPage: 999, name: debouncedSearchText },
       }),
   });
+
+  const renderItem = React.useCallback(({ item }) => {
+    return <RenderItem item={item} customIconRight={<Info />} />;
+  }, []);
 
   return (
     <Wrapper>
       <Header
         iconLeft={{
-          text: !isCustom ? "Create" : null,
+          text: "Back",
+          hideText: true,
           onPress: () => router.push({ pathname: "workouts/workoutCreate" }),
         }}
       />
-      <CustomSwitch value={isCustom} setValue={setIsCustom} />
+      <SecondaryTitle text={"Custom workout 1"} />
       <Input
         placeholder="Search..."
         value={searchText}
@@ -46,19 +50,11 @@ export default function TabWorkoutsScreen() {
 
       <DefaultFlatlist
         title="Workouts list"
+        emptyText={"No exercises found"}
         isLoading={isLoading}
-        data={data?.workouts}
-        renderItem={(item) => (
-          <RenderItem
-            item={item.item}
-            onPress={() =>
-              router.push({
-                pathname: "workouts/workoutInfo",
-                params: { id: item.item._id },
-              })
-            }
-          />
-        )}
+        data={data?.exercises}
+        showsVerticalScrollIndicator={true}
+        renderItem={renderItem}
       />
     </Wrapper>
   );
