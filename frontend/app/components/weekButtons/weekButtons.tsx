@@ -17,7 +17,7 @@ const WeekButtons = () => {
     <View className="flex-row justify-between items-center  mt-2">
       {days.map((day, index) => (
         <TouchableOpacity
-          key={day}
+          key={`${day + index}`}
           className={`w-10 h-10 justify-center items-center ${
             selectedDays[index] ? "border border-success bg-success" : "border border-primary"
           } rounded`}
