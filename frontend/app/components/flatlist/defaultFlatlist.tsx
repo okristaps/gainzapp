@@ -1,4 +1,4 @@
-import React from "react";
+import React, { memo } from "react";
 import { FlatList, View } from "react-native";
 import { EmptyComponent } from "./components";
 import { Divider } from "components/loginform/components";
@@ -13,6 +13,7 @@ interface Props {
   onEndReached?: () => void;
   onEndReachedThreshold?: number;
   showsVerticalScrollIndicator?: boolean;
+  onStartReached?: () => void;
 }
 
 const DefaultFlatlist: React.FC<Props> = ({
@@ -25,28 +26,42 @@ const DefaultFlatlist: React.FC<Props> = ({
   onEndReached,
   onEndReachedThreshold,
   showsVerticalScrollIndicator = false,
+  onStartReached,
 }) => {
+  const keyExtractor = (item: any) => item?._id;
+
+  const getItemLayout = (data: any, index: number) => {
+    return {
+      length: 40,
+      offset: 40 * index,
+      index,
+    };
+  };
+
   return (
     <>
       <Divider text={title} textSize={28} extraClassName="mt-[25px]" />
       <FlatList
+        onStartReached={onStartReached}
         alwaysBounceVertical={true}
         ListFooterComponent={ListFooterComponent}
-        getItemLayout={(data, index) => ({ length: 40, offset: 40 * index, index })}
+        getItemLayout={getItemLayout}
         ItemSeparatorComponent={() => <View className="h-[10px]" />}
         ListEmptyComponent={<EmptyComponent isLoading={isLoading} text={emptyText} />}
         className="flex flex-1 mt-[25px]"
         showsVerticalScrollIndicator={showsVerticalScrollIndicator}
         data={data}
         renderItem={renderItem}
-        keyExtractor={(item) => item._id}
+        keyExtractor={keyExtractor}
         onEndReached={onEndReached}
         onEndReachedThreshold={onEndReachedThreshold}
-        contentOffset={{ x: 0, y: 40 }}
-        maxToRenderPerBatch={80}
+        removeClippedSubviews={true}
+        windowSize={50}
+        initialNumToRender={40}
+        maxToRenderPerBatch={100}
       />
     </>
   );
 };
 
-export default DefaultFlatlist;
+export default memo(DefaultFlatlist);

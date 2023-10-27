@@ -16,7 +16,7 @@ const Wrapper: React.FC<Props> = ({ children }) => {
         start={{ x: 0, y: 0.3 }}
         end={{ x: 0, y: 2 }}
       >
-        <SafeAreaView className="flex-1 align-center pl-[23px] pr-[23px] pb-[20px] font-isotok">
+        <SafeAreaView className="flex-1 align-center pl-[23px] pr-[23px]  font-isotok">
           {children}
         </SafeAreaView>
       </LinearGradient>

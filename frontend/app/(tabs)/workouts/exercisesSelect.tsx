@@ -1,8 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { getBe } from "api/index";
 import SecondaryTitle from "components/common/secondaryTitle";
-import { DefaultFlatlist } from "components/flatlist";
-import { RenderItem } from "components/flatlist/components";
+import { EmptyComponent, RenderItem } from "components/flatlist/components";
 import useDebounce from "components/flatlist/helpers/searchDebounce";
 
 import Info from "assets/images/info.svg";
@@ -11,6 +10,9 @@ import { Input } from "components/inputs/input";
 import Wrapper from "components/layout/wrapper";
 import { router } from "expo-router";
 import React, { useState } from "react";
+
+import { FlashList } from "@shopify/flash-list";
+import { View } from "react-native-animatable";
 
 export default function TabExercisesSelect() {
   const [searchText, setSearchText] = useState("");
@@ -44,17 +46,16 @@ export default function TabExercisesSelect() {
         placeholder="Search..."
         value={searchText}
         setValue={setSearchText}
-        extraClass={"mt-[25px]"}
+        extraClass={"mt-[15px] mb-[15px]"}
         type="search"
       />
 
-      <DefaultFlatlist
-        title="Workouts list"
-        emptyText={"No exercises found"}
-        isLoading={isLoading}
+      <FlashList
+        ListEmptyComponent={<EmptyComponent isLoading={isLoading} text={"No exercises found"} />}
         data={data?.exercises}
-        showsVerticalScrollIndicator={true}
         renderItem={renderItem}
+        ItemSeparatorComponent={() => <View className="h-[10px]" />}
+        estimatedItemSize={40}
       />
     </Wrapper>
   );
