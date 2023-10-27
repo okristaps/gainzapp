@@ -18,6 +18,7 @@ interface HeaderProps {
   iconRight?: IconProps;
   justify?: "between" | "start" | "end" | "center";
   titleLength?: number;
+  extraClassname?: string;
 }
 
 const Header: React.FC<HeaderProps> = ({
@@ -27,9 +28,12 @@ const Header: React.FC<HeaderProps> = ({
   iconRight,
   justify = "between",
   titleLength = 20,
+  extraClassname = "",
 }) => {
   return (
-    <View className={`flex w-[100%] h-[66px] flex-row justify-${justify}  items-center`}>
+    <View
+      className={`flex w-[100%] h-[66px] flex-row justify-${justify}  items-center ${extraClassname}`}
+    >
       {customChildren ?? (
         <>
           <View className="w-[50px]">{iconLeft && <IconButton {...iconLeft} />}</View>

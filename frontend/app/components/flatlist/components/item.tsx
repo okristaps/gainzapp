@@ -15,6 +15,7 @@ const RenderItem = ({
   children,
   onPress,
   handleInfoPress,
+  disabled = false,
 }: {
   item: ListItem;
   onPress?: () => void;
@@ -22,15 +23,19 @@ const RenderItem = ({
   customIconLeft?: React.ReactNode;
   children?: React.ReactNode;
   handleInfoPress?: () => void;
+  disabled?: boolean;
 }) => {
   const [opened, setOpened] = React.useState(false);
   const handlePress = () => (children ? setOpened((opened) => !opened) : onPress?.());
-
+  console.log("disabled", disabled);
   return (
     <TouchableOpacity
+      disabled={disabled}
       key={item?._id}
-      className={`flex w-[100%] flex-col border-secondary border-[1px] rounded-[12px] pl-[15px] pr-[12.5px]
-        h-[${opened ? "140px" : "40px"}]
+      className={`flex w-[100%] flex-col 
+      border-[1px] rounded-[12px] pl-[15px] pr-[12.5px]
+      border-${disabled ? "none" : "secondary"}
+      h-[${opened ? "140px" : "40px"}]
         `}
       onPress={handlePress}
     >

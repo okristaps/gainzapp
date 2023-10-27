@@ -9,12 +9,17 @@ import Header from "components/header";
 import { Input } from "components/inputs/input";
 import Wrapper from "components/layout/wrapper";
 import { router } from "expo-router";
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 
 import { FlashList } from "@shopify/flash-list";
-import { View } from "react-native-animatable";
+
+import { WorkoutsContext } from "./context/workoutsContext";
+import ExercisesHorizontal from "components/flatlist/exerciseHorizontal";
+import { View } from "react-native";
+import { Divider } from "components/loginform/components";
 
 export default function TabExercisesSelect() {
+  const { handleExercises, selectedExercises } = useContext(WorkoutsContext);
   const [searchText, setSearchText] = useState("");
   const debouncedSearchText = useDebounce(searchText, 300);
 
@@ -28,13 +33,32 @@ export default function TabExercisesSelect() {
       }),
   });
 
-  const renderItem = React.useCallback(({ item }) => {
-    return <RenderItem item={item} customIconRight={<Info />} />;
-  }, []);
+  const renderItem = React.useCallback(
+    ({
+      item,
+    }: {
+      item: {
+        _id: string;
+        name: string;
+      };
+    }) => {
+      return (
+        <RenderItem
+          disabled={selectedExercises.some((ex) => ex._id === item._id)}
+          onPress={() => selectedExercises.length < 11 && handleExercises(item)}
+          item={item}
+          customIconRight={<Info />}
+        />
+      );
+    },
+    [selectedExercises]
+  );
 
   return (
     <Wrapper>
       <Header
+        extraClassname="h-[50px]"
+        title="Add Exercises"
         iconLeft={{
           text: "Back",
           hideText: true,
@@ -49,14 +73,26 @@ export default function TabExercisesSelect() {
         extraClass={"mt-[15px] mb-[15px]"}
         type="search"
       />
+      {Boolean(selectedExercises.length) && (
+        <ExercisesHorizontal
+          data={selectedExercises}
+          onItemPress={(item) => handleExercises(item)}
+        />
+      )}
+      <View className="mt-[15px] mb-[10px]">
+        <Divider text={"Exercises"} />
+      </View>
 
-      <FlashList
-        ListEmptyComponent={<EmptyComponent isLoading={isLoading} text={"No exercises found"} />}
-        data={data?.exercises}
-        renderItem={renderItem}
-        ItemSeparatorComponent={() => <View className="h-[10px]" />}
-        estimatedItemSize={40}
-      />
+      <View className="mt-[10px] flex flex-1">
+        <FlashList
+          extraData={selectedExercises}
+          ListEmptyComponent={<EmptyComponent isLoading={isLoading} text={"No exercises found"} />}
+          data={data?.exercises}
+          renderItem={renderItem}
+          ItemSeparatorComponent={() => <View className="h-[10px]" />}
+          estimatedItemSize={40}
+        />
+      </View>
     </Wrapper>
   );
 }

@@ -6,7 +6,7 @@ import { Exercise } from "types/index";
 import { InfoItem, Instructions } from "./components";
 
 interface ModalProps {
-  exercise: Exercise | null | undefined;
+  exercise?: Exercise | null | undefined;
   visible: boolean;
   setVisible?: (visible: boolean) => void;
 }

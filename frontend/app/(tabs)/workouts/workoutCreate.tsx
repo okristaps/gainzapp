@@ -3,17 +3,40 @@ import { RenderItem } from "components/flatlist/components";
 import Header from "components/header";
 import Wrapper from "components/layout/wrapper";
 import { router, useLocalSearchParams } from "expo-router";
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 
 import Info from "assets/images/info.svg";
 import { PirmaryButtonEmpty } from "components/common/primarybutton";
 import { Input } from "components/inputs/input";
-import { Exercise } from "types/index";
+import { TouchableOpacity, View } from "react-native";
+import { WorkoutsContext } from "./context/workoutsContext";
+
+import Bin from "assets/images/trash.svg";
 
 export default function TabWorkoutsCreate() {
-  const [exercises, setExercises] = useState<Exercise[]>([]);
-  const [name, setName] = useState("Full body strength training");
+  const { selectedExercises, handleExercises } = useContext(WorkoutsContext);
+  const [name, setName] = useState("");
   const { id } = useLocalSearchParams<{ id: string }>();
+
+  const Item = ({
+    item,
+  }: {
+    item: {
+      _id: string;
+      name: string;
+    };
+  }) => {
+    return (
+      <View className="flex flex-row items-center w-[100%]">
+        <TouchableOpacity className="mr-[9px]" onPress={() => handleExercises(item)}>
+          <Bin height={24} width={24} />
+        </TouchableOpacity>
+        <View className="max-w-[300px]">
+          <RenderItem item={item} customIconRight={<Info />} />
+        </View>
+      </View>
+    );
+  };
 
   return (
     <Wrapper>
@@ -23,23 +46,25 @@ export default function TabWorkoutsCreate() {
         iconRight={{ text: "Save", hideText: false, onPress: () => router.back() }}
       />
 
-      <Input placeholder="Workout name" value={name} setValue={setName} type="book" />
+      <Input placeholder="Enter workout name..." value={name} setValue={setName} type="book" />
       <DefaultFlatlist
         emptyText="No exercises added yet"
         title="Excercises"
-        data={exercises}
+        data={selectedExercises}
         isLoading={false}
-        renderItem={(item) => <RenderItem item={item.item} customIconRight={<Info />} />}
+        renderItem={Item}
       />
-      <PirmaryButtonEmpty
-        text="+ Add exercises"
-        onPress={() => {
-          router.push({
-            pathname: "workouts/exercisesSelect",
-            params: { id: "sad" },
-          });
-        }}
-      />
+      <View className="mt-[10px]">
+        <PirmaryButtonEmpty
+          text="+ Add exercises"
+          onPress={() => {
+            router.push({
+              pathname: "workouts/exercisesSelect",
+              params: { id: "sad" },
+            });
+          }}
+        />
+      </View>
     </Wrapper>
   );
 }
