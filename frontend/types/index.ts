@@ -23,7 +23,7 @@ export interface Workout {
   forces: string[];
   equipment: string[];
   instructions: string[];
-  exercises: ExerciseIdentifier[];
+  exercises: ExerciseIdentifier[] | Exercise[];
 }
 
 export interface ExerciseIdentifier {

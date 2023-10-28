@@ -42,10 +42,11 @@ export default function TabExercisesSelect() {
         name: string;
       };
     }) => {
+      const disabled = selectedExercises.some((ex) => ex._id === item._id);
       return (
         <RenderItem
-          disabled={selectedExercises.some((ex) => ex._id === item._id)}
-          onPress={() => selectedExercises.length < 11 && handleExercises(item)}
+          disabled={disabled}
+          onPress={() => selectedExercises.length < 11 && !disabled && handleExercises(item)}
           item={item}
           customIconRight={<Info />}
         />
@@ -62,7 +63,7 @@ export default function TabExercisesSelect() {
         iconLeft={{
           text: "Back",
           hideText: true,
-          onPress: () => router.push({ pathname: "workouts/workoutCreate" }),
+          onPress: () => router.back(),
         }}
       />
       <SecondaryTitle text={"Custom workout 1"} />

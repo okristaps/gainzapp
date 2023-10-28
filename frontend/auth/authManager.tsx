@@ -31,6 +31,7 @@ export const AuthContext = createContext<AuthContext>({
 const AuthManager: React.FC<AuthManagerProps> = ({ children }) => {
   const [userData, setUserData] = useState<MongoUser | null>(null);
   const auth = getAuth(app);
+  console.log("userData", userData);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {

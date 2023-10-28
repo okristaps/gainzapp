@@ -30,6 +30,7 @@ const getBe = async ({ path, params }: GetBeParams): Promise<any> => {
     : "";
 
   try {
+    console.log(`${API_URL}${path}${queryString}`);
     const response = await fetch(`${API_URL}${path}${queryString}`, {
       method: "GET",
       headers: {

@@ -1,7 +1,7 @@
+import Thing from "assets/images/thing.svg";
+import { shortenText } from "components/helpers";
 import React from "react";
 import { Text, TouchableOpacity, View } from "react-native";
-import { shortenText } from "components/helpers";
-import Thing from "assets/images/thing.svg";
 
 interface ListItem {
   _id: string;
@@ -27,12 +27,12 @@ const RenderItem = ({
 }) => {
   const [opened, setOpened] = React.useState(false);
   const handlePress = () => (children ? setOpened((opened) => !opened) : onPress?.());
-  console.log("disabled", disabled);
+
   return (
     <TouchableOpacity
-      disabled={disabled}
       key={item?._id}
-      className={`flex w-[100%] flex-col 
+      className={`flex flex-col 
+   
       border-[1px] rounded-[12px] pl-[15px] pr-[12.5px]
       border-${disabled ? "none" : "secondary"}
       h-[${opened ? "140px" : "40px"}]
@@ -40,7 +40,9 @@ const RenderItem = ({
       onPress={handlePress}
     >
       <View
-        className={`flex-row content-center h-[40px] w-[100%] justify-between ${
+        className={`
+     
+        flex-row  content-center h-[40px] justify-between ${
           opened && "border-b-2 border-secondary"
         }`}
       >

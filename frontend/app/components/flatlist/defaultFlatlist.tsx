@@ -39,7 +39,7 @@ const DefaultFlatlist: React.FC<Props> = ({
   };
 
   return (
-    <>
+    <View className="flex flex-1">
       <Divider text={title} textSize={28} extraClassName="mt-[25px]" />
       <FlatList
         onStartReached={onStartReached}
@@ -48,7 +48,7 @@ const DefaultFlatlist: React.FC<Props> = ({
         getItemLayout={getItemLayout}
         ItemSeparatorComponent={() => <View className="h-[10px]" />}
         ListEmptyComponent={<EmptyComponent isLoading={isLoading} text={emptyText} />}
-        className="flex flex-1 mt-[25px]"
+        className=" mt-[25px]"
         showsVerticalScrollIndicator={showsVerticalScrollIndicator}
         data={data}
         renderItem={renderItem}
@@ -60,7 +60,7 @@ const DefaultFlatlist: React.FC<Props> = ({
         initialNumToRender={40}
         maxToRenderPerBatch={100}
       />
-    </>
+    </View>
   );
 };
 

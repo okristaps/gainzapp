@@ -5,32 +5,43 @@ import { DefaultFlatlist } from "components/flatlist";
 import { RenderItem } from "components/flatlist/components";
 import Header from "components/header";
 import Wrapper from "components/layout/wrapper";
-import { router, useLocalSearchParams } from "expo-router";
-import React, { useState } from "react";
+import { router } from "expo-router";
+import React, { useContext, useState } from "react";
 
 import Info from "assets/images/info.svg";
 import { InfoContainer } from "components/common/infoContainer";
 import ExerciseModal from "components/modals/exerciseModal/exerciseModal";
 import { Exercise } from "../../../types";
+import { WorkoutsContext } from "./context/workoutsContext";
 
-export default function TabLogsScreen() {
+export default function TabWorkoutInfo() {
+  const { setSelectedExercises, selectedWorkout } = useContext(WorkoutsContext);
   const [exercise, setExercise] = useState<Exercise | null>();
-  const { id } = useLocalSearchParams<{ id: string }>();
 
   const { isLoading, data } = useQuery({
     retry: 3,
-    queryKey: ["workout", id],
+    queryKey: ["workout", selectedWorkout?._id],
     queryFn: async () =>
       await getBe({
-        path: `/workouts/${id}`,
+        path: `/workouts/${selectedWorkout?._id}`,
       }),
   });
+
+  const handleExercises = () => {
+    setSelectedExercises(data?.exercises.map((ex: Exercise) => ({ _id: ex._id, name: ex.name })));
+    router.replace({ pathname: "workouts/workoutCreate" });
+  };
 
   return (
     <Wrapper>
       <Header
         title="Workout info"
-        iconLeft={{ text: "Back", hideText: true, onPress: () => router.back() }}
+        iconLeft={{
+          text: "Back",
+          hideText: true,
+          onPress: () => router.back(),
+        }}
+        iconRight={{ text: data?.uid ? "Edit" : "", onPress: () => handleExercises() }}
       />
       <SecondaryTitle text={data?.name} />
       <InfoContainer forces={data?.forces} equipment={data?.equipment} />

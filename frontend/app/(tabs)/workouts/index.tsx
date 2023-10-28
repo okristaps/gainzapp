@@ -1,5 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { getBe } from "api/index";
+import { AuthContext } from "auth/authManager";
 import CustomSwitch from "components/common/switch";
 import { DefaultFlatlist } from "components/flatlist";
 import { RenderItem } from "components/flatlist/components";
@@ -10,9 +11,12 @@ import { Input } from "components/inputs/input";
 import Wrapper from "components/layout/wrapper";
 import { Divider } from "components/loginform/components";
 import { router } from "expo-router";
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
+import { WorkoutsContext } from "./context/workoutsContext";
 
 export default function TabWorkoutsScreen() {
+  const { userData } = useContext(AuthContext);
+  const { setSelectedWorkout } = useContext(WorkoutsContext);
   const [searchText, setSearchText] = useState("");
   const [isCustom, setIsCustom] = useState(true);
   const debouncedSearchText = useDebounce(searchText, 300);
@@ -22,11 +26,10 @@ export default function TabWorkoutsScreen() {
     queryKey: ["workouts", debouncedSearchText, isCustom],
     queryFn: async () =>
       await getBe({
-        path: `/workouts/all${!isCustom ? "/custom" : ""}`,
-        params: { perPage: 12, name: debouncedSearchText },
+        path: `/workouts/all`,
+        params: { name: debouncedSearchText, uid: !isCustom ? userData?.uid : "" },
       }),
   });
-
   return (
     <Wrapper>
       <Header
@@ -51,12 +54,12 @@ export default function TabWorkoutsScreen() {
         renderItem={(item) => (
           <RenderItem
             item={item.item}
-            onPress={() =>
+            onPress={() => {
+              setSelectedWorkout(item.item);
               router.push({
                 pathname: "workouts/workoutInfo",
-                params: { id: item.item._id },
-              })
-            }
+              });
+            }}
           />
         )}
       />
