@@ -1,7 +1,7 @@
+import Thing from "assets/images/thing.svg";
+import { shortenText } from "components/helpers";
 import React from "react";
 import { Text, TouchableOpacity, View } from "react-native";
-import { shortenText } from "components/helpers";
-import Thing from "assets/images/thing.svg";
 
 interface ListItem {
   _id: string;
@@ -14,12 +14,16 @@ const RenderItem = ({
   customIconLeft,
   children,
   onPress,
+  handleInfoPress,
+  disabled = false,
 }: {
   item: ListItem;
   onPress?: () => void;
   customIconRight?: React.ReactNode;
   customIconLeft?: React.ReactNode;
   children?: React.ReactNode;
+  handleInfoPress?: () => void;
+  disabled?: boolean;
 }) => {
   const [opened, setOpened] = React.useState(false);
   const handlePress = () => (children ? setOpened((opened) => !opened) : onPress?.());
@@ -27,13 +31,18 @@ const RenderItem = ({
   return (
     <TouchableOpacity
       key={item?._id}
-      className={`flex flex-col border-secondary border-[1px] rounded-[12px] pl-[15px] pr-[12.5px]
-        h-[${opened ? "140px" : "40px"}]
+      className={`flex flex-col 
+   
+      border-[1px] rounded-[12px] pl-[15px] pr-[12.5px]
+      border-${disabled ? "none" : "secondary"}
+      h-[${opened ? "140px" : "40px"}]
         `}
       onPress={handlePress}
     >
       <View
-        className={`flex-row content-center h-[40px] w-[100%] justify-between ${
+        className={`
+     
+        flex-row  content-center h-[40px] justify-between ${
           opened && "border-b-2 border-secondary"
         }`}
       >
@@ -41,13 +50,16 @@ const RenderItem = ({
           {customIconLeft}
           <Text className="text-white font-bold text-15">{shortenText(item?.name, 33)}</Text>
         </View>
-        <View className="h-[100%] w-[20px] flex justify-center self-end ">
+        <TouchableOpacity
+          onPress={handleInfoPress}
+          className="h-[100%] w-[30px] pl-[10px] flex justify-center self-end "
+        >
           {customIconRight ?? (
             <View className={opened ? "-rotate-90 mb-[10px] ml-[5px]" : "rotate-180"}>
               <Thing stroke="white" />
             </View>
           )}
-        </View>
+        </TouchableOpacity>
       </View>
 
       {opened && children}

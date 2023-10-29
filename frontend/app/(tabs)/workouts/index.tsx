@@ -1,5 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { getBe } from "api/index";
+import { AuthContext } from "auth/authManager";
 import CustomSwitch from "components/common/switch";
 import { DefaultFlatlist } from "components/flatlist";
 import { RenderItem } from "components/flatlist/components";
@@ -8,37 +9,38 @@ import useDebounce from "components/flatlist/helpers/searchDebounce";
 import Header from "components/header";
 import { Input } from "components/inputs/input";
 import Wrapper from "components/layout/wrapper";
-import { Divider } from "components/loginform/components";
 import { router } from "expo-router";
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
+import { WorkoutsContext } from "./context/workoutsContext";
 
 export default function TabWorkoutsScreen() {
+  const { userData } = useContext(AuthContext);
+  const { setSelectedWorkout, resetData } = useContext(WorkoutsContext);
   const [searchText, setSearchText] = useState("");
-  const [value, setValue] = useState(true);
+  const [isCustom, setIsCustom] = useState(true);
   const debouncedSearchText = useDebounce(searchText, 300);
 
   const { isLoading, data } = useQuery({
     retry: false,
-    queryKey: ["workouts", debouncedSearchText, value],
+    queryKey: ["workouts", debouncedSearchText, isCustom],
     queryFn: async () =>
       await getBe({
-        path: `/workouts/all${!value ? "/custom" : ""}`,
-        params: { perPage: 12, name: debouncedSearchText },
+        path: `/workouts/all`,
+        params: { name: debouncedSearchText, uid: !isCustom ? userData?.uid : "" },
       }),
   });
-
   return (
     <Wrapper>
       <Header
         iconLeft={{
-          text: !value ? "Create" : null,
-        }}
-        iconRight={{
-          text: "Filter",
-          items: "end",
+          text: !isCustom ? "Create" : null,
+          onPress: () => {
+            resetData();
+            router.push({ pathname: "workouts/workoutCreate" });
+          },
         }}
       />
-      <CustomSwitch value={value} setValue={setValue} />
+      <CustomSwitch value={isCustom} setValue={setIsCustom} />
       <Input
         placeholder="Search..."
         value={searchText}
@@ -54,9 +56,12 @@ export default function TabWorkoutsScreen() {
         renderItem={(item) => (
           <RenderItem
             item={item.item}
-            onPress={() =>
-              router.push({ pathname: "workouts/workoutInfo", params: { id: item.item._id } })
-            }
+            onPress={() => {
+              setSelectedWorkout(item.item);
+              router.push({
+                pathname: "workouts/workoutInfo",
+              });
+            }}
           />
         )}
       />

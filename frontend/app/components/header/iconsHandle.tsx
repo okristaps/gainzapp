@@ -1,45 +1,55 @@
 import React from "react";
 
-import ArrowLeft from "assets/images/arrleft.svg";
-import Filter from "assets/images/filter.svg";
-import Edit from "assets/images/edit.svg";
 import Add from "assets/images/add.svg";
+import ArrowLeft from "assets/images/arrleft.svg";
+import Edit from "assets/images/edit.svg";
+import Filter from "assets/images/filter.svg";
 
-import { TouchableOpacity, Text } from "react-native";
-import { View } from "react-native";
+import { Text, TouchableOpacity, View } from "react-native";
 
 interface Props {
   text?: string | null;
   hideText?: boolean;
   items?: string;
   onPress?: () => void;
+  disabled?: boolean;
+  color?: string;
 }
 
-const Icon = ({ name }) => {
+const Icon = ({ name }: { name: string }) => {
   switch (name) {
     case "Back":
       return <ArrowLeft />;
-      break;
     case "Filter":
       return <Filter />;
-      break;
     case "Edit":
       return <Edit />;
-      break;
     case "Create":
       return <Add />;
-      break;
     default:
       break;
   }
 };
 
-const IconButton: React.FC<Props> = ({ text, hideText, items = "start", onPress }) => {
+const IconButton: React.FC<Props> = ({
+  text,
+  hideText,
+  items = "start",
+  onPress,
+  disabled,
+  color,
+}) => {
   return (
-    <TouchableOpacity className={`flex items-${items}`} onPress={onPress}>
+    <TouchableOpacity disabled={disabled} className={`flex items-${items}  `} onPress={onPress}>
       <View className="flex items-center justify-center h-[100%]">
         <Icon name={text} />
-        {!hideText && <Text className="text-white text-[10px] text-regular"> {text} </Text>}
+        {!hideText && (
+          <Text
+            className={`text-white text-[12px] text-regular text-${disabled ? "secondary" : color}`}
+          >
+            {text}
+          </Text>
+        )}
       </View>
     </TouchableOpacity>
   );

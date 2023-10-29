@@ -23,3 +23,8 @@ export interface OtherMetProps {
 export interface RegisterProps extends OtherMetProps {
   setType: (type: string) => void;
 }
+
+export interface exerciseId {
+  _id: string;
+  name: string;
+}

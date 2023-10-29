@@ -5,25 +5,21 @@ const days = ["M", "T", "W", "T", "F", "S", "S"];
 
 const WeekButtons = () => {
   //TODO: Make day selection show the correspoding graphs etc.
-  const [selectedDays, setSelectedDays] = useState<Boolean[]>(
-    Array(7).fill(false)
-  );
+  const [selectedDays, setSelectedDays] = useState<Boolean[]>(Array(7).fill(false));
 
-  const toggleDay = (index) => {
+  const toggleDay = (index: number) => {
     const newSelectedDays = [...selectedDays];
     newSelectedDays[index] = !newSelectedDays[index];
     setSelectedDays(newSelectedDays);
   };
 
   return (
-    <View className="flex-row justify-center items-center gap-x-2.5 mt-2">
+    <View className="flex-row justify-between items-center  mt-2">
       {days.map((day, index) => (
         <TouchableOpacity
-          key={index}
+          key={`${day + index}`}
           className={`w-10 h-10 justify-center items-center ${
-            selectedDays[index]
-              ? "border border-success bg-success"
-              : "border border-primary"
+            selectedDays[index] ? "border border-success bg-success" : "border border-primary"
           } rounded`}
           onPress={() => toggleDay(index)}
         >
