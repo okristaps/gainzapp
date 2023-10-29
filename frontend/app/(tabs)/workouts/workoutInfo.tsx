@@ -6,7 +6,7 @@ import { RenderItem } from "components/flatlist/components";
 import Header from "components/header";
 import Wrapper from "components/layout/wrapper";
 import { router } from "expo-router";
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 
 import Info from "assets/images/info.svg";
 import { InfoContainer } from "components/common/infoContainer";
@@ -18,7 +18,7 @@ export default function TabWorkoutInfo() {
   const { setSelectedExercises, selectedWorkout } = useContext(WorkoutsContext);
   const [exercise, setExercise] = useState<Exercise | null>();
 
-  const { isLoading, data } = useQuery({
+  const { isLoading, data, refetch } = useQuery({
     retry: 3,
     queryKey: ["workout", selectedWorkout?._id],
     queryFn: async () =>
@@ -29,8 +29,12 @@ export default function TabWorkoutInfo() {
 
   const handleExercises = () => {
     setSelectedExercises(data?.exercises.map((ex: Exercise) => ({ _id: ex._id, name: ex.name })));
-    router.replace({ pathname: "workouts/workoutCreate" });
+    router.push({ pathname: "workouts/workoutCreate" });
   };
+
+  useEffect(() => {
+    refetch();
+  }, [selectedWorkout]);
 
   return (
     <Wrapper>

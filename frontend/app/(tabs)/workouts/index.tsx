@@ -9,14 +9,13 @@ import useDebounce from "components/flatlist/helpers/searchDebounce";
 import Header from "components/header";
 import { Input } from "components/inputs/input";
 import Wrapper from "components/layout/wrapper";
-import { Divider } from "components/loginform/components";
 import { router } from "expo-router";
 import React, { useContext, useState } from "react";
 import { WorkoutsContext } from "./context/workoutsContext";
 
 export default function TabWorkoutsScreen() {
   const { userData } = useContext(AuthContext);
-  const { setSelectedWorkout } = useContext(WorkoutsContext);
+  const { setSelectedWorkout, resetData } = useContext(WorkoutsContext);
   const [searchText, setSearchText] = useState("");
   const [isCustom, setIsCustom] = useState(true);
   const debouncedSearchText = useDebounce(searchText, 300);
@@ -35,7 +34,10 @@ export default function TabWorkoutsScreen() {
       <Header
         iconLeft={{
           text: !isCustom ? "Create" : null,
-          onPress: () => router.push({ pathname: "workouts/workoutCreate" }),
+          onPress: () => {
+            resetData();
+            router.push({ pathname: "workouts/workoutCreate" });
+          },
         }}
       />
       <CustomSwitch value={isCustom} setValue={setIsCustom} />

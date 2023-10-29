@@ -12,6 +12,8 @@ interface Props {
   hideText?: boolean;
   items?: string;
   onPress?: () => void;
+  disabled?: boolean;
+  color?: string;
 }
 
 const Icon = ({ name }: { name: string }) => {
@@ -29,12 +31,25 @@ const Icon = ({ name }: { name: string }) => {
   }
 };
 
-const IconButton: React.FC<Props> = ({ text, hideText, items = "start", onPress }) => {
+const IconButton: React.FC<Props> = ({
+  text,
+  hideText,
+  items = "start",
+  onPress,
+  disabled,
+  color,
+}) => {
   return (
-    <TouchableOpacity className={`flex items-${items}`} onPress={onPress}>
+    <TouchableOpacity disabled={disabled} className={`flex items-${items}  `} onPress={onPress}>
       <View className="flex items-center justify-center h-[100%]">
         <Icon name={text} />
-        {!hideText && <Text className="text-white text-[10px] text-regular"> {text} </Text>}
+        {!hideText && (
+          <Text
+            className={`text-white text-[12px] text-regular text-${disabled ? "secondary" : color}`}
+          >
+            {text}
+          </Text>
+        )}
       </View>
     </TouchableOpacity>
   );

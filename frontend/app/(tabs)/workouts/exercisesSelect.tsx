@@ -29,7 +29,7 @@ export default function TabExercisesSelect() {
     queryFn: async () =>
       await getBe({
         path: `/exercises/strength`,
-        params: { perPage: 999, name: debouncedSearchText },
+        params: { perPage: 999, name: debouncedSearchText ?? "" },
       }),
   });
 

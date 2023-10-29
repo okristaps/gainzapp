@@ -8,7 +8,9 @@ interface IconProps {
   text: string | null;
   items?: "start" | "end";
   hideText?: boolean;
-  onPress?: () => void;
+  onPress?: () => any;
+  disabled?: boolean;
+  color?: string;
 }
 
 interface HeaderProps {
@@ -40,7 +42,7 @@ const Header: React.FC<HeaderProps> = ({
           <Text className="text-secondary text-[22px] font-medium">
             {shortenText(title, titleLength)}
           </Text>
-          <View className="w-[50px]">{iconRight && <IconButton {...iconRight} />}</View>
+          <View className="w-[50px] items-end">{iconRight && <IconButton {...iconRight} />}</View>
         </>
       )}
     </View>

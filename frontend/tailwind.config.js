@@ -10,6 +10,7 @@ module.exports = {
         input: "#282C30",
         default: "#1E1E1E",
         success: "#88BB46",
+        danger: "#DC3545",
       },
       colors: {
         primary: "#FFFFFF",
