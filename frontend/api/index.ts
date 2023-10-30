@@ -19,7 +19,7 @@ interface PutBeParams {
 interface DeleteBeParams {
   path: string;
 }
-
+console.log(API_URL);
 const getBe = async ({ path, params }: GetBeParams): Promise<any> => {
   const token = await getFirebaseAccessToken();
 

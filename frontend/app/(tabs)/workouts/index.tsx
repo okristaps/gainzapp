@@ -10,8 +10,11 @@ import Header from "components/header";
 import { Input } from "components/inputs/input";
 import Wrapper from "components/layout/wrapper";
 import { router } from "expo-router";
-import React, { useContext, useState } from "react";
+import React, { useContext, useRef, useState } from "react";
 import { WorkoutsContext } from "./context/workoutsContext";
+import { AnimatedFlashList, FlashList } from "@shopify/flash-list";
+import { LayoutAnimation, View } from "react-native";
+import { Divider } from "components/loginform/components";
 
 export default function TabWorkoutsScreen() {
   const { userData } = useContext(AuthContext);
@@ -19,7 +22,7 @@ export default function TabWorkoutsScreen() {
   const [searchText, setSearchText] = useState("");
   const [isCustom, setIsCustom] = useState(true);
   const debouncedSearchText = useDebounce(searchText, 300);
-
+  const list = useRef<FlashList<number> | null>(null);
   const { isLoading, data } = useQuery({
     retry: false,
     queryKey: ["workouts", debouncedSearchText, isCustom],
@@ -29,10 +32,29 @@ export default function TabWorkoutsScreen() {
         params: { name: debouncedSearchText, uid: !isCustom ? userData?.uid : "" },
       }),
   });
+
+  const Item = React.useCallback((item: any) => {
+    list.current?.prepareForLayoutAnimationRender();
+    LayoutAnimation.configureNext(LayoutAnimation.Presets.spring);
+
+    return (
+      <RenderItem
+        item={item.item}
+        onPress={() => {
+          setSelectedWorkout(item.item);
+          router.push({
+            pathname: "workouts/workoutInfo",
+          });
+        }}
+      />
+    );
+  }, []);
+
   return (
     <Wrapper>
       <Header
         iconLeft={{
+          disabled: isCustom,
           text: !isCustom ? "Create" : null,
           onPress: () => {
             resetData();
@@ -48,23 +70,17 @@ export default function TabWorkoutsScreen() {
         extraClass={"mt-[25px]"}
         type="search"
       />
-
-      <DefaultFlatlist
-        title="Workouts list"
-        isLoading={isLoading}
-        data={data?.workouts}
-        renderItem={(item) => (
-          <RenderItem
-            item={item.item}
-            onPress={() => {
-              setSelectedWorkout(item.item);
-              router.push({
-                pathname: "workouts/workoutInfo",
-              });
-            }}
-          />
-        )}
-      />
+      <Divider text={"Workouts"} textSize={28} extraClassName="mt-[25px] mb-[15px]" />
+      <View className="mt-[10px] flex flex-1">
+        <AnimatedFlashList
+          estimatedItemSize={40}
+          ItemSeparatorComponent={() => <View className="h-[10px]" />}
+          // title="Workouts list"
+          // isLoading={isLoading}
+          data={data?.workouts}
+          renderItem={Item}
+        />
+      </View>
     </Wrapper>
   );
 }

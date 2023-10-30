@@ -2,15 +2,15 @@ import { EmptyComponent, RenderItem } from "components/flatlist/components";
 import Header from "components/header";
 import Wrapper from "components/layout/wrapper";
 import { router } from "expo-router";
-import React, { useContext, useState } from "react";
+import React, { useContext, useRef, useState } from "react";
 
 import Info from "assets/images/info.svg";
 import { PirmaryButtonEmpty } from "components/common/primarybutton";
 import { Input } from "components/inputs/input";
-import { Alert, TouchableOpacity, View } from "react-native";
+import { Alert, LayoutAnimation, TouchableOpacity, View } from "react-native";
 import { WorkoutsContext } from "./context/workoutsContext";
 
-import { FlashList } from "@shopify/flash-list";
+import { AnimatedFlashList, FlashList } from "@shopify/flash-list";
 import Bin from "assets/images/trash.svg";
 import { Divider } from "components/loginform/components";
 import { compareExercises } from "../../helpers";
@@ -33,10 +33,12 @@ export default function TabWorkoutsCreate() {
 
   const [loading, setLoading] = useState(initialLoading);
 
+  const defaultDisabled = name.length === 0 || selectedExercises.length === 0;
+
   const disabledEdit =
     (selectedWorkout?.name == name &&
       compareExercises(selectedExercises, selectedWorkout?.exercises)) ||
-    name.length === 0;
+    defaultDisabled;
 
   const handleSave = async () => {
     setLoading({ ...initialLoading, post: true });
@@ -75,6 +77,8 @@ export default function TabWorkoutsCreate() {
     Alert.alert(title, message, [{ text: "OK", onPress: () => {} }]);
   };
 
+  const list = useRef<FlashList<number> | null>(null);
+
   const Item = React.useCallback(
     ({
       item,
@@ -84,6 +88,8 @@ export default function TabWorkoutsCreate() {
         name: string;
       };
     }) => {
+      list.current?.prepareForLayoutAnimationRender();
+      LayoutAnimation.configureNext(LayoutAnimation.Presets.linear);
       return (
         <View className={`flex flex-1 flex-row items-center`}>
           <TouchableOpacity className="mr-[9px]" onPress={() => handleExercises(item)}>
@@ -110,9 +116,7 @@ export default function TabWorkoutsCreate() {
         }}
         iconRight={{
           disabled:
-            loading.delete || loading.post || selectedWorkout?._id
-              ? disabledEdit
-              : !name.length || !selectedExercises.length,
+            loading.delete || loading.post || selectedWorkout?._id ? disabledEdit : defaultDisabled,
           text: "Save",
           color: "success",
           hideText: false,
@@ -126,10 +130,10 @@ export default function TabWorkoutsCreate() {
         setValue={(text: string) => setName(text)}
         type="book"
       />
-      <Divider text={"Exercises"} textSize={28} extraClassName="mt-[25px]" />
+      <Divider text={"Exercises"} textSize={28} extraClassName="mt-[25px] mb-[15px]" />
 
       <View className="mt-[10px] flex flex-1">
-        <FlashList
+        <AnimatedFlashList
           ListEmptyComponent={<EmptyComponent isLoading={false} text={"No exercises found yet"} />}
           data={selectedExercises}
           ItemSeparatorComponent={() => <View className="h-[10px]" />}
@@ -148,15 +152,17 @@ export default function TabWorkoutsCreate() {
             });
           }}
         />
-        <View className="mt-[10px]">
-          <PirmaryButtonEmpty
-            disabled={loading.delete || loading.post}
-            loading={loading.delete}
-            color="danger"
-            text="Delete workout"
-            onPress={handleDelete}
-          />
-        </View>
+        {selectedWorkout?._id && (
+          <View className="mt-[10px]">
+            <PirmaryButtonEmpty
+              disabled={loading.delete || loading.post}
+              loading={loading.delete}
+              color="danger"
+              text="Delete workout"
+              onPress={handleDelete}
+            />
+          </View>
+        )}
       </View>
     </Wrapper>
   );
