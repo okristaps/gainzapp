@@ -1,6 +1,7 @@
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import { QueryClient, QueryClientProvider, focusManager } from "@tanstack/react-query";
 import AuthManager from "auth/authManager";
+import FiltersModal from "components/modals/filtersModal";
 import { useFonts } from "expo-font";
 import { Stack } from "expo-router";
 import React, { useEffect } from "react";
@@ -41,6 +42,7 @@ function RootLayoutNav() {
   return (
     <AuthManager>
       <QueryClientProvider client={queryClient}>
+        <FiltersModal visible={true} />
         <Stack>
           <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
         </Stack>

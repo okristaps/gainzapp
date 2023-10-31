@@ -1,3 +1,5 @@
+import "./filters";
+
 export interface MongoUserBody {
   uid: string;
   email?: string | null;
