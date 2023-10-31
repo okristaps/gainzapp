@@ -1,5 +1,6 @@
 {
   "expo": {
+    "platforms": ["ios"],
     "name": "gainzapp",
     "slug": "gainzapp",
     "version": "1.0.0",
@@ -19,16 +20,6 @@
       "supportsTablet": true,
       "bundleIdentifier": "y",
       "googleServicesFile": "./GoogleService-Info.plist"
-    },
-    "android": {
-      "adaptiveIcon": {
-        "foregroundImage": "./src/assets/images/temporary.png",
-        "backgroundColor": "#ffffff"
-      }
-    },
-    "web": {
-      "bundler": "metro",
-      "favicon": "./src/assets/images/temporary.png"
     },
     "plugins": [
       "expo-router",
