@@ -9,8 +9,8 @@ enum PrimaryMuscles {
   Glutes = "glutes",
   Hamstrings = "hamstrings",
   Lats = "lats",
-  LowerBack = "lower back",
-  MiddleBack = "middle back",
+  LowerBack = "lower+back",
+  MiddleBack = "middle+back",
   Neck = "neck",
   Quadriceps = "quadriceps",
   Shoulders = "shoulders",
@@ -33,7 +33,7 @@ enum Forces {
 enum Categories {
   Strength = "strength",
   Cardio = "cardio",
-  OlympicWeightlifting = "olympic weightlifting",
+  OlympicWeightlifting = "olympic+weightlifting",
   Plyometrics = "plyometrics",
   Powerlifting = "powerlifting",
   Stretching = "stretching",
@@ -49,9 +49,9 @@ export interface Filters {
 
 const parseDropdownData = (enumObj: Record<string, string>) =>
   Object.keys(enumObj).map((key, index) => ({
-    label: enumObj[key],
+    label: `${enumObj[key]}`.replace("+", " "),
     _index: index,
-    value: key,
+    value: enumObj[key],
   }));
 
 const CategoriesData = parseDropdownData(Categories);

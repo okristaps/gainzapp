@@ -43,7 +43,7 @@ const DropdownComponent: React.FC<DropdownComponentProps> = ({
               border-secondary
             `}
       >
-        <Text className={`text-primary text-16 capitalize`}>{item.label}</Text>
+        <Text className={`text-primary text-16 capitalize`}>{item.label.replace("+", " ")}</Text>
       </View>
     );
   };

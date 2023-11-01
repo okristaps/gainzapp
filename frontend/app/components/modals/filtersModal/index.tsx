@@ -10,16 +10,17 @@ import { FilterConfig, filtersConfig, initialFilters } from "./helpers";
 
 interface FilterModalProps {
   visible: boolean;
-  setVisible?: (visible: boolean) => void;
+  setVisible: (visible: boolean) => void;
+  onSave: (filters: Filters) => void;
 }
 
-const FiltersModal: React.FC<FilterModalProps> = ({ visible, setVisible }) => {
+const FiltersModal: React.FC<FilterModalProps> = ({ visible, setVisible, onSave }) => {
   const [filters, setFilters] = useState<Filters>(initialFilters);
   const [focus, setFocus] = useState<number | null>(null);
 
   const RenderDropdowns = useCallback(() => {
     return filtersConfig.map((filter: FilterConfig, index: number) => {
-      const value = filters[filter.name] ?? "";
+      const value = filters[filter.name];
       return (
         <View key={filter.name} className="mb-[10px]">
           <DropdownComponent
@@ -53,20 +54,32 @@ const FiltersModal: React.FC<FilterModalProps> = ({ visible, setVisible }) => {
     >
       <View className="mt-[20px]">
         <RenderDropdowns />
-        <Buttons />
+        <Buttons
+          onReset={() => {
+            setFilters(initialFilters);
+            onSave(initialFilters);
+          }}
+          onSave={() => onSave(filters)}
+        />
       </View>
     </ModalWrapper>
   );
 };
 
-const Buttons = () => {
+const Buttons = ({ onSave, onReset }: { onSave: () => void; onReset: () => void }) => {
   return (
     <View className="flex-row w mt-[20px] justify-between gap-x-[30px]">
       <View className="flex-1">
-        <PirmaryButtonEmpty disabled={false} loading={false} color="danger" text="Reset " />
+        <PirmaryButtonEmpty
+          disabled={false}
+          loading={false}
+          color="danger"
+          text="Reset "
+          onPress={onReset}
+        />
       </View>
       <View className="flex-1">
-        <PirmaryButton disabled={false} text="Save " />
+        <PirmaryButton disabled={false} text="Save " onPress={onSave} />
       </View>
     </View>
   );

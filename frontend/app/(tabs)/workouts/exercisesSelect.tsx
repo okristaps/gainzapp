@@ -17,19 +17,30 @@ import { WorkoutsContext } from "./context/workoutsContext";
 import ExercisesHorizontal from "components/flatlist/exerciseHorizontal";
 import { View } from "react-native";
 import { Divider } from "components/loginform/components";
+import FiltersModal from "components/modals/filtersModal";
+import { Filters } from "types/filters";
+import { initialFilters } from "components/modals/filtersModal/helpers";
 
 export default function TabExercisesSelect() {
+  const [visible, setVisible] = useState(false);
+  const [filters, setFilters] = useState<Filters>(initialFilters);
   const { handleExercises, selectedExercises } = useContext(WorkoutsContext);
   const [searchText, setSearchText] = useState("");
   const debouncedSearchText = useDebounce(searchText, 300);
 
   const { isLoading, data } = useQuery({
     retry: false,
-    queryKey: ["exercises", debouncedSearchText],
+    queryKey: ["exercises", debouncedSearchText, filters],
     queryFn: async () =>
       await getBe({
-        path: `/exercises/strength`,
-        params: { perPage: 999, name: debouncedSearchText ?? "" },
+        path: `/exercises/${filters.category.toLowerCase()}`,
+        params: {
+          perPage: 999,
+          name: debouncedSearchText?.toLowerCase() ?? "",
+          force: filters.force?.toLowerCase() ?? "",
+          level: filters.level?.toLowerCase() ?? "",
+          muscles: filters.primaryMuscle?.toLowerCase() ?? "",
+        },
       }),
   });
 
@@ -57,6 +68,14 @@ export default function TabExercisesSelect() {
 
   return (
     <Wrapper>
+      <FiltersModal
+        visible={visible}
+        setVisible={setVisible}
+        onSave={(filters) => {
+          setFilters(filters);
+          setVisible(false);
+        }}
+      />
       <Header
         extraClassname="h-[50px]"
         title="Add Exercises"
@@ -64,6 +83,10 @@ export default function TabExercisesSelect() {
           text: "Back",
           hideText: true,
           onPress: () => router.back(),
+        }}
+        iconRight={{
+          text: "Filter",
+          onPress: () => setVisible(true),
         }}
       />
       <SecondaryTitle text={"Custom workout 1"} />

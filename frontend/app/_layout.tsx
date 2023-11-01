@@ -9,7 +9,6 @@ import { AppState, AppStateStatus, Platform } from "react-native";
 export { ErrorBoundary } from "expo-router";
 
 export default function RootLayout() {
-  const [visible, setVisible] = useState(true);
   const [loaded, error] = useFonts({
     Isotok: require("../src/assets/fonts/IstokWeb-Regular.ttf"),
     ...FontAwesome.font,
@@ -33,17 +32,16 @@ export default function RootLayout() {
   return (
     <>
       {/* {!loaded && <SplashScreen />} */}
-      {loaded && <RootLayoutNav visible={visible} setVisible={setVisible} />}
+      {loaded && <RootLayoutNav />}
     </>
   );
 }
 const queryClient = new QueryClient();
 
-function RootLayoutNav({ visible, setVisible }: { visible: boolean; setVisible: any }) {
+function RootLayoutNav() {
   return (
     <AuthManager>
       <QueryClientProvider client={queryClient}>
-        <FiltersModal visible={visible} setVisible={setVisible} />
         <Stack>
           <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
         </Stack>
