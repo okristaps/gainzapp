@@ -31,13 +31,41 @@ enum Forces {
 }
 
 enum Categories {
+  Strength = "strength",
   Cardio = "cardio",
   OlympicWeightlifting = "olympic weightlifting",
   Plyometrics = "plyometrics",
   Powerlifting = "powerlifting",
-  Strength = "strength",
   Stretching = "stretching",
   Strongman = "strongman",
 }
 
-export { PrimaryMuscles, Levels, Forces, Categories };
+export interface Filters {
+  category: string;
+  level: string;
+  force: string;
+  primaryMuscle: string;
+}
+
+const parseDropdownData = (enumObj: Record<string, string>) =>
+  Object.keys(enumObj).map((key, index) => ({
+    label: enumObj[key],
+    _index: index,
+    value: key,
+  }));
+
+const CategoriesData = parseDropdownData(Categories);
+const PrimaryMusclesData = parseDropdownData(PrimaryMuscles);
+const LevelsData = parseDropdownData(Levels);
+const ForcesData = parseDropdownData(Forces);
+
+export {
+  Categories,
+  CategoriesData,
+  Forces,
+  ForcesData,
+  Levels,
+  LevelsData,
+  PrimaryMuscles,
+  PrimaryMusclesData,
+};

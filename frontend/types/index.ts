@@ -1,4 +1,5 @@
 import "./filters";
+import "./components";
 
 export interface MongoUserBody {
   uid: string;

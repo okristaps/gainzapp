@@ -15,7 +15,7 @@ const PirmaryButton: React.FC<Props> = ({ text, onPress, loading }) => {
   return (
     <TouchableOpacity onPress={onPress}>
       <LinearGradient
-        className="h-[50px] bg-input rounded-[15px] flex  justify-center"
+        className="h-[50px] bg-input rounded-[15px] w-[100%]  justify-center"
         colors={colors.buttonGradient}
         start={{ x: 0, y: 1 }}
         end={{ x: 1, y: 0 }}
@@ -35,7 +35,9 @@ const PirmaryButtonEmpty: React.FC<Props> = ({ text, onPress, loading, color, di
     <TouchableOpacity
       disabled={disabled}
       onPress={onPress}
-      className={`h-[50px] border border-${color ?? "success"} rounded-[15px] flex  justify-center`}
+      className={`h-[50px]  border border-${
+        color ?? "success"
+      } rounded-[15px]  w-[100%] justify-center`}
     >
       {loading ? (
         <ActivityIndicator size="large" color={color ?? "#7F8489"} />

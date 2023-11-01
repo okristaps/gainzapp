@@ -5,10 +5,11 @@ import ModalHeader from "components/modals/components/modalHeader";
 
 interface ModalProps {
   visible: boolean;
-  setVisible?: (visible: boolean) => void;
+  setVisible: (visible: boolean) => void;
   title?: string;
   children?: React.ReactNode;
   onModalHide?: () => void;
+  disableSwipe?: boolean;
 }
 
 const ModalWrapper: React.FC<ModalProps> = ({
@@ -17,6 +18,7 @@ const ModalWrapper: React.FC<ModalProps> = ({
   title,
   children,
   onModalHide,
+  disableSwipe,
 }) => {
   return (
     <Modal
@@ -25,7 +27,7 @@ const ModalWrapper: React.FC<ModalProps> = ({
       backdropOpacity={0.94}
       style={{ margin: 0, marginTop: "15%" }}
       onSwipeComplete={() => setVisible(false)}
-      swipeDirection="down"
+      swipeDirection={disableSwipe ? undefined : "down"}
       onModalHide={onModalHide}
       swipeThreshold={100}
       avoidKeyboard={true}
