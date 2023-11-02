@@ -33,11 +33,10 @@ const ExerciseInfoItem: React.FC<ExerciseInfo> = ({ title, sub }) => (
   </View>
 );
 
-
 // Export this stuff
 
 const InfoContainer: React.FC<InfoContainerProps> = ({ forces, equipment }) => (
-  <InputGradient extraClassName="mt-[30px] pt-[9px] pb-[9px] items-start h-[50px] bg-default">
+  <InputGradient extraClassName="mt-[15px] pt-[9px] pb-[9px] items-start h-[50px] bg-default">
     <View className="h-[100%] justify-between">
       <InfoItem text="Forces" items={forces} />
       <InfoItem text="Equipment" items={equipment} />

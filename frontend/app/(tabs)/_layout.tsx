@@ -5,6 +5,8 @@ import { Tabs } from "expo-router";
 import React, { useContext, useEffect } from "react";
 import { tabs } from "./helpers/tabs";
 import { getAuth } from "firebase/auth";
+import { ExerciseModalContext } from "../contexts/exerciseModalContext";
+import ExerciseModal from "components/modals/exerciseModal/exerciseModal";
 
 const NavTabs = () => {
   return (
@@ -28,6 +30,7 @@ const NavTabs = () => {
 };
 
 export default function TabLayout() {
+  const { exercise, setExercise, exercisesLoading } = useContext(ExerciseModalContext);
   const { userData } = useContext(AuthContext);
   const auth = getAuth();
   const user = auth.currentUser;
@@ -38,6 +41,14 @@ export default function TabLayout() {
 
   return (
     <>
+      <ExerciseModal
+        visible={Boolean(exercise)}
+        setVisible={() => setExercise(null)}
+        exercise={exercise}
+        isLoading={exercisesLoading}
+        id
+      />
+
       <NavTabs />
       {!user?.emailVerified && <ConfirmEmailModal user={user} auth={auth} />}
     </>

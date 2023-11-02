@@ -14,6 +14,7 @@ import { AnimatedFlashList, FlashList } from "@shopify/flash-list";
 import Bin from "assets/images/trash.svg";
 import { Divider } from "components/loginform/components";
 import { compareExercises } from "../../helpers";
+import { ExerciseModalContext } from "../../contexts/exerciseModalContext";
 
 const initialLoading = {
   post: false,
@@ -32,7 +33,7 @@ export default function TabWorkoutsCreate() {
   } = useContext(WorkoutsContext);
 
   const [loading, setLoading] = useState(initialLoading);
-
+  const { setExercise } = useContext(ExerciseModalContext);
   const defaultDisabled = name.length === 0 || selectedExercises.length === 0;
 
   const disabledEdit =
@@ -96,7 +97,7 @@ export default function TabWorkoutsCreate() {
             <Bin height={24} width={24} />
           </TouchableOpacity>
           <View className="flex-1">
-            <RenderItem item={item} customIconRight={<Info />} />
+            <RenderItem item={item} customIconRight={<Info />} onPress={() => setExercise(item)} />
           </View>
         </View>
       );
