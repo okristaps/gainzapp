@@ -19,7 +19,7 @@ export default function TabExercisesSelect() {
   const { setExercise } = useContext(ExerciseModalContext);
   const [searchText, setSearchText] = useState("");
   const debouncedSearchText = useDebounce(searchText, 300);
-
+  const [visible, setVisible] = useState(false);
   const { handleExercises, selectedExercises } = useContext(WorkoutsContext);
 
   const memoizedOnItemPress = useCallback(
@@ -41,7 +41,7 @@ export default function TabExercisesSelect() {
         }}
         iconRight={{
           text: "Filter",
-          // onPress: () => setVisible(true),
+          onPress: () => setVisible(true),
         }}
       />
       <SecondaryTitle text={"Custom workout 1"} />
@@ -52,19 +52,52 @@ export default function TabExercisesSelect() {
         extraClass={"mt-[15px] mb-[15px]"}
         type="search"
       />
-
-      <View className="mt-[15px] mb-[10px]">
-        <Divider text={"Exercises"} />
-      </View>
-      <RenderExerciseList
-        debouncedSearchText={debouncedSearchText}
+      <RenderLists
+        visible={visible}
+        setVisible={setVisible}
         selectedExercises={selectedExercises}
-        onItemPress={memoizedOnItemPress}
-        handleExercises={(item) => handleExercises(item)}
+        handleExercises={handleExercises}
+        memoizedOnItemPress={memoizedOnItemPress}
+        debouncedSearchText={debouncedSearchText}
       />
     </Wrapper>
   );
 }
+
+const RenderLists = memo(
+  ({
+    selectedExercises,
+    handleExercises,
+    memoizedOnItemPress,
+    debouncedSearchText,
+    visible,
+    setVisible,
+  }: {
+    selectedExercises: ExerciseIdentifier[];
+    handleExercises: (item: ExerciseIdentifier) => void;
+    memoizedOnItemPress: (item: ExerciseIdentifier) => void;
+    debouncedSearchText: string | null;
+    visible: boolean;
+    setVisible: (visible: boolean) => void;
+  }) => {
+    return (
+      <>
+        <RenderHorizontal selectedExercises={selectedExercises} handleExercises={handleExercises} />
+        <View className="mt-[15px] mb-[10px]">
+          <Divider text={"Exercises"} />
+        </View>
+        <RenderExerciseList
+          visible={visible}
+          setVisible={setVisible}
+          debouncedSearchText={debouncedSearchText}
+          selectedExercises={selectedExercises}
+          onItemPress={memoizedOnItemPress}
+          handleExercises={(item) => handleExercises(item)}
+        />
+      </>
+    );
+  }
+);
 
 const RenderHorizontal = memo(
   ({

@@ -19,7 +19,6 @@ const ExerciseModal: React.FC<ModalProps> = ({
   exercise,
   isLoading = false,
 }) => {
-  console.log("modal");
   return (
     <ModalWrapper visible={visible} setVisible={setVisible} title={exercise?.name}>
       {isLoading ? (

@@ -11,12 +11,14 @@ interface ExerciseModalContext {
   exercise: Exercise | null | ExerciseIdentifier;
   exercisesLoading: boolean;
   setExercise: React.Dispatch<React.SetStateAction<Exercise | ExerciseIdentifier | null>>;
+  _id: string;
 }
 
 export const ExerciseModalContext = createContext<ExerciseModalContext>({
   exercise: null,
   exercisesLoading: false,
   setExercise: () => {},
+  _id: "",
 });
 
 const ExerciseModalManager: React.FC<ExerciseModalManagerProps> = ({ children }) => {

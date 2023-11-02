@@ -1,6 +1,6 @@
-import { AnimatedFlashList, FlashList } from "@shopify/flash-list";
+import { FlashList } from "@shopify/flash-list";
 import React, { useRef } from "react";
-import { LayoutAnimation, Text, TouchableOpacity, View } from "react-native";
+import { Text, TouchableOpacity, View } from "react-native";
 
 import Close from "assets/images/close.svg";
 import { shortenText } from "components/helpers";
@@ -15,11 +15,8 @@ const ExercisesHorizontal = ({
 }) => {
   const list = useRef<FlashList<number> | null>(null);
 
-  const Item = React.useCallback(
-    ({ item }: { item: ExerciseIdentifier }) => {
-      list.current?.prepareForLayoutAnimationRender();
-      LayoutAnimation.configureNext(LayoutAnimation.Presets.linear);
-
+  const renderItem = React.useMemo(() => {
+    const renderFunction = ({ item }: { item: ExerciseIdentifier }) => {
       return (
         <TouchableOpacity
           key={item?._id}
@@ -36,16 +33,16 @@ const ExercisesHorizontal = ({
           </TouchableOpacity>
         </TouchableOpacity>
       );
-    },
-    [data]
-  );
+    };
+    return renderFunction;
+  }, [data]);
 
   return (
-    <AnimatedFlashList
+    <FlashList
       data={data}
       showsHorizontalScrollIndicator={false}
       ItemSeparatorComponent={() => <View className="w-[10px]" />}
-      renderItem={Item}
+      renderItem={renderItem}
       horizontal={true}
       scrollEnabled={true}
       estimatedItemSize={200}

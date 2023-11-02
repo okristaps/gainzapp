@@ -1,20 +1,22 @@
-import React, { memo, useCallback, useState } from "react";
-import { View } from "react-native-animatable";
+import { FlashList } from "@shopify/flash-list";
 import { useQuery } from "@tanstack/react-query";
 import { getBe } from "api/index";
-import FiltersModal from "components/modals/filtersModal";
-import { initialFilters } from "components/modals/filtersModal/helpers";
-import { Filters } from "types/filters";
-import { ExerciseIdentifier } from "types/index";
-import { FlashList } from "@shopify/flash-list";
 import Add from "assets/images/add.svg";
 import { EmptyComponent, RenderItem } from "components/flatlist/components";
+import FiltersModal from "components/modals/filtersModal";
+import { initialFilters } from "components/modals/filtersModal/helpers";
+import React, { memo, useState } from "react";
+import { View } from "react-native-animatable";
+import { Filters } from "types/filters";
+import { ExerciseIdentifier } from "types/index";
 
 interface ListProps {
   debouncedSearchText: string | null;
   selectedExercises: ExerciseIdentifier[];
   onItemPress: (item: ExerciseIdentifier) => void;
   handleExercises: (item: ExerciseIdentifier) => void;
+  visible: boolean;
+  setVisible: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const RenderExerciseList: React.FC<ListProps> = ({
@@ -22,12 +24,13 @@ const RenderExerciseList: React.FC<ListProps> = ({
   selectedExercises,
   onItemPress,
   handleExercises,
+  visible,
+  setVisible,
 }) => {
   const [filters, setFilters] = useState<Filters>(initialFilters);
-  const [visible, setVisible] = useState(false);
 
-  const renderItem = React.useCallback(
-    ({
+  const renderItem = React.useMemo(() => {
+    const renderFunction = ({
       item,
     }: {
       item: {
@@ -44,12 +47,13 @@ const RenderExerciseList: React.FC<ListProps> = ({
             selectedExercises.length < 11 && !disabled && handleExercises(item)
           }
           item={item}
+          iconDisabled={selectedExercises.length === 15}
           customIconRight={<Add />}
         />
       );
-    },
-    [selectedExercises]
-  );
+    };
+    return renderFunction;
+  }, [selectedExercises]);
 
   return (
     <>
@@ -84,7 +88,6 @@ const RenderList = memo(
     renderItem: any;
     selectedExercises: ExerciseIdentifier[];
   }) => {
-    console.log("debouncedSearchText", debouncedSearchText);
     const { isLoading, data } = useQuery({
       retry: false,
       queryKey: ["exercises", debouncedSearchText, filters],
@@ -103,12 +106,11 @@ const RenderList = memo(
         }),
     });
 
-    console.log("listrender");
-
     return (
       <View className="mt-[10px] flex flex-1">
         <FlashList
           extraData={selectedExercises}
+          keyExtractor={(item: ExerciseIdentifier) => item?._id}
           ListEmptyComponent={<EmptyComponent isLoading={isLoading} text={"No exercises found"} />}
           data={data?.exercises}
           renderItem={renderItem}
@@ -120,4 +122,4 @@ const RenderList = memo(
   }
 );
 
-export default React.memo(RenderExerciseList);
+export default memo(RenderExerciseList);

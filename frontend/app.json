@@ -1,6 +1,8 @@
 {
   "expo": {
-    "platforms": ["ios"],
+    "platforms": [
+      "ios"
+    ],
     "name": "gainzapp",
     "slug": "gainzapp",
     "version": "1.0.0",
@@ -19,7 +21,17 @@
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "y",
-      "googleServicesFile": "./GoogleService-Info.plist"
+      "googleServicesFile": "./GoogleService-Info.plist",
+      "infoPlist": {
+        "SKAdNetworkItems": [
+          {
+            "SKAdNetworkIdentifier": "v9wttpbfk9.skadnetwork"
+          },
+          {
+            "SKAdNetworkIdentifier": "n38lu8286q.skadnetwork"
+          }
+        ]
+      }
     },
     "plugins": [
       "expo-router",
@@ -32,9 +44,17 @@
           "displayName": "Gainzapp",
           "advertiserIDCollectionEnabled": false,
           "autoLogAppEventsEnabled": false,
-          "isAutoInitEnabled": true        
+          "isAutoInitEnabled": true
         }
       ]
-    ]
+    ],
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "1def8b90-e43c-4279-a542-f4906083a98c"
+      }
+    }
   }
 }

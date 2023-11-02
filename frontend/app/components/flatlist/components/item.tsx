@@ -30,7 +30,6 @@ const RenderItem = ({
 
   return (
     <TouchableOpacity
-      key={item?._id}
       className={`flex flex-col 
    
       border-[1px] rounded-[12px] pl-[15px] pr-[12.5px]
@@ -51,7 +50,7 @@ const RenderItem = ({
           <Text className="text-white font-bold text-15">{shortenText(item?.name, 33)}</Text>
         </View>
         <TouchableOpacity
-          disabled={!handleInfoPress}
+          disabled={!handleInfoPress || disabled}
           onPress={handleInfoPress}
           className="h-[100%] w-[30px] pl-[10px] flex justify-center self-end "
         >

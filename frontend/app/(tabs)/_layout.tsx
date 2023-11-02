@@ -2,11 +2,12 @@ import { AuthContext } from "auth/authManager";
 import LoginForm from "components/loginform/loginform";
 import ConfirmEmailModal from "components/modals/confirmEmailModal";
 import { Tabs } from "expo-router";
-import React, { useContext, useEffect } from "react";
+import React, { memo, useContext, useEffect } from "react";
 import { tabs } from "./helpers/tabs";
 import { getAuth } from "firebase/auth";
 import { ExerciseModalContext } from "../contexts/exerciseModalContext";
 import ExerciseModal from "components/modals/exerciseModal/exerciseModal";
+import { Exercise, ExerciseIdentifier } from "types/index";
 
 const NavTabs = () => {
   return (
@@ -41,6 +42,28 @@ export default function TabLayout() {
 
   return (
     <>
+      <ModalSuff
+        exercise={exercise}
+        exercisesLoading={exercisesLoading}
+        setExercise={setExercise}
+      />
+      <NavTabs />
+      {!user?.emailVerified && <ConfirmEmailModal user={user} auth={auth} />}
+    </>
+  );
+}
+
+const ModalSuff = memo(
+  ({
+    exercise,
+    exercisesLoading,
+    setExercise,
+  }: {
+    exercise: Exercise | ExerciseIdentifier;
+    exercisesLoading: boolean;
+    setExercise: React.Dispatch<React.SetStateAction<Exercise | ExerciseIdentifier | null>>;
+  }) => {
+    return (
       <ExerciseModal
         visible={Boolean(exercise)}
         setVisible={() => setExercise(null)}
@@ -48,9 +71,6 @@ export default function TabLayout() {
         isLoading={exercisesLoading}
         id
       />
-
-      <NavTabs />
-      {!user?.emailVerified && <ConfirmEmailModal user={user} auth={auth} />}
-    </>
-  );
-}
+    );
+  }
+);
