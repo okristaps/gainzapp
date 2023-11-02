@@ -1,11 +1,11 @@
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import { QueryClient, QueryClientProvider, focusManager } from "@tanstack/react-query";
 import AuthManager from "auth/authManager";
-import FiltersModal from "components/modals/filtersModal";
 import { useFonts } from "expo-font";
 import { Stack } from "expo-router";
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { AppState, AppStateStatus, Platform } from "react-native";
+import ExerciseModalManager from "./contexts/exerciseModalContext";
 export { ErrorBoundary } from "expo-router";
 
 export default function RootLayout() {
@@ -42,9 +42,11 @@ function RootLayoutNav() {
   return (
     <AuthManager>
       <QueryClientProvider client={queryClient}>
-        <Stack>
-          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        </Stack>
+        <ExerciseModalManager>
+          <Stack>
+            <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+          </Stack>
+        </ExerciseModalManager>
       </QueryClientProvider>
     </AuthManager>
   );

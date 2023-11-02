@@ -1,4 +1,3 @@
-import ExerciseModal from "components/modals/exerciseModal/exerciseModal";
 import { Stack } from "expo-router";
 import WorkoutManager from "./context/workoutsContext";
 

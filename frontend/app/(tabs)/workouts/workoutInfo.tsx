@@ -6,17 +6,17 @@ import { RenderItem } from "components/flatlist/components";
 import Header from "components/header";
 import Wrapper from "components/layout/wrapper";
 import { router } from "expo-router";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect } from "react";
 
 import Info from "assets/images/info.svg";
 import { InfoContainer } from "components/common/infoContainer";
-import ExerciseModal from "components/modals/exerciseModal/exerciseModal";
 import { Exercise } from "../../../types";
+import { ExerciseModalContext } from "../../contexts/exerciseModalContext";
 import { WorkoutsContext } from "./context/workoutsContext";
 
 export default function TabWorkoutInfo() {
+  const { setExercise } = useContext(ExerciseModalContext);
   const { setSelectedExercises, selectedWorkout } = useContext(WorkoutsContext);
-  const [exercise, setExercise] = useState<Exercise | null>();
 
   const { isLoading, data, refetch } = useQuery({
     retry: 3,
@@ -60,11 +60,6 @@ export default function TabWorkoutInfo() {
             onPress={() => setExercise(item.item)}
           />
         )}
-      />
-      <ExerciseModal
-        visible={Boolean(exercise)}
-        setVisible={() => setExercise(null)}
-        exercise={exercise}
       />
     </Wrapper>
   );
