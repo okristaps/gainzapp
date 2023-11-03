@@ -13,7 +13,7 @@ import { View } from "react-native";
 import { ExerciseIdentifier } from "types/index";
 import { ExerciseModalContext } from "../../contexts/exerciseModalContext";
 import RenderExerciseList from "./components/exerciseList";
-import { WorkoutsContext } from "./context/workoutsContext";
+import { WorkoutsContext } from "../../contexts/workoutsContext";
 
 export default function TabExercisesSelect() {
   const { setExercise } = useContext(ExerciseModalContext);

@@ -1,17 +1,13 @@
-import Header from "components/header";
-import Wrapper from "components/layout/wrapper";
-import React from "react";
+import { Stack } from "expo-router";
+import WorkoutManager from "../../contexts/workoutsContext";
 
-export default function TabStartScreen() {
+export default function Layout() {
   return (
-    <Wrapper>
-      <Header
-        title="Select workout"
-        iconRight={{
-          text: "Filter",
-          items: "end",
-        }}
-      />
-    </Wrapper>
+    <WorkoutManager>
+      <Stack>
+        <Stack.Screen name="index" options={{ headerShown: false }} />
+        <Stack.Screen name="workoutInfo" options={{ headerShown: false }} />
+      </Stack>
+    </WorkoutManager>
   );
 }
