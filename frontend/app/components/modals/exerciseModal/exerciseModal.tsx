@@ -1,18 +1,10 @@
 import { ExerciseInfoContainer } from "components/common/infoContainer";
+import Loader from "components/loader/loader";
 import ModalWrapper from "components/modals/components/modalWrapper";
 import React, { useRef, useState } from "react";
-import {
-  ScrollView,
-  ScrollViewProps,
-  Text,
-  TouchableOpacity,
-  TouchableWithoutFeedbackComponent,
-  View,
-} from "react-native";
+import { ScrollView, Text, TouchableOpacity, View } from "react-native";
 import { Exercise } from "types/index";
 import { InfoItem, Instructions } from "./components";
-import Loader from "components/loader/loader";
-import { State } from "expo-router/build/fork/getPathFromState";
 
 interface ModalProps {
   exercise: Exercise | null;
@@ -54,7 +46,7 @@ const ExerciseModal: React.FC<ModalProps> = ({
           <Loader />
         </View>
       ) : (
-        <>
+        <View className="mt-[20px]">
           <ExerciseInfoContainer
             info1={{
               title: "Category",
@@ -88,7 +80,7 @@ const ExerciseModal: React.FC<ModalProps> = ({
               </TouchableOpacity>
             </ScrollView>
           </View>
-        </>
+        </View>
       )}
     </ModalWrapper>
   );

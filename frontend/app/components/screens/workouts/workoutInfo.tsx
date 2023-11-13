@@ -76,7 +76,10 @@ const TabWorkoutInfo: React.FC<InfoProps> = ({ path = "workouts" }) => {
       />
       {path === "start" && (
         <View className="mt-[10px]">
-          <PirmaryButton text="Start" />
+          <PirmaryButton
+            text="Start"
+            onPress={() => router.push({ pathname: "start/startedwo" })}
+          />
         </View>
       )}
     </Wrapper>

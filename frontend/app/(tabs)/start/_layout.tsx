@@ -7,6 +7,7 @@ export default function Layout() {
       <Stack>
         <Stack.Screen name="index" options={{ headerShown: false }} />
         <Stack.Screen name="workoutInfo" options={{ headerShown: false }} />
+        <Stack.Screen name="startedwo" options={{ headerShown: false }} />
       </Stack>
     </WorkoutManager>
   );

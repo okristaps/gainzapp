@@ -48,7 +48,7 @@ const ExerciseInfoContainer: React.FC<{ info1?: ExerciseInfo; info2?: ExerciseIn
   info1,
   info2,
 }) => (
-  <InputGradient extraClassName="flex-row mt-[30px] pt-[7px] px-[30px] pb-[7px] h-[50px] justify-between items-center">
+  <InputGradient extraClassName="flex-row  pt-[7px] px-[30px] pb-[7px] h-[50px] justify-between items-center">
     <ExerciseInfoItem {...info1} />
     <Biceps className="mt-[8px]" />
     <ExerciseInfoItem {...info2} />
