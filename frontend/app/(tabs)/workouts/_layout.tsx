@@ -1,5 +1,5 @@
 import { Stack } from "expo-router";
-import WorkoutManager from "./context/workoutsContext";
+import WorkoutManager from "../../contexts/workoutsContext";
 
 export default function Layout() {
   return (

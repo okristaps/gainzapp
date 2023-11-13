@@ -1,14 +1,14 @@
 import { EmptyComponent, RenderItem } from "components/flatlist/components";
 import Header from "components/header";
 import Wrapper from "components/layout/wrapper";
-import { router } from "expo-router";
+import { router, useNavigation } from "expo-router";
 import React, { useContext, useRef, useState } from "react";
-
+import { CommonActions } from "@react-navigation/native";
 import Info from "assets/images/info.svg";
 import { PirmaryButtonEmpty } from "components/common/primarybutton";
 import { Input } from "components/inputs/input";
 import { Alert, LayoutAnimation, TouchableOpacity, View } from "react-native";
-import { WorkoutsContext } from "./context/workoutsContext";
+import { WorkoutsContext } from "../../contexts/workoutsContext";
 
 import { AnimatedFlashList, FlashList } from "@shopify/flash-list";
 import Bin from "assets/images/trash.svg";
@@ -32,6 +32,8 @@ export default function TabWorkoutsCreate() {
     deleteWorkout,
   } = useContext(WorkoutsContext);
 
+  const navigation = useNavigation();
+
   const [loading, setLoading] = useState(initialLoading);
   const { setExercise } = useContext(ExerciseModalContext);
   const defaultDisabled = name.length === 0 || selectedExercises.length === 0;
@@ -44,7 +46,15 @@ export default function TabWorkoutsCreate() {
   const handleSave = async () => {
     setLoading({ ...initialLoading, post: true });
     createWorkout(selectedWorkout?._id)
-      .then(() => router.replace({ pathname: "workouts" }))
+      .then(() => {
+        navigation.dispatch(
+          CommonActions.reset({
+            routes: [{ key: "(tabs)", name: "start" }],
+          })
+        );
+        router.replace({ pathname: "workouts" });
+      })
+
       .catch(() => {
         showAlert("Error", "An error occurred while saving your workout.");
       })

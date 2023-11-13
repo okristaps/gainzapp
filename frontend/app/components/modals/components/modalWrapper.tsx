@@ -10,6 +10,9 @@ interface ModalProps {
   children?: React.ReactNode;
   onModalHide?: () => void;
   disableSwipe?: boolean;
+  handleScrollTo?: (p: number) => void;
+  scrollOffset?: number;
+  scrollOffsetMax?: number;
 }
 
 const ModalWrapper: React.FC<ModalProps> = ({
@@ -19,9 +22,16 @@ const ModalWrapper: React.FC<ModalProps> = ({
   children,
   onModalHide,
   disableSwipe,
+  handleScrollTo,
+  scrollOffset,
+  scrollOffsetMax,
 }) => {
   return (
     <Modal
+      scrollTo={handleScrollTo}
+      scrollOffset={scrollOffset}
+      scrollOffsetMax={scrollOffsetMax}
+      propagateSwipe={true}
       isVisible={visible}
       hasBackdrop={true}
       backdropOpacity={0.94}

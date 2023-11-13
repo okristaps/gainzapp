@@ -1,6 +1,6 @@
 import TabWorkoutsScreen from "components/screens/workouts/workoutsScreen";
 import React from "react";
 
-const WorkoutsScreen = () => <TabWorkoutsScreen />;
+const StartWorkoutScreen = () => <TabWorkoutsScreen path="start" />;
 
-export default WorkoutsScreen;
+export default StartWorkoutScreen;
