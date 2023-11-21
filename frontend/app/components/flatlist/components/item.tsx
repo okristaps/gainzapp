@@ -1,12 +1,24 @@
 import Thing from "assets/images/thing.svg";
 import { shortenText } from "components/helpers";
-import React from "react";
-import { Text, TouchableOpacity, View } from "react-native";
+import React, { useEffect } from "react";
+import { Text, TouchableOpacity, View, LayoutAnimation } from "react-native";
 
 interface ListItem {
   _id: string;
   name: string;
 }
+
+const customLayoutAnimationConfig = {
+  duration: 300,
+  create: {
+    type: LayoutAnimation.Types.easeInEaseOut,
+    property: LayoutAnimation.Properties.opacity,
+  },
+  update: {
+    type: LayoutAnimation.Types.spring,
+    springDamping: 0.7,
+  },
+};
 
 const RenderItem = ({
   item,
@@ -15,18 +27,25 @@ const RenderItem = ({
   children,
   onPress,
   handleInfoPress,
+  titleChildren,
   disabled = false,
+  opened = false,
 }: {
   item: ListItem;
   onPress?: () => void;
   customIconRight?: React.ReactNode;
   customIconLeft?: React.ReactNode;
   children?: React.ReactNode;
+  titleChildren?: React.ReactNode;
   handleInfoPress?: () => void;
   disabled?: boolean;
+  opened?: boolean;
 }) => {
-  const [opened, setOpened] = React.useState(false);
-  const handlePress = () => (children ? setOpened((opened) => !opened) : onPress?.());
+  const handlePress = () => onPress?.();
+
+  useEffect(() => {
+    LayoutAnimation.configureNext(customLayoutAnimationConfig);
+  }, [opened]);
 
   return (
     <TouchableOpacity
@@ -34,7 +53,7 @@ const RenderItem = ({
    
       border-[1px] rounded-[12px] pl-[15px] pr-[12.5px]
       border-${disabled ? "none" : "secondary"}
-      h-[${opened ? "140px" : "40px"}]
+      m-h-["40px"]
         `}
       onPress={handlePress}
     >
@@ -48,6 +67,7 @@ const RenderItem = ({
         <View className="flex-row items-center">
           {customIconLeft}
           <Text className="text-white font-bold text-15">{shortenText(item?.name, 33)}</Text>
+          {titleChildren}
         </View>
         <TouchableOpacity
           disabled={!handleInfoPress || disabled}

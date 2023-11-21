@@ -1,18 +1,40 @@
 import { ExerciseInfoContainer } from "components/common/infoContainer";
+import DefaultFlatlist from "components/flatlist/defaultFlatlist";
 import Header from "components/header";
 import Wrapper from "components/layout/wrapper";
-import { Divider } from "components/loginform/components";
-import React from "react";
-import { View } from "react-native";
+import React, { useContext, useState } from "react";
+import { StartedWorkoutContext } from "../../contexts/startedWorkout/startedWorkoutContext";
 
-interface StartedWorkout {
-  path?: string;
-}
+import { StartedWoItem } from "components/flatlist/startedwo/items";
+import { ExerciseModalContext } from "../../contexts/exerciseModalContext";
+const StartedWorkout: React.FC = () => {
+  const { setExercise } = useContext(ExerciseModalContext);
+  const { startedWorkout, startedExercise, setStartedExercise, handleProgress, progress } =
+    useContext(StartedWorkoutContext);
+  const [opened, setOpened] = useState(startedWorkout?.exercises[0]._id);
 
-const StartedWorkout: React.FC<StartedWorkout> = ({ path = "workouts" }) => {
+  const Item = (item: any) => (
+    <StartedWoItem
+      itemProgress={progress ? progress[item?.item._id] : {}}
+      onCardioEndPress={() => handleProgress(item?.item)}
+      onInfoPress={() => setExercise(item.item)}
+      onPress={() => !startedExercise.length && setOpened(item.item._id)}
+      item={item}
+      opened={opened === item.item._id}
+      startedExercise={startedExercise}
+      onStartPress={() => setStartedExercise(item.item._id)}
+    />
+  );
+
   return (
     <Wrapper>
       <StartedHeader />
+      <DefaultFlatlist
+        title="Excercises"
+        data={startedWorkout?.exercises}
+        isLoading={false}
+        renderItem={Item}
+      />
     </Wrapper>
   );
 };
@@ -31,9 +53,6 @@ const StartedHeader = () => {
           sub: "23%",
         }}
       />
-      <View className="mt-[20px]">
-        <Divider text="Exercises" />
-      </View>
     </>
   );
 };

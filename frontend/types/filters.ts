@@ -40,6 +40,22 @@ enum Categories {
   Strongman = "strongman",
 }
 
+enum Equipment {
+  none = "none",
+  bands = "bands",
+  barbell = "barbell",
+  bodyOnly = "body only",
+  cable = "cable",
+  dumbbell = "dumbbell",
+  eZCurlBar = "e-z curl bar",
+  exerciseBall = "exercise ball",
+  foamRoll = "foam roll",
+  kettlebells = "kettlebells",
+  machine = "machine",
+  medicineBall = "medicine ball",
+  other = "other",
+}
+
 export interface Filters {
   category: string;
   level: string;
@@ -65,6 +81,7 @@ export {
   Forces,
   ForcesData,
   Levels,
+  Equipment,
   LevelsData,
   PrimaryMuscles,
   PrimaryMusclesData,
