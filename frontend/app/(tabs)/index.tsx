@@ -1,3 +1,4 @@
+import InfoBoxes from "components/dashboard/dashboardScreen";
 import Header from "components/header";
 import ProfilePicture from "components/header/profile";
 import WeekNavigation from "components/header/weekSwitch";
@@ -20,6 +21,7 @@ const Dashboard = () => {
         }
       />
       <WeekButtons />
+      <InfoBoxes />
     </Wrapper>
   );
 };
