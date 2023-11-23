@@ -18,8 +18,6 @@ const CardioModal: React.FC<CardioModalProps> = ({ visible, setVisible, onSave, 
   const { timeValue, setTimeValue, formatTime, isValidTime } = useTimeInput();
   const [distance, setDistance] = useState("");
 
-  console.log("payload", payload);
-
   const distanceInputRef = useRef<any>(null);
   useEffect(() => {
     setTimeValue(payload?.time ?? "");
@@ -39,10 +37,7 @@ const CardioModal: React.FC<CardioModalProps> = ({ visible, setVisible, onSave, 
             placeholder="HH:MM:SS"
             value={timeValue}
             setValue={setTimeValue}
-            onChangeText={(text) => {
-              console.log("text");
-              formatTime(text);
-            }}
+            onChangeText={formatTime}
             extraInputClass="w-[70px]"
           />
         </View>

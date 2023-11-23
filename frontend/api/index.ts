@@ -1,6 +1,6 @@
 import { API_URL } from "@env";
 import getFirebaseAccessToken from "../auth/auth";
-console.log("API_URL", API_URL);
+
 interface GetBeParams {
   path: string;
   params?: any;
@@ -22,7 +22,7 @@ interface DeleteBeParams {
 
 const getBe = async ({ path, params }: GetBeParams): Promise<any> => {
   const token = await getFirebaseAccessToken();
-  console.log(API_URL);
+
   const queryString = params
     ? `?${Object.entries(params)
         .map(([key, value]) => `${key}=${encodeURIComponent(value)}`)

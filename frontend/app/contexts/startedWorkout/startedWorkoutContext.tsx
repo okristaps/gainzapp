@@ -66,7 +66,6 @@ const StartedWorkoutManager: React.FC<StartedWorkoutContextProps> = ({ children 
       const newProgress = { ...prev };
 
       if (item?.category === Categories.Cardio) {
-        console.log("payload", payload);
         newProgress[item._id] = {
           ...newProgress[item._id],
           finished: true,
@@ -98,8 +97,6 @@ const StartedWorkoutManager: React.FC<StartedWorkoutContextProps> = ({ children 
     });
     setStartedExercise("");
   };
-
-  console.log("progress", progress);
 
   const values: StartedWorkoutContext = useMemo(() => {
     return {

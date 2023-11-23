@@ -1,12 +1,13 @@
-import React, { forwardRef, useEffect } from "react";
+import React, { forwardRef } from "react";
 import { TextInput, TouchableOpacity, View } from "react-native";
 import InputGradient from "./inputGradient";
 
+import Book from "assets/images/book.svg";
 import Close from "assets/images/close.svg";
 import Search from "assets/images/search.svg";
-import Book from "assets/images/book.svg";
 import StopWatch from "assets/images/stopwatch.svg";
 import colors from "constants/colors";
+
 interface InputProps {
   placeholder?: string;
   defaultValue?: string;
