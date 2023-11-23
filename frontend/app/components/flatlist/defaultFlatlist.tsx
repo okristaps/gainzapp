@@ -14,6 +14,7 @@ interface Props {
   onEndReachedThreshold?: number;
   showsVerticalScrollIndicator?: boolean;
   onStartReached?: () => void;
+  extraData?: any;
 }
 
 const DefaultFlatlist: React.FC<Props> = ({
@@ -27,6 +28,7 @@ const DefaultFlatlist: React.FC<Props> = ({
   onEndReachedThreshold,
   showsVerticalScrollIndicator = false,
   onStartReached,
+  extraData,
 }) => {
   const keyExtractor = (item: any) => item?._id;
 
@@ -42,6 +44,7 @@ const DefaultFlatlist: React.FC<Props> = ({
     <View className="flex flex-1">
       <Divider text={title} textSize={28} extraClassName="mt-[25px]" />
       <FlatList
+        extraData={extraData}
         onStartReached={onStartReached}
         alwaysBounceVertical={true}
         ListFooterComponent={ListFooterComponent}

@@ -7,6 +7,7 @@ const parseWorkouts = (workout: Workout) =>
       category: curr?.category,
       equipment: curr?.equipment,
       finished: false,
+      inProgrss: false,
     };
 
     if (curr?.category === Categories.Strength) {

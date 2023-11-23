@@ -10,6 +10,29 @@ import Stop from "assets/images/stop.svg";
 import StopWatch from "assets/images/stopwatch.svg";
 
 import { Categories } from "types/filters";
+import { useEffect, useState } from "react";
+import moment from "moment";
+import useElapsedTime from "../../../hooks/timerHook";
+
+const InfoItem = ({
+  title,
+  subtitle,
+  subsubtitle,
+  extraClassname,
+}: {
+  title: string;
+  subtitle?: string;
+  subsubtitle?: string;
+  extraClassname?: string;
+}) => {
+  return (
+    <View className={`flex-col items-center gap-y-[8px] ` + extraClassname}>
+      <Text className="text-white text-16 underline"> {title} </Text>
+      <Text className="text-white text-14"> {subtitle ?? "-"}</Text>
+      {subsubtitle && <Text className="text-white text-14"> {subsubtitle} </Text>}
+    </View>
+  );
+};
 
 const SrengthItem = () => {
   return (
@@ -26,11 +49,13 @@ const SrengthItem = () => {
       <View className="flex flex-row justify-between">
         {[1, 2, 3, 4].map((item) => {
           return (
-            <View key={item} className="flex-col items-center gap-y-[8px] mb-[16px]">
-              <Text className="text-white text-15 underline"> Set {item} </Text>
-              <Text className="text-white text-14"> 70 kg's </Text>
-              <Text className="text-white text-14"> 12 reps </Text>
-            </View>
+            <InfoItem
+              extraClassname="mb-[16px]"
+              key={item}
+              title={"Set" + item}
+              subtitle="12kg"
+              subsubtitle="10 reps"
+            />
           );
         })}
       </View>
@@ -38,22 +63,41 @@ const SrengthItem = () => {
   );
 };
 
-const CardioItem = ({ onPress, itemProgress }: { onPress: () => void; itemProgress: any }) => {
-  const { finished } = itemProgress || {};
+const CardioItem = ({
+  onPress,
+  itemProgress,
+}: {
+  onPress: (payload: any) => void;
+  itemProgress: any;
+}) => {
+  const { finished, startTime, time } = itemProgress || {};
+  const elapsedTime = useElapsedTime(startTime, finished);
+
+  const formattedTime = moment.utc(elapsedTime.asMilliseconds()).format("HH:mm:ss");
+
+  const handleEnd = () => {
+    onPress({
+      elapsedTime: formattedTime,
+      distance: 1000,
+    });
+  };
+
   return (
     <View className="flex flex-row justify-between mt-[12px] items-center mb-[16px]">
-      <View className="flex-col items-center gap-y-[8px]  flex-[0.33]">
-        <Text className="text-white text-15 underline"> Time </Text>
-        <Text className="text-white text-14"> {itemProgress?.time ?? "-"} </Text>
-      </View>
-      <View className="flex-col items-center gap-y-[8px]  flex-[0.33]">
-        <Text className="text-white text-15 underline"> Distance </Text>
-        <Text className="text-white text-14"> {itemProgress?.distance ?? "-"} </Text>
-      </View>
+      <InfoItem
+        extraClassname="flex-[0.33]"
+        title="Time"
+        subtitle={!finished ? formattedTime : time}
+      />
+      <InfoItem
+        extraClassname="flex-[0.33]"
+        title="Distance"
+        subtitle={itemProgress?.distance ?? "-"}
+      />
       {!finished && (
         <TouchableOpacity
           className="flex flex-row flex-[0.33] justify-end mb-[px]"
-          onPress={onPress}
+          onPress={handleEnd}
         >
           <Text className="text-success font-bold underline"> End </Text>
           <Stop height={18} width={18} fill={colors.success} />
@@ -79,11 +123,12 @@ const StartedWoItem = ({
   opened: boolean;
   onPress: () => void;
   onInfoPress: () => void;
-  onCardioEndPress: () => void;
+  onCardioEndPress: (payload: any) => void;
   itemProgress: any;
 }) => {
   const { category, _id } = item.item;
   const { finished } = itemProgress || {};
+
   return (
     <RenderItem
       onPress={onPress}
@@ -114,7 +159,7 @@ const StartedWoItem = ({
           {category === Categories.Cardio && (
             <CardioItem itemProgress={itemProgress} onPress={onCardioEndPress} />
           )}
-          {category === Categories.Strength || (category.includes("olympic") && <SrengthItem />)}
+          {category === Categories.Strength && <SrengthItem />}
         </View>
       )}
     </RenderItem>
