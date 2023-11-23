@@ -26,12 +26,14 @@ export interface Workout {
   forces: string[];
   equipment: string[];
   instructions: string[];
-  exercises: ExerciseIdentifier[] | Exercise[];
+  exercises: Exercise[] | ExerciseIdentifier[];
 }
 
 export interface ExerciseIdentifier {
   _id: string;
   name: string;
+  category?: string;
+  equipment?: string;
 }
 
 export interface Exercise {

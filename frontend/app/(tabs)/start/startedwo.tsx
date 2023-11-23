@@ -1,40 +1,78 @@
-import { ExerciseInfoContainer } from "components/common/infoContainer";
-import Header from "components/header";
+import DefaultFlatlist from "components/flatlist/defaultFlatlist";
 import Wrapper from "components/layout/wrapper";
-import { Divider } from "components/loginform/components";
-import React from "react";
-import { View } from "react-native";
+import React, { useContext, useState } from "react";
+import { StartedWorkoutContext } from "../../contexts/startedWorkout/startedWorkoutContext";
 
-interface StartedWorkout {
-  path?: string;
-}
+import StartedHeader from "components/flatlist/startedwo/header";
+import { StartedWoItem } from "components/flatlist/startedwo/items";
+import { ExerciseModalContext } from "../../contexts/exerciseModalContext";
+import CardioModal from "components/modals/inputModal/cardioInputModal";
+const StartedWorkout: React.FC = () => {
+  const { setExercise } = useContext(ExerciseModalContext);
+  const {
+    startedWorkout,
+    startedExercise,
+    startExercise,
+    handleProgress,
+    progress,
+    startTime,
+    setStartTime,
+  } = useContext(StartedWorkoutContext);
 
-const StartedWorkout: React.FC<StartedWorkout> = ({ path = "workouts" }) => {
+  const initial = {
+    key: "",
+    payload: null,
+  };
+
+  const [opened, setOpened] = useState(startedWorkout?.exercises[0]._id);
+  const [finished, setFinished] = useState(false);
+  const [modal, setModal] = useState(initial);
+
+  const Item = (item: any) => (
+    <StartedWoItem
+      itemProgress={progress ? progress[item?.item._id] : {}}
+      onCardioEndPress={(payload: any) => {
+        setModal({
+          key: "Cardio",
+          payload: { ...payload, item: item?.item },
+        });
+      }}
+      onInfoPress={() => setExercise(item.item)}
+      onPress={() => !startedExercise.length && setOpened(item.item._id)}
+      item={item}
+      opened={opened === item.item._id}
+      startedExercise={startedExercise}
+      onStartPress={() => startExercise(item.item._id)}
+    />
+  );
+
   return (
     <Wrapper>
-      <StartedHeader />
-    </Wrapper>
-  );
-};
-
-const StartedHeader = () => {
-  return (
-    <>
-      <Header title={"Selected workout"} />
-      <ExerciseInfoContainer
-        info1={{
-          title: "Time spent",
-          sub: "21min 23sec",
-        }}
-        info2={{
-          title: "Completed",
-          sub: "23%",
-        }}
+      <StartedHeader
+        progress={progress}
+        finished={finished}
+        startTime={startTime}
+        setStartTime={setStartTime}
       />
-      <View className="mt-[20px]">
-        <Divider text="Exercises" />
-      </View>
-    </>
+      <DefaultFlatlist
+        title="Excercises"
+        data={startedWorkout?.exercises}
+        isLoading={false}
+        renderItem={Item}
+        extraData={progress}
+      />
+      {modal.key === "Cardio" && (
+        <CardioModal
+          visible={true}
+          setVisible={() => setModal(initial)}
+          payload={modal.payload}
+          onSave={(data) => {
+            handleProgress(data.item, data.payload);
+            setModal(initial);
+          }}
+        />
+      )}
+    </Wrapper>
   );
 };
 

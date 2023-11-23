@@ -15,6 +15,7 @@ import { WorkoutsContext } from "../../../contexts/workoutsContext";
 import { Exercise } from "types/index";
 import { PirmaryButton } from "components/common/primarybutton";
 import { View } from "react-native";
+import { StartedWorkoutContext } from "../../../contexts/startedWorkout/startedWorkoutContext";
 
 interface InfoProps {
   path?: string;
@@ -22,6 +23,7 @@ interface InfoProps {
 
 const TabWorkoutInfo: React.FC<InfoProps> = ({ path = "workouts" }) => {
   const { setExercise } = useContext(ExerciseModalContext);
+  const { setStartedWorkout } = useContext(StartedWorkoutContext);
   const { setSelectedExercises, selectedWorkout } = useContext(WorkoutsContext);
 
   const { isLoading, data, refetch } = useQuery({
@@ -78,7 +80,10 @@ const TabWorkoutInfo: React.FC<InfoProps> = ({ path = "workouts" }) => {
         <View className="mt-[10px]">
           <PirmaryButton
             text="Start"
-            onPress={() => router.push({ pathname: "start/startedwo" })}
+            onPress={() => {
+              setStartedWorkout(selectedWorkout);
+              router.push({ pathname: "start/startedwo" });
+            }}
           />
         </View>
       )}

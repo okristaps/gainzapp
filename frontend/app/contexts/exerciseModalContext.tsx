@@ -1,6 +1,13 @@
 import { useQuery } from "@tanstack/react-query";
 import { getBe } from "api/index";
-import React, { createContext, useEffect, useMemo, useState } from "react";
+import React, {
+  createContext,
+  useEffect,
+  useMemo,
+  useState,
+  Dispatch,
+  SetStateAction,
+} from "react";
 import { Exercise, ExerciseIdentifier } from "types/index";
 
 interface ExerciseModalManagerProps {
@@ -10,7 +17,7 @@ interface ExerciseModalManagerProps {
 interface ExerciseModalContext {
   exercise: Exercise | null | ExerciseIdentifier;
   exercisesLoading: boolean;
-  setExercise: React.Dispatch<React.SetStateAction<Exercise | ExerciseIdentifier | null>>;
+  setExercise: Dispatch<SetStateAction<Exercise | ExerciseIdentifier | null>>;
   _id: string;
 }
 
