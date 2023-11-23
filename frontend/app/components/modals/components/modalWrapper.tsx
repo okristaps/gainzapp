@@ -13,6 +13,7 @@ interface ModalProps {
   handleScrollTo?: (p: number) => void;
   scrollOffset?: number;
   scrollOffsetMax?: number;
+  hideClose?: boolean;
 }
 
 const ModalWrapper: React.FC<ModalProps> = ({
@@ -25,6 +26,7 @@ const ModalWrapper: React.FC<ModalProps> = ({
   handleScrollTo,
   scrollOffset,
   scrollOffsetMax,
+  hideClose,
 }) => {
   return (
     <Modal
@@ -47,6 +49,7 @@ const ModalWrapper: React.FC<ModalProps> = ({
           className={`pl-[23px] pr-[23px] pt-[23px] pb-[40px] rounded-tl-[20px] rounded-tr-[20px] bg-default`}
         >
           <ModalHeader
+            hideClose={hideClose}
             text={title}
             onClosePress={() => {
               setVisible(false);

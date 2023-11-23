@@ -9,6 +9,7 @@ interface Props {
   onClosePress: () => void;
   showBack?: boolean;
   text?: string;
+  hideClose?: boolean;
 }
 
 const ModalHeader: React.FC<Props> = ({
@@ -16,6 +17,7 @@ const ModalHeader: React.FC<Props> = ({
   onBackPress,
   onClosePress,
   text = "Reset password",
+  hideClose,
 }) => {
   return (
     <View className="flex width-[100%] flex-row justify-between items-center">
@@ -27,9 +29,11 @@ const ModalHeader: React.FC<Props> = ({
         <View className="w-[24px] h-[24px]" />
       )}
       <Divider text={text} textSize={28} />
-      <TouchableOpacity onPress={onClosePress}>
-        <Close fill="#ffffff" />
-      </TouchableOpacity>
+      {!hideClose && (
+        <TouchableOpacity onPress={onClosePress}>
+          <Close fill="#ffffff" />
+        </TouchableOpacity>
+      )}
     </View>
   );
 };

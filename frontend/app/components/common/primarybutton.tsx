@@ -35,14 +35,20 @@ const PirmaryButtonEmpty: React.FC<Props> = ({ text, onPress, loading, color, di
     <TouchableOpacity
       disabled={disabled}
       onPress={onPress}
-      className={`h-[50px]  border border-${
-        color ?? "success"
-      } rounded-[15px]  w-[100%] justify-center`}
+      className={`h-[50px]  border border-${color ?? "success"}
+      ${disabled && "border-input"}
+        rounded-[15px]  w-[100%] justify-center`}
     >
       {loading ? (
         <ActivityIndicator size="large" color={color ?? "#7F8489"} />
       ) : (
-        <Text className={`text-center text-${color ?? "success"} text-18`}>{text}</Text>
+        <Text
+          className={`text-center text-${color ?? "success"} 
+          ${disabled && "text-input"}
+          text-18`}
+        >
+          {text}
+        </Text>
       )}
     </TouchableOpacity>
   );

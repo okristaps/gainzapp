@@ -72,7 +72,7 @@ const StartedWorkoutManager: React.FC<StartedWorkoutContextProps> = ({ children 
           finished: true,
           started: false,
           distance: payload?.distance,
-          time: payload?.elapsedTime,
+          time: payload?.time,
         };
       }
 

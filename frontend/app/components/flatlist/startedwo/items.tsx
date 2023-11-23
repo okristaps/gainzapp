@@ -63,6 +63,11 @@ const SrengthItem = () => {
   );
 };
 
+const metersToKilometers = (meters: number) => {
+  const kilometers = meters / 1000;
+  return kilometers.toFixed(2); // Display two decimal places
+};
+
 const CardioItem = ({
   onPress,
   itemProgress,
@@ -77,7 +82,7 @@ const CardioItem = ({
 
   const handleEnd = () => {
     onPress({
-      elapsedTime: formattedTime,
+      time: formattedTime,
       distance: 1000,
     });
   };
@@ -92,7 +97,7 @@ const CardioItem = ({
       <InfoItem
         extraClassname="flex-[0.33]"
         title="Distance"
-        subtitle={itemProgress?.distance ?? "-"}
+        subtitle={itemProgress?.distance ? metersToKilometers(itemProgress?.distance) + "km" : "-"}
       />
       {!finished && (
         <TouchableOpacity
