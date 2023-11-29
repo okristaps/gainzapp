@@ -2,25 +2,23 @@ import React, { useState } from "react";
 import { View, Text, TouchableOpacity } from "react-native";
 import { LineChart } from "react-native-chart-kit";
 
-import TriangleLeft from "../../../src/assets/images/triangle_right.svg";
-import TriangleDown from "../../../src/assets/images/triangle_down.svg";
+import colors from "constants/colors";
+import Triangle from "assets/images/thing.svg";
 
 // Components for each box
 const PreviousWorkout = () => {
   return (
-    <View className="mt-5 mb-2 p-4 bg-input rounded-lg">
+    <View className="mt-6 mb-2 px-4 pt-2 pb-4 bg-input rounded-lg">
       <View className="flex-row justify-between items-center">
         <Text className="text-secondary text-12">Previous Workout</Text>
         <Text className="text-secondary text-10">1H 26Min</Text>
       </View>
-      <View className="">
-        <Text className="text-lg text-primary">Workout 1</Text>
-      </View>
-      <View className="flex-row justify-between items-center mt-3">
+      <Text className="text-lg text-primary">Workout 1</Text>
+      <View className="flex-row justify-between items-center mt-6">
         <Text className="text-12 text-primary">Thurs. June 22nd</Text>
         <TouchableOpacity className="flex-row items-center">
           <Text className="text-primary text-12 mr-1">See Details</Text>
-          <TriangleLeft />
+          <Triangle className="rotate-180" />
         </TouchableOpacity>
       </View>
     </View>
@@ -29,9 +27,9 @@ const PreviousWorkout = () => {
 
 const WeeklySummary = () => {
   return (
-    <View className="my-2 p-4 bg-input rounded-lg">
+    <View className="my-2 px-4 pt-2 pb-4 bg-input rounded-lg">
       <Text className="text-secondary text-12 mb-3">Weekly Summary</Text>
-      <View className="flex-row justify-between">
+      <View className="flex-row justify-between items-center">
         <View className="items-center">
           <Text className="text-primary font-semibold">Workouts</Text>
           <Text className="text-primary font-semibold text-20">3</Text>
@@ -99,7 +97,7 @@ const Chart = () => {
           <Text className="text-primary font-semibold mr-1">
             {selectedWorkout.title}
           </Text>
-          <TriangleDown />
+          <Triangle className="-rotate-90" />
         </TouchableOpacity>
 
         {dropdownVisible && (
@@ -132,9 +130,9 @@ const Chart = () => {
           yAxisSuffix="%"
           yAxisInterval={1}
           chartConfig={{
-            backgroundColor: "#282C30",
-            backgroundGradientFrom: "#282C30",
-            backgroundGradientTo: "#282C30",
+            backgroundColor: colors.background,
+            backgroundGradientFrom: colors.background,
+            backgroundGradientTo: colors.background,
             decimalPlaces: 1,
             color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
             labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
@@ -143,6 +141,7 @@ const Chart = () => {
             },
             propsForDots: {
               r: "5",
+              strokeWidth: "2",
               stroke: "#88BB46",
             },
           }}
