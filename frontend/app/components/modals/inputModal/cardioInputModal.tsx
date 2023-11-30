@@ -38,7 +38,7 @@ const CardioModal: React.FC<CardioModalProps> = ({ visible, setVisible, onSave, 
             value={timeValue}
             setValue={setTimeValue}
             onChangeText={formatTime}
-            extraInputClass="w-[70px]"
+            extraInputClass="w-[80px]"
           />
         </View>
         <View className="w-[5%]" />

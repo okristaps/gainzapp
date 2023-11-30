@@ -1,9 +1,10 @@
 import ArrowThick from "assets/images/arrowthick.svg";
 import { PirmaryButtonEmpty } from "components/common/primarybutton";
 import colors from "constants/colors";
-import { Text, TouchableOpacity, View } from "react-native";
+import { Alert, ScrollView, Text, TouchableOpacity, View } from "react-native";
 import { RenderItem } from "../components";
 
+import Add from "assets/images/add.svg";
 import Check from "assets/images/check.svg";
 import Info from "assets/images/info.svg";
 import Stop from "assets/images/stop.svg";
@@ -13,8 +14,9 @@ import { Categories } from "types/filters";
 import { useEffect, useState } from "react";
 import moment from "moment";
 import useElapsedTime from "../../../hooks/timerHook";
+import OtherItem from "./items/otherItems";
 
-const InfoItem = ({
+export const InfoItem = ({
   title,
   subtitle,
   subsubtitle,
@@ -29,36 +31,7 @@ const InfoItem = ({
     <View className={`flex-col items-center gap-y-[8px] ` + extraClassname}>
       <Text className="text-white text-16 underline"> {title} </Text>
       <Text className="text-white text-14"> {subtitle ?? "-"}</Text>
-      {subsubtitle && <Text className="text-white text-14"> {subsubtitle} </Text>}
-    </View>
-  );
-};
-
-const SrengthItem = () => {
-  return (
-    <View>
-      <View className="flex flex-row justify-between mt-[9px] mb-[18px]">
-        <TouchableOpacity>
-          <Text className="text-secondary font-bold underline"> Set count: 4 </Text>
-        </TouchableOpacity>
-        <TouchableOpacity className="flex flex-row items-center">
-          <Text className="text-success font-bold underline"> Start set (3) </Text>
-          <ArrowThick height={18} width={18} fill={colors.success} />
-        </TouchableOpacity>
-      </View>
-      <View className="flex flex-row justify-between">
-        {[1, 2, 3, 4].map((item) => {
-          return (
-            <InfoItem
-              extraClassname="mb-[16px]"
-              key={item}
-              title={"Set" + item}
-              subtitle="12kg"
-              subsubtitle="10 reps"
-            />
-          );
-        })}
-      </View>
+      {subsubtitle && <Text className="text-white text-14"> {subsubtitle ?? "-"} </Text>}
     </View>
   );
 };
@@ -99,15 +72,7 @@ const CardioItem = ({
         title="Distance"
         subtitle={itemProgress?.distance ? metersToKilometers(itemProgress?.distance) + "km" : "-"}
       />
-      {!finished && (
-        <TouchableOpacity
-          className="flex flex-row flex-[0.33] justify-end mb-[px]"
-          onPress={handleEnd}
-        >
-          <Text className="text-success font-bold underline"> End </Text>
-          <Stop height={18} width={18} fill={colors.success} />
-        </TouchableOpacity>
-      )}
+      {!finished && <End handleEnd={handleEnd} />}
     </View>
   );
 };
@@ -121,6 +86,7 @@ const StartedWoItem = ({
   onInfoPress,
   onCardioEndPress,
   itemProgress,
+  onEndPress,
 }: {
   item: any;
   startedExercise: string;
@@ -130,9 +96,17 @@ const StartedWoItem = ({
   onInfoPress: () => void;
   onCardioEndPress: (payload: any) => void;
   itemProgress: any;
+  onEndPress: (sets: any) => void;
 }) => {
   const { category, _id } = item.item;
   const { finished } = itemProgress || {};
+
+  const weightedCategories = [
+    Categories.Strength,
+    Categories.OlympicWeightlifting,
+    Categories.Powerlifting,
+    Categories.Strongman,
+  ];
 
   return (
     <RenderItem
@@ -164,11 +138,29 @@ const StartedWoItem = ({
           {category === Categories.Cardio && (
             <CardioItem itemProgress={itemProgress} onPress={onCardioEndPress} />
           )}
-          {category === Categories.Strength && <SrengthItem />}
+          {weightedCategories.includes(category) && (
+            <OtherItem itemProgress={itemProgress} onEndPress={onEndPress} />
+          )}
         </View>
       )}
     </RenderItem>
   );
 };
 
-export { CardioItem, SrengthItem, StartedWoItem };
+const End = ({ handleEnd, disabled }: { handleEnd: () => void; disabled?: boolean }) => {
+  return (
+    <TouchableOpacity
+      disabled={disabled}
+      className="flex flex-row flex-[0.33] justify-end mb-[px]"
+      onPress={handleEnd}
+    >
+      <Text className={`text-${disabled ? "secondary" : "success"} font-bold underline`}>
+        {" "}
+        End{" "}
+      </Text>
+      {/* <Stop height={18} width={18} fill={disabled ? colors.primary : colors.success} /> */}
+    </TouchableOpacity>
+  );
+};
+
+export { CardioItem, StartedWoItem, End };
