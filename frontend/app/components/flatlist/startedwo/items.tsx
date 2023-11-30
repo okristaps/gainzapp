@@ -1,7 +1,7 @@
 import ArrowThick from "assets/images/arrowthick.svg";
 import { PirmaryButtonEmpty } from "components/common/primarybutton";
 import colors from "constants/colors";
-import { Text, TouchableOpacity, View } from "react-native";
+import { ScrollView, Text, TouchableOpacity, View } from "react-native";
 import { RenderItem } from "../components";
 
 import Check from "assets/images/check.svg";
@@ -34,30 +34,44 @@ const InfoItem = ({
   );
 };
 
-const SrengthItem = () => {
+const OtherItem = ({
+  onSetCountPress,
+  onStartSetPress,
+  itemProgress,
+}: {
+  onSetCountPress: () => void;
+  onStartSetPress: () => void;
+  itemProgress: any;
+}) => {
+  console.log("itemProgress", itemProgress);
+
   return (
     <View>
       <View className="flex flex-row justify-between mt-[9px] mb-[18px]">
-        <TouchableOpacity>
-          <Text className="text-secondary font-bold underline"> Set count: 4 </Text>
+        <TouchableOpacity onPress={onSetCountPress}>
+          <Text className="text-secondary font-bold underline">
+            {" "}
+            Set count: {itemProgress?.sets?.length + 1}{" "}
+          </Text>
         </TouchableOpacity>
-        <TouchableOpacity className="flex flex-row items-center">
+        <TouchableOpacity className="flex flex-row items-center" onPress={onStartSetPress}>
           <Text className="text-success font-bold underline"> Start set (3) </Text>
           <ArrowThick height={18} width={18} fill={colors.success} />
         </TouchableOpacity>
       </View>
-      <View className="flex flex-row justify-between">
-        {[1, 2, 3, 4].map((item) => {
-          return (
-            <InfoItem
-              extraClassname="mb-[16px]"
-              key={item}
-              title={"Set" + item}
-              subtitle="12kg"
-              subsubtitle="10 reps"
-            />
-          );
-        })}
+      <View className="flex flex-row ">
+        <ScrollView horizontal scrollEnabled className="gap-x-[8px] ">
+          {[1, 2].map((item) => {
+            return (
+              <TouchableOpacity
+                key={item}
+                className="w-[80px] border border-secondary items-center rounded-[12px] mb-[16px] p-[8px] "
+              >
+                <InfoItem title={"Set" + item} subtitle="12kg" subsubtitle="10 reps" />
+              </TouchableOpacity>
+            );
+          })}
+        </ScrollView>
       </View>
     </View>
   );
@@ -121,6 +135,8 @@ const StartedWoItem = ({
   onInfoPress,
   onCardioEndPress,
   itemProgress,
+  onSetCountPress,
+  onStartSetPress,
 }: {
   item: any;
   startedExercise: string;
@@ -130,6 +146,8 @@ const StartedWoItem = ({
   onInfoPress: () => void;
   onCardioEndPress: (payload: any) => void;
   itemProgress: any;
+  onSetCountPress: () => void;
+  onStartSetPress: () => void;
 }) => {
   const { category, _id } = item.item;
   const { finished } = itemProgress || {};
@@ -164,11 +182,17 @@ const StartedWoItem = ({
           {category === Categories.Cardio && (
             <CardioItem itemProgress={itemProgress} onPress={onCardioEndPress} />
           )}
-          {category === Categories.Strength && <SrengthItem />}
+          {category === Categories.Strength && (
+            <OtherItem
+              itemProgress={itemProgress}
+              onSetCountPress={onSetCountPress}
+              onStartSetPress={onStartSetPress}
+            />
+          )}
         </View>
       )}
     </RenderItem>
   );
 };
 
-export { CardioItem, SrengthItem, StartedWoItem };
+export { CardioItem, OtherItem, StartedWoItem };

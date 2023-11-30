@@ -7,6 +7,7 @@ import StartedHeader from "components/flatlist/startedwo/header";
 import { StartedWoItem } from "components/flatlist/startedwo/items";
 import { ExerciseModalContext } from "../../contexts/exerciseModalContext";
 import CardioModal from "components/modals/inputModal/cardioInputModal";
+import OtherInputModal from "components/modals/inputModal/otherInputModal";
 const StartedWorkout: React.FC = () => {
   const { setExercise } = useContext(ExerciseModalContext);
   const {
@@ -43,6 +44,12 @@ const StartedWorkout: React.FC = () => {
       opened={opened === item.item._id}
       startedExercise={startedExercise}
       onStartPress={() => startExercise(item.item._id)}
+      onStartSetPress={() => {
+        setModal({
+          key: "Other",
+          payload: { item: item?.item },
+        });
+      }}
     />
   );
 
@@ -61,6 +68,11 @@ const StartedWorkout: React.FC = () => {
         renderItem={Item}
         extraData={progress}
       />
+
+      {modal.key === "Other" && (
+        <OtherInputModal visible={true} setVisible={() => setModal(initial)} />
+      )}
+
       {modal.key === "Cardio" && (
         <CardioModal
           visible={true}

@@ -10,7 +10,11 @@ const parseWorkouts = (workout: Workout) =>
       inProgrss: false,
     };
 
-    if (curr?.category === Categories.Strength) {
+    if (
+      curr?.category !== Categories.Cardio &&
+      curr?.category !== Categories.Stretching &&
+      curr?.category !== Categories.Plyometrics
+    ) {
       acc[curr._id] = {
         ...exerciseInfo,
         sets: [
