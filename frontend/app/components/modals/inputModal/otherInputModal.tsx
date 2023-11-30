@@ -13,10 +13,10 @@ interface OtherModalProps {
 }
 
 const OtherInputModal: React.FC<OtherModalProps> = ({ visible, setVisible, onSave, payload }) => {
-  const [value, setValue] = useState("");
-
+  const [value, setValue] = useState(payload.weight ?? "");
+  const [reps, setReps] = useState(payload.reps ?? "");
   return (
-    <ModalWrapper visible={visible} setVisible={setVisible} title={payload?.item?.name}>
+    <ModalWrapper visible={visible} setVisible={setVisible} title={"Set " + (payload.index + 1)}>
       <View className="flex flex-row m-w-[100%] mt-[20px]">
         <View className="flex-1 ">
           <Text className="text-secondary mb-[5px] "> Weight Kg's </Text>
@@ -35,8 +35,8 @@ const OtherInputModal: React.FC<OtherModalProps> = ({ visible, setVisible, onSav
           <Input
             keyboardType={"numeric"}
             placeholder="12"
-            value={value}
-            setValue={(value) => setValue(value)}
+            value={reps}
+            setValue={(value) => setReps(value)}
             type="search"
             extraInputClass="w-[70px]"
           />
@@ -44,11 +44,9 @@ const OtherInputModal: React.FC<OtherModalProps> = ({ visible, setVisible, onSav
       </View>
       <View className="mt-[20px]">
         <PirmaryButtonEmpty
+          disabled={!value.length || !reps.length}
           text="Save"
-          //   disabled={!isValidTime || !distance.length}
-          //   onPress={() =>
-          //     onSave({ payload: { time: timeValue, distance: distance }, item: payload.item })
-          //   }
+          onPress={() => onSave({ weight: value, reps: reps, index: payload.index })}
         />
       </View>
     </ModalWrapper>

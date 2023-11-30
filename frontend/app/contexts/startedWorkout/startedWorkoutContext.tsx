@@ -44,6 +44,7 @@ const StartedWorkoutManager: React.FC<StartedWorkoutContextProps> = ({ children 
   const [startedExercise, setStartedExercise] = useState<string>("");
   const [progress, setProgress] = useState<any>({});
   const [startTime, setStartTime] = useState<number | undefined>(undefined);
+
   const startExercise = (_id: string) => {
     setStartedExercise(_id);
     setProgress((prev: any) => {
@@ -65,11 +66,14 @@ const StartedWorkoutManager: React.FC<StartedWorkoutContextProps> = ({ children 
     setProgress((prev: any) => {
       const newProgress = { ...prev };
 
+      newProgress[item._id] = {
+        finished: true,
+        started: false,
+      };
+
       if (item?.category === Categories.Cardio) {
         newProgress[item._id] = {
           ...newProgress[item._id],
-          finished: true,
-          started: false,
           distance: payload?.distance,
           time: payload?.time,
         };
@@ -78,18 +82,7 @@ const StartedWorkoutManager: React.FC<StartedWorkoutContextProps> = ({ children 
       if (item?.category === Categories.Strength) {
         newProgress[item._id] = {
           ...newProgress[item._id],
-          finished: true,
-          started: false,
-          sets: [
-            {
-              reps: 10,
-              weight: 100,
-            },
-            {
-              reps: 10,
-              weight: 100,
-            },
-          ],
+          sets: payload,
         };
       }
 

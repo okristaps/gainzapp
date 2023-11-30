@@ -10,21 +10,7 @@ const parseWorkouts = (workout: Workout) =>
       inProgrss: false,
     };
 
-    if (
-      curr?.category !== Categories.Cardio &&
-      curr?.category !== Categories.Stretching &&
-      curr?.category !== Categories.Plyometrics
-    ) {
-      acc[curr._id] = {
-        ...exerciseInfo,
-        sets: [
-          {
-            reps: 0,
-            weight: 0,
-          },
-        ],
-      };
-    } else if (curr?.category === Categories.Cardio) {
+    if (curr?.category === Categories.Cardio) {
       acc[curr._id] = {
         ...exerciseInfo,
         time: null,

@@ -9,6 +9,8 @@ interface Props {
   loading?: boolean;
   color?: string;
   disabled?: boolean;
+  extraClassName?: string;
+  extraTextClassName?: string;
 }
 
 const PirmaryButton: React.FC<Props> = ({ text, onPress, loading }) => {
@@ -30,14 +32,22 @@ const PirmaryButton: React.FC<Props> = ({ text, onPress, loading }) => {
   );
 };
 
-const PirmaryButtonEmpty: React.FC<Props> = ({ text, onPress, loading, color, disabled }) => {
+const PirmaryButtonEmpty: React.FC<Props> = ({
+  text,
+  onPress,
+  loading,
+  color,
+  disabled,
+  extraClassName,
+  extraTextClassName,
+}) => {
   return (
     <TouchableOpacity
       disabled={disabled}
       onPress={onPress}
       className={`h-[50px]  border border-${color ?? "success"}
       ${disabled && "border-input"}
-        rounded-[15px]  w-[100%] justify-center`}
+        rounded-[15px]  w-[100%] justify-center ${extraClassName}`}
     >
       {loading ? (
         <ActivityIndicator size="large" color={color ?? "#7F8489"} />
@@ -45,7 +55,9 @@ const PirmaryButtonEmpty: React.FC<Props> = ({ text, onPress, loading, color, di
         <Text
           className={`text-center text-${color ?? "success"} 
           ${disabled && "text-input"}
-          text-18`}
+          text-18
+          ${extraTextClassName}
+          `}
         >
           {text}
         </Text>

@@ -3,11 +3,13 @@ import Wrapper from "components/layout/wrapper";
 import React, { useContext, useState } from "react";
 import { StartedWorkoutContext } from "../../contexts/startedWorkout/startedWorkoutContext";
 
+import { PirmaryButtonEmpty } from "components/common/primarybutton";
 import StartedHeader from "components/flatlist/startedwo/header";
+import { calculateCompletedPercentage } from "components/flatlist/startedwo/helpers";
 import { StartedWoItem } from "components/flatlist/startedwo/items";
-import { ExerciseModalContext } from "../../contexts/exerciseModalContext";
 import CardioModal from "components/modals/inputModal/cardioInputModal";
-import OtherInputModal from "components/modals/inputModal/otherInputModal";
+import { View } from "react-native";
+import { ExerciseModalContext } from "../../contexts/exerciseModalContext";
 const StartedWorkout: React.FC = () => {
   const { setExercise } = useContext(ExerciseModalContext);
   const {
@@ -44,14 +46,11 @@ const StartedWorkout: React.FC = () => {
       opened={opened === item.item._id}
       startedExercise={startedExercise}
       onStartPress={() => startExercise(item.item._id)}
-      onStartSetPress={() => {
-        setModal({
-          key: "Other",
-          payload: { item: item?.item },
-        });
-      }}
+      onEndPress={(sets: any) => handleProgress(item.item, sets)}
     />
   );
+
+  const completedPercentage = calculateCompletedPercentage(progress);
 
   return (
     <Wrapper>
@@ -68,10 +67,13 @@ const StartedWorkout: React.FC = () => {
         renderItem={Item}
         extraData={progress}
       />
-
-      {modal.key === "Other" && (
-        <OtherInputModal visible={true} setVisible={() => setModal(initial)} />
-      )}
+      <View className="mt-[20px]">
+        <PirmaryButtonEmpty
+          text="End workout"
+          extraClassName={`${completedPercentage !== 100 && "border-danger"}`}
+          extraTextClassName={`${completedPercentage !== 100 && "text-danger"}`}
+        />
+      </View>
 
       {modal.key === "Cardio" && (
         <CardioModal
