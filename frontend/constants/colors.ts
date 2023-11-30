@@ -8,6 +8,7 @@ const colors = {
   danger: "#DC3545",
   info: "#17A2B8",
   input: "#A4A4A4",
+  background: "#282C30",
 };
 
 export default colors;
