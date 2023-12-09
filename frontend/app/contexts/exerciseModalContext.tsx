@@ -62,6 +62,8 @@ const ExerciseModalManager: React.FC<ExerciseModalManagerProps> = ({ children })
       refetch().then((res: any) => {
         setExercise(res?.data?.exercises[0] ?? {});
       });
+    } else {
+      setExercise(exercise);
     }
   }, [exercise, refetch]);
 

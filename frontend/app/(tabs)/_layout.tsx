@@ -42,11 +42,13 @@ export default function TabLayout() {
 
   return (
     <>
-      <ModalSuff
-        exercise={exercise}
-        exercisesLoading={exercisesLoading}
-        setExercise={setExercise}
-      />
+      {exercise && (
+        <ModalSuff
+          exercise={exercise}
+          exercisesLoading={exercisesLoading}
+          setExercise={setExercise}
+        />
+      )}
       <NavTabs />
       {!user?.emailVerified && <ConfirmEmailModal user={user} auth={auth} />}
     </>
