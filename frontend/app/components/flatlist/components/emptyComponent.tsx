@@ -8,7 +8,7 @@ const EmptyComponent = ({
   isLoading: boolean;
   text?: string;
 }) => {
-  if (isLoading) return <Loader />;
+  // if (isLoading) return <Loader />;
   return <Text className="text-secondary text-center font-medium text-15">{text}</Text>;
 };
 

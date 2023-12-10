@@ -1,7 +1,15 @@
 import { useCallback, useState } from "react";
 import { Alert, ScrollView, Text, TouchableOpacity, View } from "react-native";
-import { End, InfoItem } from "../items";
+import { InfoItem } from "./items";
 import OtherInputModal from "components/modals/inputModal/otherInputModal";
+import useElapsedTime from "../../../../hooks/timerHook";
+import moment from "moment";
+import { End } from "./components";
+
+const metersToKilometers = (meters: number) => {
+  const kilometers = meters / 1000;
+  return kilometers.toFixed(2); // Display two decimal places
+};
 
 const initial = {
   weight: null,
@@ -106,4 +114,40 @@ const OtherItem = ({
   );
 };
 
-export default OtherItem;
+const CardioItem = ({
+  onPress,
+  itemProgress,
+}: {
+  onPress: (payload: any) => void;
+  itemProgress: any;
+}) => {
+  const { finished, startTime, time } = itemProgress || {};
+  const elapsedTime = useElapsedTime(startTime, finished);
+
+  const formattedTime = moment.utc(elapsedTime.asMilliseconds()).format("HH:mm:ss");
+
+  const handleEnd = () => {
+    onPress({
+      time: formattedTime,
+      distance: 1000,
+    });
+  };
+
+  return (
+    <View className="flex flex-row justify-between mt-[12px] items-center mb-[16px]">
+      <InfoItem
+        extraClassname="flex-[0.33]"
+        title="Time"
+        subtitle={!finished ? formattedTime : time}
+      />
+      <InfoItem
+        extraClassname="flex-[0.33]"
+        title="Distance"
+        subtitle={itemProgress?.distance ? metersToKilometers(itemProgress?.distance) + "km" : "-"}
+      />
+      {!finished && <End handleEnd={handleEnd} />}
+    </View>
+  );
+};
+
+export { OtherItem, CardioItem };

@@ -40,9 +40,6 @@ const TabWorkoutsScreen: React.FC<TabWorkoutsScreenProps> = ({ path = "workouts"
   });
 
   const Item = React.useCallback((item: any) => {
-    list.current?.prepareForLayoutAnimationRender();
-    LayoutAnimation.configureNext(LayoutAnimation.Presets.spring);
-
     return (
       <RenderItem
         item={item.item}

@@ -5,32 +5,33 @@ import Header from "components/header";
 import { Input } from "components/inputs/input";
 import Wrapper from "components/layout/wrapper";
 import { router, useNavigation } from "expo-router";
-import React, { useContext, useRef, useState } from "react";
-import { LayoutAnimation, TouchableOpacity, View } from "react-native";
+import React, { useContext, useState } from "react";
+import { TouchableOpacity, View } from "react-native";
 import { WorkoutsContext } from "../../contexts/workoutsContext";
 
-import { AnimatedFlashList, FlashList } from "@shopify/flash-list";
+import { AnimatedFlashList } from "@shopify/flash-list";
 import Bin from "assets/images/trash.svg";
 import { Divider } from "components/loginform/components";
-import { ExerciseModalContext } from "../../contexts/exerciseModalContext";
+
+import ExerciseModal from "components/modals/exerciseModal/exerciseModal";
+import { Exercise } from "types/index";
 import { compareExercises } from "../../helpers";
 import { handleDelete, handleSave, initialLoading } from "./helpers";
 
 export default function TabWorkoutsCreate() {
   const { selectedExercises, handleExercises, selectedWorkout, createWorkout, deleteWorkout } =
     useContext(WorkoutsContext);
+  const [exercise, setExercise] = useState<Exercise | null>(null);
   const navigation = useNavigation();
   const [name, setName] = useState<string>("");
   const [loading, setLoading] = useState(initialLoading);
-  const { setExercise } = useContext(ExerciseModalContext);
+
   const defaultDisabled = name.length === 0 || selectedExercises.length === 0;
 
   const disabledEdit =
     (selectedWorkout?.name == name &&
       compareExercises(selectedExercises, selectedWorkout?.exercises)) ||
     defaultDisabled;
-
-  const list = useRef<FlashList<number> | null>(null);
 
   const Item = React.useCallback(
     ({
@@ -41,15 +42,19 @@ export default function TabWorkoutsCreate() {
         name: string;
       };
     }) => {
-      list.current?.prepareForLayoutAnimationRender();
-      LayoutAnimation.configureNext(LayoutAnimation.Presets.linear);
       return (
         <View className={`flex flex-1 flex-row items-center`}>
           <TouchableOpacity className="mr-[9px]" onPress={() => handleExercises(item)}>
             <Bin height={24} width={24} />
           </TouchableOpacity>
           <View className="flex-1">
-            <RenderItem item={item} customIconRight={<Info />} onPress={() => setExercise(item)} />
+            <RenderItem
+              item={item}
+              customIconRight={<Info />}
+              onPress={() =>
+                setExercise(selectedWorkout?.exercises?.find((exer) => exer._id === item._id))
+              }
+            />
           </View>
         </View>
       );
@@ -129,6 +134,13 @@ export default function TabWorkoutsCreate() {
           </View>
         )}
       </View>
+      {exercise !== null && (
+        <ExerciseModal
+          visible={Boolean(exercise)}
+          setVisible={() => setExercise(null)}
+          exercise={exercise}
+        />
+      )}
     </Wrapper>
   );
 }

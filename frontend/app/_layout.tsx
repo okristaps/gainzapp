@@ -5,7 +5,7 @@ import { useFonts } from "expo-font";
 import { Stack } from "expo-router";
 import React, { useEffect } from "react";
 import { AppState, AppStateStatus, Platform } from "react-native";
-import ExerciseModalManager from "./contexts/exerciseModalContext";
+
 import StartedWorkoutManager from "./contexts/startedWorkout/startedWorkoutContext";
 export { ErrorBoundary } from "expo-router";
 
@@ -43,13 +43,11 @@ function RootLayoutNav() {
   return (
     <AuthManager>
       <QueryClientProvider client={queryClient}>
-        <ExerciseModalManager>
-          <StartedWorkoutManager>
-            <Stack>
-              <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-            </Stack>
-          </StartedWorkoutManager>
-        </ExerciseModalManager>
+        <StartedWorkoutManager>
+          <Stack>
+            <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+          </Stack>
+        </StartedWorkoutManager>
       </QueryClientProvider>
     </AuthManager>
   );

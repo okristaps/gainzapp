@@ -1,17 +1,19 @@
 import DefaultFlatlist from "components/flatlist/defaultFlatlist";
 import Wrapper from "components/layout/wrapper";
-import React, { useContext, useState } from "react";
+import React, { useCallback, useContext, useState } from "react";
 import { StartedWorkoutContext } from "../../contexts/startedWorkout/startedWorkoutContext";
 
 import { PirmaryButtonEmpty } from "components/common/primarybutton";
 import StartedHeader from "components/flatlist/startedwo/header";
 import { calculateCompletedPercentage } from "components/flatlist/startedwo/helpers";
-import { StartedWoItem } from "components/flatlist/startedwo/items";
+import { StartedWoItem } from "components/flatlist/startedwo/items/items";
+import ExerciseModal from "components/modals/exerciseModal/exerciseModal";
 import CardioModal from "components/modals/inputModal/cardioInputModal";
 import { View } from "react-native";
-import { ExerciseModalContext } from "../../contexts/exerciseModalContext";
+import { Exercise } from "types/index";
+
 const StartedWorkout: React.FC = () => {
-  const { setExercise } = useContext(ExerciseModalContext);
+  const [exercise, setExercise] = useState<Exercise | null>(null);
   const {
     startedWorkout,
     startedExercise,
@@ -31,23 +33,37 @@ const StartedWorkout: React.FC = () => {
   const [finished, setFinished] = useState(false);
   const [modal, setModal] = useState(initial);
 
-  const Item = (item: any) => (
-    <StartedWoItem
-      itemProgress={progress ? progress[item?.item._id] : {}}
-      onCardioEndPress={(payload: any) => {
-        setModal({
-          key: "Cardio",
-          payload: { ...payload, item: item?.item },
-        });
-      }}
-      onInfoPress={() => setExercise(item.item)}
-      onPress={() => !startedExercise.length && setOpened(item.item._id)}
-      item={item}
-      opened={opened === item.item._id}
-      startedExercise={startedExercise}
-      onStartPress={() => startExercise(item.item._id)}
-      onEndPress={(sets: any) => handleProgress(item.item, sets)}
-    />
+  const Item = useCallback(
+    (item: any) => {
+      return (
+        <StartedWoItem
+          itemProgress={progress ? progress[item?.item._id] : {}}
+          onCardioEndPress={(payload: any) => {
+            setModal({
+              key: "Cardio",
+              payload: { ...payload, item: item?.item },
+            });
+          }}
+          onInfoPress={() => setExercise(item.item)}
+          onPress={() => !startedExercise.length && setOpened(item.item._id)}
+          item={item}
+          opened={opened === item.item._id}
+          startedExercise={startedExercise}
+          onStartPress={() => startExercise(item.item._id)}
+          onEndPress={(sets: any) => handleProgress(item.item, sets)}
+        />
+      );
+    },
+    [
+      opened,
+      progress,
+      setExercise,
+      setOpened,
+      startExercise,
+      startedExercise,
+      handleProgress,
+      setModal,
+    ]
   );
 
   const completedPercentage = calculateCompletedPercentage(progress);
@@ -74,6 +90,14 @@ const StartedWorkout: React.FC = () => {
           extraTextClassName={`${completedPercentage !== 100 && "text-danger"}`}
         />
       </View>
+
+      {exercise !== null && (
+        <ExerciseModal
+          visible={Boolean(exercise)}
+          setVisible={() => setExercise(null)}
+          exercise={exercise}
+        />
+      )}
 
       {modal.key === "Cardio" && (
         <CardioModal

@@ -30,6 +30,7 @@ const RenderItem = ({
   titleChildren,
   disabled = false,
   opened = false,
+  extraClassname,
 }: {
   item: ListItem;
   onPress?: () => void;
@@ -40,6 +41,7 @@ const RenderItem = ({
   handleInfoPress?: () => void;
   disabled?: boolean;
   opened?: boolean;
+  extraClassname?: string;
 }) => {
   const handlePress = () => onPress?.();
 
@@ -51,7 +53,7 @@ const RenderItem = ({
     <View
       className={`border-[1px] rounded-[12px] pl-[15px] pr-[12.5px]
     border-${disabled ? "none" : "secondary"}
-    `}
+    ${extraClassname}`}
     >
       <TouchableOpacity
         className={`flex flex-col 
