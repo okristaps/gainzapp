@@ -1,6 +1,6 @@
 import { useCallback, useState } from "react";
 import { Alert, ScrollView, Text, TouchableOpacity, View } from "react-native";
-import { End, InfoItem } from "../items";
+import { End, InfoItem } from "./items";
 import OtherInputModal from "components/modals/inputModal/otherInputModal";
 
 const initial = {

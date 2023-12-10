@@ -29,6 +29,10 @@ export default function TabExercisesSelect() {
     [setExercise]
   );
 
+  const handleRouterBack = useCallback(() => {
+    router.back();
+  }, []);
+
   return (
     <Wrapper>
       <Header
@@ -37,7 +41,7 @@ export default function TabExercisesSelect() {
         iconLeft={{
           text: "Back",
           hideText: true,
-          onPress: () => router.back(),
+          onPress: () => handleRouterBack,
         }}
         iconRight={{
           text: "Filter",
@@ -52,68 +56,14 @@ export default function TabExercisesSelect() {
         type="search"
         debounceEnabled
       />
-      <RenderLists
+
+      <RenderExerciseList
+        selectedExercises={selectedExercises}
         visible={visible}
         setVisible={setVisible}
-        selectedExercises={selectedExercises}
-        handleExercises={handleExercises}
-        memoizedOnItemPress={memoizedOnItemPress}
         debouncedSearchText={searchText}
+        onItemPress={memoizedOnItemPress}
       />
     </Wrapper>
   );
 }
-
-const RenderLists = memo(
-  ({
-    selectedExercises,
-    handleExercises,
-    memoizedOnItemPress,
-    debouncedSearchText,
-    visible,
-    setVisible,
-  }: {
-    selectedExercises: ExerciseIdentifier[];
-    handleExercises: (item: ExerciseIdentifier) => void;
-    memoizedOnItemPress: (item: ExerciseIdentifier) => void;
-    debouncedSearchText: string | null;
-    visible: boolean;
-    setVisible: (visible: boolean) => void;
-  }) => {
-    return (
-      <>
-        <RenderHorizontal selectedExercises={selectedExercises} handleExercises={handleExercises} />
-        <View className="mt-[15px] mb-[10px]">
-          <Divider text={"Exercises"} />
-        </View>
-        <RenderExerciseList
-          visible={visible}
-          setVisible={setVisible}
-          debouncedSearchText={debouncedSearchText}
-          selectedExercises={selectedExercises}
-          onItemPress={memoizedOnItemPress}
-          handleExercises={(item) => handleExercises(item)}
-        />
-      </>
-    );
-  }
-);
-
-const RenderHorizontal = memo(
-  ({
-    selectedExercises,
-    handleExercises,
-  }: {
-    selectedExercises: ExerciseIdentifier[];
-    handleExercises: (item: ExerciseIdentifier) => void;
-  }) => {
-    return (
-      Boolean(selectedExercises.length) && (
-        <ExercisesHorizontal
-          data={selectedExercises}
-          onItemPress={(item) => handleExercises(item)}
-        />
-      )
-    );
-  }
-);

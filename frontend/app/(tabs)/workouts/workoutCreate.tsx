@@ -41,8 +41,6 @@ export default function TabWorkoutsCreate() {
         name: string;
       };
     }) => {
-      list.current?.prepareForLayoutAnimationRender();
-      LayoutAnimation.configureNext(LayoutAnimation.Presets.linear);
       return (
         <View className={`flex flex-1 flex-row items-center`}>
           <TouchableOpacity className="mr-[9px]" onPress={() => handleExercises(item)}>

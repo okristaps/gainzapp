@@ -1,20 +1,16 @@
-import ArrowThick from "assets/images/arrowthick.svg";
 import { PirmaryButtonEmpty } from "components/common/primarybutton";
 import colors from "constants/colors";
-import { Alert, ScrollView, Text, TouchableOpacity, View } from "react-native";
-import { RenderItem } from "../components";
+import { Text, TouchableOpacity, View } from "react-native";
+import { RenderItem } from "../../components";
 
-import Add from "assets/images/add.svg";
 import Check from "assets/images/check.svg";
 import Info from "assets/images/info.svg";
-import Stop from "assets/images/stop.svg";
 import StopWatch from "assets/images/stopwatch.svg";
 
-import { Categories } from "types/filters";
-import { useEffect, useState } from "react";
 import moment from "moment";
-import useElapsedTime from "../../../hooks/timerHook";
-import OtherItem from "./items/otherItems";
+import { Categories } from "types/filters";
+import useElapsedTime from "../../../../hooks/timerHook";
+import OtherItem from "./otherItems";
 
 export const InfoItem = ({
   title,
@@ -129,7 +125,7 @@ const StartedWoItem = ({
         </View>
       }
     >
-      {!startedExercise.length && !finished ? (
+      {/* {!startedExercise.length && !finished ? (
         <View className="py-[16px] px-[30px]">
           <PirmaryButtonEmpty text="Start" onPress={onStartPress} />
         </View>
@@ -142,7 +138,7 @@ const StartedWoItem = ({
             <OtherItem itemProgress={itemProgress} onEndPress={onEndPress} />
           )}
         </View>
-      )}
+      )} */}
     </RenderItem>
   );
 };
@@ -163,4 +159,4 @@ const End = ({ handleEnd, disabled }: { handleEnd: () => void; disabled?: boolea
   );
 };
 
-export { CardioItem, StartedWoItem, End };
+export { End, StartedWoItem };
