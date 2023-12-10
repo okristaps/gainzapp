@@ -35,8 +35,8 @@ const CardioModal: React.FC<CardioModalProps> = ({ visible, setVisible, onSave, 
             keyboardType={"numeric"}
             type="time"
             placeholder="HH:MM:SS"
-            value={timeValue}
-            setValue={setTimeValue}
+            customValue={timeValue}
+            onValueChange={setTimeValue}
             onChangeText={formatTime}
             extraInputClass="w-[80px]"
           />
@@ -48,8 +48,7 @@ const CardioModal: React.FC<CardioModalProps> = ({ visible, setVisible, onSave, 
             keyboardType={"numeric"}
             ref={distanceInputRef}
             placeholder="0000m"
-            value={distance.toString()}
-            setValue={(value) => setDistance(value)}
+            onValueChange={(value) => setDistance(value)}
             type="search"
             extraInputClass="w-[70px]"
           />

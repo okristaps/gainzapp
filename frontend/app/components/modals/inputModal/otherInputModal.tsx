@@ -24,8 +24,7 @@ const OtherInputModal: React.FC<OtherModalProps> = ({ visible, setVisible, onSav
             keyboardType={"numeric"}
             type="search"
             placeholder="12kg"
-            value={value}
-            setValue={setValue}
+            onValueChange={setValue}
             extraInputClass="w-[80px]"
           />
         </View>
@@ -35,8 +34,7 @@ const OtherInputModal: React.FC<OtherModalProps> = ({ visible, setVisible, onSav
           <Input
             keyboardType={"numeric"}
             placeholder="12"
-            value={reps}
-            setValue={(value) => setReps(value)}
+            onValueChange={(value) => setReps(value)}
             type="search"
             extraInputClass="w-[70px]"
           />

@@ -26,16 +26,16 @@ const TabWorkoutsScreen: React.FC<TabWorkoutsScreenProps> = ({ path = "workouts"
   const { setSelectedWorkout, resetData } = useContext(WorkoutsContext);
   const [searchText, setSearchText] = useState("");
   const [isCustom, setIsCustom] = useState(true);
-  const debouncedSearchText = useDebounce(searchText, 300);
+
   const list = useRef<FlashList<number> | null>(null);
 
   const { isLoading, data } = useQuery({
     retry: false,
-    queryKey: ["workouts", debouncedSearchText, isCustom],
+    queryKey: ["workouts", searchText, isCustom],
     queryFn: async () =>
       await getBe({
         path: `/workouts/all`,
-        params: { name: debouncedSearchText, uid: !isCustom ? userData?.uid : "" },
+        params: { name: searchText, uid: !isCustom ? userData?.uid : "" },
       }),
   });
 
@@ -75,9 +75,9 @@ const TabWorkoutsScreen: React.FC<TabWorkoutsScreenProps> = ({ path = "workouts"
       />
       <CustomSwitch value={isCustom} setValue={setIsCustom} />
       <Input
+        debounceEnabled
         placeholder="Search..."
-        value={searchText}
-        setValue={setSearchText}
+        onValueChange={setSearchText}
         extraClass={"mt-[25px]"}
         type="search"
       />

@@ -18,7 +18,7 @@ import { WorkoutsContext } from "../../contexts/workoutsContext";
 export default function TabExercisesSelect() {
   const { setExercise } = useContext(ExerciseModalContext);
   const [searchText, setSearchText] = useState("");
-  const debouncedSearchText = useDebounce(searchText, 300);
+
   const [visible, setVisible] = useState(false);
   const { handleExercises, selectedExercises } = useContext(WorkoutsContext);
 
@@ -47,10 +47,10 @@ export default function TabExercisesSelect() {
       <SecondaryTitle text={"Custom workout 1"} />
       <Input
         placeholder="Search..."
-        value={searchText}
-        setValue={setSearchText}
+        onValueChange={setSearchText}
         extraClass={"mt-[15px] mb-[15px]"}
         type="search"
+        debounceEnabled
       />
       <RenderLists
         visible={visible}
@@ -58,7 +58,7 @@ export default function TabExercisesSelect() {
         selectedExercises={selectedExercises}
         handleExercises={handleExercises}
         memoizedOnItemPress={memoizedOnItemPress}
-        debouncedSearchText={debouncedSearchText}
+        debouncedSearchText={searchText}
       />
     </Wrapper>
   );

@@ -1,6 +1,7 @@
 import { deleteBe, postBe, putBe } from "api/index";
 import { AuthContext } from "auth/authManager";
 import { exerciseId } from "components/loginform/types";
+import { useNavigation } from "expo-router";
 import React, { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { Workout } from "types/index";
 
@@ -15,7 +16,7 @@ interface WorkoutContext {
   setSelectedWorkout: React.Dispatch<React.SetStateAction<Workout | null>>;
   setSelectedExercises: React.Dispatch<React.SetStateAction<exerciseId[]>>;
   resetData: () => void;
-  createWorkout: (_id?: string) => Promise<any>;
+  createWorkout: (name: string, _id?: string) => Promise<any>;
   name: string;
   setName: React.Dispatch<React.SetStateAction<string>>;
   deleteWorkout: () => Promise<any>;
@@ -23,7 +24,7 @@ interface WorkoutContext {
 
 const initalWorkout = {
   _id: "",
-  name: "",
+
   description: [],
   forces: [],
   equipment: [],
@@ -40,19 +41,13 @@ export const WorkoutsContext = createContext<WorkoutContext>({
   resetData: () => {},
   createWorkout: async () => {},
   deleteWorkout: async () => {},
-  name: "",
-  setName: () => {},
 });
 
 const WorkoutManager: React.FC<AuthManagerProps> = ({ children }) => {
   const { userData } = useContext(AuthContext);
   const [selectedWorkout, setSelectedWorkout] = useState<Workout | null>(initalWorkout);
-  const [name, setName] = useState<string>(initalWorkout.name ?? "");
-  const [selectedExercises, setSelectedExercises] = useState<exerciseId[]>([]);
 
-  useEffect(() => {
-    setName(selectedWorkout?.name ?? "");
-  }, [selectedWorkout]);
+  const [selectedExercises, setSelectedExercises] = useState<exerciseId[]>([]);
 
   const handleExercises = useCallback(
     (exercise: exerciseId) => {
@@ -67,8 +62,13 @@ const WorkoutManager: React.FC<AuthManagerProps> = ({ children }) => {
     [selectedExercises]
   );
 
-  const createWorkout = async (_id?: string) => {
-    const body = { ...selectedWorkout, exercises: selectedExercises, uid: userData?.uid, name };
+  const createWorkout = async (name: string, _id?: string) => {
+    const body = {
+      ...selectedWorkout,
+      exercises: selectedExercises,
+      uid: userData?.uid,
+      name,
+    };
     !_id
       ? await putBe({
           path: "/workouts",
@@ -85,7 +85,6 @@ const WorkoutManager: React.FC<AuthManagerProps> = ({ children }) => {
   const resetData = () => {
     setSelectedExercises([]);
     setSelectedWorkout(initalWorkout);
-    setName("");
   };
 
   const values: WorkoutContext = useMemo(() => {
@@ -97,11 +96,10 @@ const WorkoutManager: React.FC<AuthManagerProps> = ({ children }) => {
       setSelectedWorkout,
       resetData,
       createWorkout,
-      name,
-      setName,
+
       deleteWorkout,
     };
-  }, [selectedExercises, selectedWorkout, name]);
+  }, [selectedExercises, selectedWorkout]);
 
   return <WorkoutsContext.Provider value={values}>{children}</WorkoutsContext.Provider>;
 };
