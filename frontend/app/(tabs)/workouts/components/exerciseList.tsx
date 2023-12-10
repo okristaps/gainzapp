@@ -1,42 +1,36 @@
 import { FlashList } from "@shopify/flash-list";
-import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
-import { getBe } from "api/index";
-import Add from "assets/images/add.svg";
 import { EmptyComponent, RenderItem } from "components/flatlist/components";
+import ExercisesHorizontal from "components/flatlist/exerciseHorizontal";
 import Loader from "components/loader/loader";
+import { Divider } from "components/loginform/components";
+import { exerciseId } from "components/loginform/types";
+import ExerciseModal from "components/modals/exerciseModal/exerciseModal";
 import FiltersModal from "components/modals/filtersModal";
 import { initialFilters } from "components/modals/filtersModal/helpers";
-import { confirmPasswordReset } from "firebase/auth";
-import React, { memo, useCallback, useEffect, useState } from "react";
-import { Dimensions, NativeScrollEvent, NativeSyntheticEvent } from "react-native";
+import React, { memo, useCallback, useState } from "react";
+import { Dimensions } from "react-native";
 import { View } from "react-native-animatable";
 import { Filters } from "types/filters";
-import { ExerciseIdentifier } from "types/index";
+import { Exercise, ExerciseIdentifier } from "types/index";
 import useExerciseQuery from "./useExercisesHook";
-import { exerciseId } from "components/loginform/types";
-import ExercisesHorizontal from "components/flatlist/exerciseHorizontal";
-import { Divider } from "components/loginform/components";
 
 interface ListProps {
   debouncedSearchText: string | null;
-  selectedExercises: ExerciseIdentifier[];
-  onItemPress: (item: ExerciseIdentifier) => void;
+  tempSelectedExercises: ExerciseIdentifier[];
+  setTempSelectedExercises: React.Dispatch<React.SetStateAction<ExerciseIdentifier[]>>;
   visible: boolean;
   setVisible: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const RenderExerciseList: React.FC<ListProps> = ({
   debouncedSearchText,
-  selectedExercises,
-  onItemPress,
+  tempSelectedExercises,
+  setTempSelectedExercises,
   visible,
   setVisible,
 }) => {
   const [filters, setFilters] = useState<Filters>(initialFilters);
-
-  const [tempSelectedExercises, setTempSelectedExercises] = useState<ExerciseIdentifier[]>(
-    selectedExercises ?? []
-  );
+  const [exercise, setExercise] = useState<Exercise | null>(null);
 
   const handleExercises = useCallback(
     (exercise: exerciseId) => {
@@ -47,6 +41,7 @@ const RenderExerciseList: React.FC<ListProps> = ({
           return [{ name: exercise.name, _id: exercise._id }, ...curr];
         }
       });
+      setExercise(null);
     },
     [tempSelectedExercises]
   );
@@ -63,8 +58,7 @@ const RenderExerciseList: React.FC<ListProps> = ({
       return (
         <RenderItem
           extraClassname="mt-[10px]"
-          onPress={() => onItemPress(item)}
-          handleInfoPress={() => tempSelectedExercises?.length < 11 && handleExercises(item)}
+          onPress={() => setExercise(item)}
           item={item}
           customIconRight={<View />}
         />
@@ -101,6 +95,16 @@ const RenderExerciseList: React.FC<ListProps> = ({
         renderItem={renderItem}
         selectedExercises={tempSelectedExercises}
       />
+
+      {exercise !== null && (
+        <ExerciseModal
+          visible={Boolean(exercise)}
+          setVisible={() => setExercise(null)}
+          exercise={exercise}
+          onAdd={!tempSelectedExercises.some((e) => e._id === exercise._id) && handleExercises}
+          buttonDisabled={tempSelectedExercises?.length >= 10}
+        />
+      )}
     </>
   );
 };

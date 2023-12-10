@@ -3,14 +3,17 @@ import Loader from "components/loader/loader";
 import ModalWrapper from "components/modals/components/modalWrapper";
 import React, { useRef, useState } from "react";
 import { ScrollView, Text, TouchableOpacity, View } from "react-native";
-import { Exercise } from "types/index";
+import { Exercise, ExerciseIdentifier } from "types/index";
 import { InfoItem, Instructions } from "./components";
+import { PirmaryButton } from "components/common/primarybutton";
 
 interface ModalProps {
   exercise: Exercise;
   visible: boolean;
   setVisible: (visible: boolean) => void;
   isLoading?: boolean;
+  onAdd?: (exercise: ExerciseIdentifier) => void;
+  buttonDisabled?: boolean;
 }
 
 const ExerciseModal: React.FC<ModalProps> = ({
@@ -18,6 +21,8 @@ const ExerciseModal: React.FC<ModalProps> = ({
   setVisible,
   exercise,
   isLoading = false,
+  onAdd,
+  buttonDisabled = false,
 }) => {
   const [scrollOffset, setScrollOffset] = useState(0);
   const scrollViewRef = useRef<ScrollView | null>(null);
@@ -57,6 +62,7 @@ const ExerciseModal: React.FC<ModalProps> = ({
               sub: exercise?.mechanic,
             }}
           />
+
           <View className="mt-[32px]">
             <InfoItem text="level" items={[exercise?.level ?? ""]} />
             <InfoItem text="Force" items={[exercise?.force ?? ""]} />
@@ -80,6 +86,14 @@ const ExerciseModal: React.FC<ModalProps> = ({
               </TouchableOpacity>
             </ScrollView>
           </View>
+          {onAdd && (
+            <PirmaryButton
+              text="+ Add"
+              extraClassName="my-[20px]"
+              onPress={() => onAdd(exercise)}
+              disabled={buttonDisabled}
+            />
+          )}
         </View>
       )}
     </ModalWrapper>

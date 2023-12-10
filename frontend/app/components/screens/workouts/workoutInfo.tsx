@@ -6,23 +6,23 @@ import { RenderItem } from "components/flatlist/components";
 import Header from "components/header";
 import Wrapper from "components/layout/wrapper";
 import { router } from "expo-router";
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 
 import Info from "assets/images/info.svg";
 import { InfoContainer } from "components/common/infoContainer";
-import { ExerciseModalContext } from "../../../contexts/exerciseModalContext";
-import { WorkoutsContext } from "../../../contexts/workoutsContext";
-import { Exercise } from "types/index";
 import { PirmaryButton } from "components/common/primarybutton";
+import ExerciseModal from "components/modals/exerciseModal/exerciseModal";
 import { View } from "react-native";
+import { Exercise } from "types/index";
 import { StartedWorkoutContext } from "../../../contexts/startedWorkout/startedWorkoutContext";
+import { WorkoutsContext } from "../../../contexts/workoutsContext";
 
 interface InfoProps {
   path?: string;
 }
 
 const TabWorkoutInfo: React.FC<InfoProps> = ({ path = "workouts" }) => {
-  const { setExercise } = useContext(ExerciseModalContext);
+  const [exercise, setExercise] = useState<Exercise | null>(null);
   const { setStartedWorkout } = useContext(StartedWorkoutContext);
   const { setSelectedExercises, selectedWorkout } = useContext(WorkoutsContext);
 
@@ -76,6 +76,13 @@ const TabWorkoutInfo: React.FC<InfoProps> = ({ path = "workouts" }) => {
           />
         )}
       />
+      {exercise !== null && (
+        <ExerciseModal
+          visible={Boolean(exercise)}
+          setVisible={() => setExercise(null)}
+          exercise={exercise}
+        />
+      )}
       {path === "start" && (
         <View className="mt-[10px]">
           <PirmaryButton

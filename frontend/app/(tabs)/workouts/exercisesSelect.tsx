@@ -1,37 +1,29 @@
 import SecondaryTitle from "components/common/secondaryTitle";
-import useDebounce from "components/flatlist/helpers/searchDebounce";
 
 import Header from "components/header";
 import { Input } from "components/inputs/input";
 import Wrapper from "components/layout/wrapper";
 import { router } from "expo-router";
-import React, { memo, useCallback, useContext, useState } from "react";
+import React, { useCallback, useContext, useState } from "react";
 
-import ExercisesHorizontal from "components/flatlist/exerciseHorizontal";
-import { Divider } from "components/loginform/components";
-import { View } from "react-native";
-import { ExerciseIdentifier } from "types/index";
-import { ExerciseModalContext } from "../../contexts/exerciseModalContext";
-import RenderExerciseList from "./components/exerciseList";
 import { WorkoutsContext } from "../../contexts/workoutsContext";
+import RenderExerciseList from "./components/exerciseList";
+import { ExerciseIdentifier } from "types/index";
 
 export default function TabExercisesSelect() {
-  const { setExercise } = useContext(ExerciseModalContext);
   const [searchText, setSearchText] = useState("");
 
   const [visible, setVisible] = useState(false);
-  const { handleExercises, selectedExercises } = useContext(WorkoutsContext);
+  const { selectedExercises, setSelectedExercises } = useContext(WorkoutsContext);
 
-  const memoizedOnItemPress = useCallback(
-    (item: ExerciseIdentifier) => {
-      setExercise(item);
-    },
-    [setExercise]
+  const [tempSelectedExercises, setTempSelectedExercises] = useState<ExerciseIdentifier[]>(
+    selectedExercises ?? []
   );
 
   const handleRouterBack = useCallback(() => {
+    setSelectedExercises(tempSelectedExercises);
     router.back();
-  }, []);
+  }, [tempSelectedExercises]);
 
   return (
     <Wrapper>
@@ -41,7 +33,7 @@ export default function TabExercisesSelect() {
         iconLeft={{
           text: "Back",
           hideText: true,
-          onPress: () => handleRouterBack,
+          onPress: () => handleRouterBack(),
         }}
         iconRight={{
           text: "Filter",
@@ -58,11 +50,11 @@ export default function TabExercisesSelect() {
       />
 
       <RenderExerciseList
-        selectedExercises={selectedExercises}
+        tempSelectedExercises={tempSelectedExercises}
+        setTempSelectedExercises={setTempSelectedExercises}
         visible={visible}
         setVisible={setVisible}
         debouncedSearchText={searchText}
-        onItemPress={memoizedOnItemPress}
       />
     </Wrapper>
   );

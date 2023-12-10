@@ -18,11 +18,11 @@ const useExerciseQuery = (debouncedSearchText: string | null, filters: any) => {
           level: filters.level?.toLowerCase() ?? "",
           muscles: filters.primaryMuscle?.toLowerCase() ?? "",
           category: `${filters.category.toLowerCase()}`,
-          identifiersOnly: true,
         },
       }),
     {
       cacheTime: 0,
+
       getNextPageParam: (lastPage, allPages) =>
         lastPage?.exercises?.length < 20 ? null : allPages.length,
       getPreviousPageParam: (firstPage, allPages) =>

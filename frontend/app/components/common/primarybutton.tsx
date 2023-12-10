@@ -13,9 +13,15 @@ interface Props {
   extraTextClassName?: string;
 }
 
-const PirmaryButton: React.FC<Props> = ({ text, onPress, loading }) => {
+const PirmaryButton: React.FC<Props> = ({
+  text,
+  onPress,
+  loading,
+  extraClassName,
+  extraTextClassName,
+}) => {
   return (
-    <TouchableOpacity onPress={onPress}>
+    <TouchableOpacity onPress={onPress} className={extraClassName}>
       <LinearGradient
         className="h-[50px] bg-input rounded-[15px] w-[100%]  justify-center"
         colors={colors.buttonGradient}
