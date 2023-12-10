@@ -7,10 +7,8 @@ import Check from "assets/images/check.svg";
 import Info from "assets/images/info.svg";
 import StopWatch from "assets/images/stopwatch.svg";
 
-import moment from "moment";
 import { Categories } from "types/filters";
-import useElapsedTime from "../../../../hooks/timerHook";
-import OtherItem from "./otherItems";
+import { CardioItem, OtherItem } from "./otherItems";
 
 export const InfoItem = ({
   title,
@@ -28,47 +26,6 @@ export const InfoItem = ({
       <Text className="text-white text-16 underline"> {title} </Text>
       <Text className="text-white text-14"> {subtitle ?? "-"}</Text>
       {subsubtitle && <Text className="text-white text-14"> {subsubtitle ?? "-"} </Text>}
-    </View>
-  );
-};
-
-const metersToKilometers = (meters: number) => {
-  const kilometers = meters / 1000;
-  return kilometers.toFixed(2); // Display two decimal places
-};
-
-const CardioItem = ({
-  onPress,
-  itemProgress,
-}: {
-  onPress: (payload: any) => void;
-  itemProgress: any;
-}) => {
-  const { finished, startTime, time } = itemProgress || {};
-  const elapsedTime = useElapsedTime(startTime, finished);
-
-  const formattedTime = moment.utc(elapsedTime.asMilliseconds()).format("HH:mm:ss");
-
-  const handleEnd = () => {
-    onPress({
-      time: formattedTime,
-      distance: 1000,
-    });
-  };
-
-  return (
-    <View className="flex flex-row justify-between mt-[12px] items-center mb-[16px]">
-      <InfoItem
-        extraClassname="flex-[0.33]"
-        title="Time"
-        subtitle={!finished ? formattedTime : time}
-      />
-      <InfoItem
-        extraClassname="flex-[0.33]"
-        title="Distance"
-        subtitle={itemProgress?.distance ? metersToKilometers(itemProgress?.distance) + "km" : "-"}
-      />
-      {!finished && <End handleEnd={handleEnd} />}
     </View>
   );
 };
@@ -96,13 +53,22 @@ const StartedWoItem = ({
 }) => {
   const { category, _id } = item.item;
   const { finished } = itemProgress || {};
-
+  const startPhase = !startedExercise.length && !finished;
   const weightedCategories = [
     Categories.Strength,
     Categories.OlympicWeightlifting,
     Categories.Powerlifting,
     Categories.Strongman,
   ];
+
+  const ContentItems = () => {
+    if (category === Categories.Cardio) {
+      return <CardioItem itemProgress={itemProgress} onPress={onCardioEndPress} />;
+    }
+    if (weightedCategories.includes(category)) {
+      return <OtherItem itemProgress={itemProgress} onEndPress={onEndPress} />;
+    }
+  };
 
   return (
     <RenderItem
@@ -125,38 +91,14 @@ const StartedWoItem = ({
         </View>
       }
     >
-      {/* {!startedExercise.length && !finished ? (
+      {startPhase && (
         <View className="py-[16px] px-[30px]">
           <PirmaryButtonEmpty text="Start" onPress={onStartPress} />
         </View>
-      ) : (
-        <View>
-          {category === Categories.Cardio && (
-            <CardioItem itemProgress={itemProgress} onPress={onCardioEndPress} />
-          )}
-          {weightedCategories.includes(category) && (
-            <OtherItem itemProgress={itemProgress} onEndPress={onEndPress} />
-          )}
-        </View>
-      )} */}
+      )}
+      <ContentItems />
     </RenderItem>
   );
 };
 
-const End = ({ handleEnd, disabled }: { handleEnd: () => void; disabled?: boolean }) => {
-  return (
-    <TouchableOpacity
-      disabled={disabled}
-      className="flex flex-row flex-[0.33] justify-end mb-[px]"
-      onPress={handleEnd}
-    >
-      <Text className={`text-${disabled ? "secondary" : "success"} font-bold underline`}>
-        {" "}
-        End{" "}
-      </Text>
-      {/* <Stop height={18} width={18} fill={disabled ? colors.primary : colors.success} /> */}
-    </TouchableOpacity>
-  );
-};
-
-export { End, StartedWoItem };
+export { StartedWoItem };
