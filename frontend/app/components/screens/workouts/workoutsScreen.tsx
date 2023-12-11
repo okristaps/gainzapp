@@ -24,17 +24,16 @@ const TabWorkoutsScreen: React.FC<TabWorkoutsScreenProps> = ({ path = "workouts"
   const { userData } = useContext(AuthContext);
   const { setSelectedWorkout, resetData } = useContext(WorkoutsContext);
   const [searchText, setSearchText] = useState("");
-  const [isCustom, setIsCustom] = useState(true);
 
   const list = useRef<FlashList<number> | null>(null);
 
   const { isLoading, data } = useQuery({
     retry: false,
-    queryKey: ["workouts", searchText, isCustom],
+    queryKey: ["workouts", searchText],
     queryFn: async () =>
       await getBe({
         path: `/workouts/all`,
-        params: { name: searchText, uid: !isCustom ? userData?.uid : "" },
+        params: { name: searchText, uid: userData?.uid },
       }),
   });
 
@@ -59,8 +58,7 @@ const TabWorkoutsScreen: React.FC<TabWorkoutsScreenProps> = ({ path = "workouts"
         iconLeft={
           path === "workouts"
             ? {
-                disabled: isCustom,
-                text: !isCustom ? "Create" : null,
+                text: "Create",
                 onPress: () => {
                   resetData();
                   router.push({ pathname: "workouts/workoutCreate" });
@@ -69,7 +67,7 @@ const TabWorkoutsScreen: React.FC<TabWorkoutsScreenProps> = ({ path = "workouts"
             : undefined
         }
       />
-      <CustomSwitch value={isCustom} setValue={setIsCustom} />
+
       <Input
         debounceEnabled
         placeholder="Search..."
