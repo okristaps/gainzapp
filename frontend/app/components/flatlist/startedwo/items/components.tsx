@@ -1,3 +1,4 @@
+import { Text } from "react-native";
 import { TouchableOpacity } from "react-native";
 
 const End = ({ handleEnd, disabled }: { handleEnd: () => void; disabled?: boolean }) => {

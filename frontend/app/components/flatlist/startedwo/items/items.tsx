@@ -71,12 +71,13 @@ const StartedWoItem = ({
         </View>
       }
     >
-      {startPhase && (
+      {startPhase ? (
         <View className="py-[16px] px-[30px]">
           <PirmaryButtonEmpty text="Start" onPress={onStartPress} />
         </View>
+      ) : (
+        <ContentItems />
       )}
-      <ContentItems />
     </RenderItem>
   );
 };
