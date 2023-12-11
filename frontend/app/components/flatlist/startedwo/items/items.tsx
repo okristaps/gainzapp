@@ -10,26 +10,6 @@ import StopWatch from "assets/images/stopwatch.svg";
 import { Categories } from "types/filters";
 import { CardioItem, OtherItem } from "./otherItems";
 
-export const InfoItem = ({
-  title,
-  subtitle,
-  subsubtitle,
-  extraClassname,
-}: {
-  title: string;
-  subtitle?: string;
-  subsubtitle?: string;
-  extraClassname?: string;
-}) => {
-  return (
-    <View className={`flex-col items-center gap-y-[8px] ` + extraClassname}>
-      <Text className="text-white text-16 underline"> {title} </Text>
-      <Text className="text-white text-14"> {subtitle ?? "-"}</Text>
-      {subsubtitle && <Text className="text-white text-14"> {subsubtitle ?? "-"} </Text>}
-    </View>
-  );
-};
-
 const StartedWoItem = ({
   item,
   startedExercise,

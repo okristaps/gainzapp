@@ -1,6 +1,6 @@
 import { useCallback, useState } from "react";
 import { Alert, ScrollView, Text, TouchableOpacity, View } from "react-native";
-import { InfoItem } from "./items";
+
 import OtherInputModal from "components/modals/inputModal/otherInputModal";
 import useElapsedTime from "../../../../hooks/timerHook";
 import moment from "moment";
@@ -8,7 +8,7 @@ import { End } from "./components";
 
 const metersToKilometers = (meters: number) => {
   const kilometers = meters / 1000;
-  return kilometers.toFixed(2); // Display two decimal places
+  return kilometers.toFixed(2);
 };
 
 const initial = {
@@ -150,4 +150,24 @@ const CardioItem = ({
   );
 };
 
-export { OtherItem, CardioItem };
+const InfoItem = ({
+  title,
+  subtitle,
+  subsubtitle,
+  extraClassname,
+}: {
+  title: string;
+  subtitle?: string;
+  subsubtitle?: string;
+  extraClassname?: string;
+}) => {
+  return (
+    <View className={`flex-col items-center gap-y-[8px] ` + extraClassname}>
+      <Text className="text-white text-16 underline"> {title} </Text>
+      <Text className="text-white text-14"> {subtitle ?? "-"}</Text>
+      {subsubtitle && <Text className="text-white text-14"> {subsubtitle ?? "-"} </Text>}
+    </View>
+  );
+};
+
+export { OtherItem, CardioItem, InfoItem };
