@@ -5,6 +5,7 @@ import OtherInputModal from "components/modals/inputModal/otherInputModal";
 import useElapsedTime from "../../../../hooks/timerHook";
 import moment from "moment";
 import { End } from "./components";
+import { Categories, noWeightEquipment, reppedWithoutWeightCategories } from "types/filters";
 
 const metersToKilometers = (meters: number) => {
   const kilometers = meters / 1000;
@@ -24,12 +25,19 @@ const modalInitial = {
 const OtherItem = ({
   itemProgress,
   onEndPress,
+  category,
 }: {
   itemProgress: any;
   onEndPress: (sets: any) => void;
+  category: Categories;
 }) => {
   const [sets, setSets] = useState(itemProgress?.sets ?? [initial]);
   const [modal, setModal] = useState(modalInitial);
+
+  const withoutWeight: boolean =
+    reppedWithoutWeightCategories.includes(category) ||
+    noWeightEquipment.includes(itemProgress?.equipment);
+
   const handleDelete = (index: number) =>
     Alert.alert("Do you want to delete this set ?", "", [
       {
@@ -76,8 +84,8 @@ const OtherItem = ({
             >
               <InfoItem
                 title={"Set " + (index + 1)}
-                subtitle={item.weight ? item.weight + "kg" : "-"}
-                subsubtitle={item.reps ? item.reps + "x" : "-"}
+                subtitle={item.reps ? item.reps + "x" : "-"}
+                subsubtitle={withoutWeight ? undefined : item.weight ? item.weight + "kg" : "-"}
               />
             </TouchableOpacity>
           );
@@ -108,6 +116,7 @@ const OtherItem = ({
           visible={modal.visible}
           setVisible={() => setModal(modalInitial)}
           onSave={handleSets}
+          withoutWeight={withoutWeight}
         />
       )}
     </View>

@@ -3,7 +3,6 @@ import { getBe } from "api/index";
 import { AuthContext } from "auth/authManager";
 import CustomSwitch from "components/common/switch";
 import { RenderItem } from "components/flatlist/components";
-import useDebounce from "components/flatlist/helpers/searchDebounce";
 
 import { AnimatedFlashList, FlashList } from "@shopify/flash-list";
 import Header from "components/header";
@@ -12,7 +11,7 @@ import Wrapper from "components/layout/wrapper";
 import { Divider } from "components/loginform/components";
 import { router } from "expo-router";
 import React, { useContext, useRef, useState } from "react";
-import { LayoutAnimation, View } from "react-native";
+import { View } from "react-native";
 
 import Loader from "components/loader/loader";
 import { WorkoutsContext } from "../../../contexts/workoutsContext";
@@ -84,8 +83,6 @@ const TabWorkoutsScreen: React.FC<TabWorkoutsScreenProps> = ({ path = "workouts"
         <AnimatedFlashList
           estimatedItemSize={40}
           ItemSeparatorComponent={() => <View className="h-[10px]" />}
-          // title="Workouts list"
-
           data={data?.workouts}
           renderItem={Item}
         />

@@ -8,7 +8,7 @@ import React, {
 } from "react";
 import { Workout } from "types/index";
 import { parseWorkouts } from "./helpers";
-import { Categories } from "types/filters";
+import { Categories, reppedCategories, reppedWithoutWeightCategories } from "types/filters";
 import moment from "moment";
 
 interface StartedWorkoutContextProps {
@@ -67,6 +67,8 @@ const StartedWorkoutManager: React.FC<StartedWorkoutContextProps> = ({ children 
       const newProgress = { ...prev };
 
       newProgress[item._id] = {
+        category: item?.category,
+        equipment: item?.equipment,
         finished: true,
         started: false,
       };
@@ -79,7 +81,10 @@ const StartedWorkoutManager: React.FC<StartedWorkoutContextProps> = ({ children 
         };
       }
 
-      if (item?.category === Categories.Strength) {
+      if (
+        reppedCategories.includes(item?.category) ||
+        reppedWithoutWeightCategories.includes(item?.category)
+      ) {
         newProgress[item._id] = {
           ...newProgress[item._id],
           sets: payload,

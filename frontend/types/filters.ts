@@ -75,6 +75,17 @@ const PrimaryMusclesData = parseDropdownData(PrimaryMuscles);
 const LevelsData = parseDropdownData(Levels);
 const ForcesData = parseDropdownData(Forces);
 
+export const reppedCategories = [
+  Categories.Strength,
+  "olympic weightlifting",
+  Categories.Powerlifting,
+  Categories.Strongman,
+];
+
+export const reppedWithoutWeightCategories = [Categories.Stretching, Categories.Plyometrics];
+
+export const noWeightEquipment = [Equipment.bodyOnly, Equipment.none, Equipment.foamRoll];
+
 export {
   Categories,
   CategoriesData,

@@ -7,7 +7,7 @@ import Check from "assets/images/check.svg";
 import Info from "assets/images/info.svg";
 import StopWatch from "assets/images/stopwatch.svg";
 
-import { Categories } from "types/filters";
+import { Categories, reppedCategories, reppedWithoutWeightCategories } from "types/filters";
 import { CardioItem, OtherItem } from "./otherItems";
 
 const StartedWoItem = ({
@@ -34,19 +34,13 @@ const StartedWoItem = ({
   const { category, _id } = item.item;
   const { finished } = itemProgress || {};
   const startPhase = !startedExercise.length && !finished;
-  const weightedCategories = [
-    Categories.Strength,
-    Categories.OlympicWeightlifting,
-    Categories.Powerlifting,
-    Categories.Strongman,
-  ];
 
   const ContentItems = () => {
     if (category === Categories.Cardio) {
       return <CardioItem itemProgress={itemProgress} onPress={onCardioEndPress} />;
     }
-    if (weightedCategories.includes(category)) {
-      return <OtherItem itemProgress={itemProgress} onEndPress={onEndPress} />;
+    if (reppedCategories.includes(category) || reppedWithoutWeightCategories.includes(category)) {
+      return <OtherItem itemProgress={itemProgress} onEndPress={onEndPress} category={category} />;
     }
   };
 

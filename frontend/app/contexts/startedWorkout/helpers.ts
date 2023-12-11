@@ -17,7 +17,15 @@ const parseWorkouts = (workout: Workout) =>
         distance: null,
       };
     } else {
-      acc[curr._id] = exerciseInfo;
+      acc[curr._id] = {
+        ...exerciseInfo,
+        sets: [
+          {
+            reps: null,
+            weight: null,
+          },
+        ],
+      };
     }
 
     return acc;
