@@ -1,8 +1,7 @@
 import { deleteBe, postBe, putBe } from "api/index";
 import { AuthContext } from "auth/authManager";
 import { exerciseId } from "components/loginform/types";
-import { useNavigation } from "expo-router";
-import React, { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react";
+import React, { createContext, useCallback, useContext, useMemo, useState } from "react";
 import { Workout } from "types/index";
 
 interface AuthManagerProps {
@@ -24,7 +23,6 @@ interface WorkoutContext {
 
 const initalWorkout = {
   _id: "",
-
   description: [],
   forces: [],
   equipment: [],
@@ -96,7 +94,6 @@ const WorkoutManager: React.FC<AuthManagerProps> = ({ children }) => {
       setSelectedWorkout,
       resetData,
       createWorkout,
-
       deleteWorkout,
     };
   }, [selectedExercises, selectedWorkout]);

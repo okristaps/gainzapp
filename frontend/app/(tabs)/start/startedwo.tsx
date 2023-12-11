@@ -22,6 +22,8 @@ const StartedWorkout: React.FC = () => {
     progress,
     startTime,
     setStartTime,
+    loading,
+    completeWorkout,
   } = useContext(StartedWorkoutContext);
 
   const initial = {
@@ -85,7 +87,9 @@ const StartedWorkout: React.FC = () => {
       />
       <View className="mt-[20px]">
         <PirmaryButtonEmpty
+          loading={loading}
           text="End workout"
+          onPress={completeWorkout}
           extraClassName={`${completedPercentage !== 100 && "border-danger"}`}
           extraTextClassName={`${completedPercentage !== 100 && "text-danger"}`}
         />
