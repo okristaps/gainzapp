@@ -1,11 +1,11 @@
-import Wrapper from "components/layout/wrapper";
-import React from "react";
-import { Text } from "react-native";
+import { Stack } from "expo-router";
 
-export default function TabLogsScreen() {
+export default function Layout() {
   return (
-    <Wrapper>
-      <Text className="text-white"> Workouts</Text>
-    </Wrapper>
+    <Stack>
+      <Stack.Screen name="index" options={{ headerShown: false }} />
+      <Stack.Screen name="pastWorkouts" options={{ headerShown: false }} />
+      <Stack.Screen name="viewPastWorkout" options={{ headerShown: false }} />
+    </Stack>
   );
 }

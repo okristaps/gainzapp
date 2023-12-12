@@ -28,7 +28,7 @@ const OtherItem = ({
   category,
 }: {
   itemProgress: any;
-  onEndPress: (sets: any) => void;
+  onEndPress?: (sets: any) => void;
   category: Categories;
 }) => {
   const [sets, setSets] = useState(itemProgress?.sets ?? [initial]);
@@ -96,13 +96,13 @@ const OtherItem = ({
 
   return (
     <View>
-      {itemProgress.started && (
+      {itemProgress?.started && (
         <View className="flex flex-row justify-between mt-[12px] ">
           <TouchableOpacity onPress={addSet} disabled={sets.length > 9}>
             <Text className="text-secondary font-bold ">+ Add set</Text>
           </TouchableOpacity>
           <End
-            handleEnd={() => onEndPress(sets)}
+            handleEnd={() => onEndPress?.(sets)}
             disabled={sets.some((item: any) => item.reps === null)}
           />
         </View>
@@ -126,9 +126,11 @@ const OtherItem = ({
 const CardioItem = ({
   onPress,
   itemProgress,
+  displayAsFinished,
 }: {
-  onPress: (payload: any) => void;
+  onPress?: (payload: any) => void;
   itemProgress: any;
+  displayAsFinished?: boolean;
 }) => {
   const { finished, startTime, time } = itemProgress || {};
   const elapsedTime = useElapsedTime(startTime, finished);
@@ -136,7 +138,7 @@ const CardioItem = ({
   const formattedTime = moment.utc(elapsedTime.asMilliseconds()).format("HH:mm:ss");
 
   const handleEnd = () => {
-    onPress({
+    onPress?.({
       time: formattedTime,
       distance: 1000,
     });
@@ -154,7 +156,7 @@ const CardioItem = ({
         title="Distance"
         subtitle={itemProgress?.distance ? metersToKilometers(itemProgress?.distance) + "km" : "-"}
       />
-      {!finished && <End handleEnd={handleEnd} />}
+      {!finished && !displayAsFinished && <End handleEnd={handleEnd} />}
     </View>
   );
 };

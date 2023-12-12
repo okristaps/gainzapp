@@ -8,7 +8,7 @@ import React, {
   useContext,
 } from "react";
 import { Workout } from "types/index";
-import { router } from "expo-router";
+import { router, useNavigation } from "expo-router";
 import { parseWorkouts } from "./helpers";
 import { Categories, reppedCategories, reppedWithoutWeightCategories } from "types/filters";
 import moment from "moment";
@@ -31,6 +31,7 @@ interface StartedWorkoutContext {
   setStartTime: Dispatch<SetStateAction<number | undefined>>;
   loading?: boolean;
   completeWorkout: () => Promise<any>;
+  setProgress: Dispatch<SetStateAction<any>>;
 }
 
 export const StartedWorkoutContext = createContext<StartedWorkoutContext>({
@@ -45,6 +46,7 @@ export const StartedWorkoutContext = createContext<StartedWorkoutContext>({
   setStartTime: () => {},
   loading: false,
   completeWorkout: async () => {},
+  setProgress: () => {},
 });
 
 const StartedWorkoutManager: React.FC<StartedWorkoutContextProps> = ({ children }) => {
@@ -54,7 +56,7 @@ const StartedWorkoutManager: React.FC<StartedWorkoutContextProps> = ({ children 
   const [loading, setLoading] = useState<boolean>(false);
   const [progress, setProgress] = useState<any>({});
   const [startTime, setStartTime] = useState<number | undefined>(undefined);
-
+  const navigation = useNavigation();
   const startExercise = (_id: string) => {
     setStartedExercise(_id);
     setProgress((prev: any) => {
@@ -106,18 +108,31 @@ const StartedWorkoutManager: React.FC<StartedWorkoutContextProps> = ({ children 
     setStartedExercise("");
   };
 
+  function clearHistory() {
+    const state = navigation.getState();
+    navigation.reset({
+      ...state,
+      routes: state.routes.map((route) => ({ ...route, state: undefined })),
+    });
+  }
+
   const completeWorkout = async () => {
     setLoading(true);
     await putBe({
       path: `/completed/${userData?.uid}`,
       body: {
         workoutId: startedWorkout?._id,
+        name: startedWorkout?.name,
         progress,
       },
-    }).then(() => {
+    }).then((res) => {
       setStartedWorkout(null);
       setProgress({});
-      router.replace({ pathname: "start" });
+      clearHistory();
+      router.push({
+        pathname: "logs/viewPastWorkout",
+        params: { workoutId: res?._id, justFinished: true },
+      });
     });
     setLoading(false);
   };
@@ -135,6 +150,7 @@ const StartedWorkoutManager: React.FC<StartedWorkoutContextProps> = ({ children 
       setStartTime,
       completeWorkout,
       loading,
+      setProgress,
     };
   }, [startedWorkout, startedExercise, progress, startTime, loading]);
 

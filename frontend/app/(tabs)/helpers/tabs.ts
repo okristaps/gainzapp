@@ -4,7 +4,15 @@ import Start from "assets/images/start.svg";
 import Logs from "assets/images/logs.svg";
 import More from "assets/images/more.svg";
 
-export const tabs = [
+function clearHistory(navigation: any) {
+  const state = navigation.getState();
+  navigation.reset({
+    ...state,
+    routes: state.routes.map((route) => ({ ...route, state: undefined })),
+  });
+}
+
+const tabs = [
   {
     name: "index",
     title: "Dashboard",
@@ -32,3 +40,5 @@ export const tabs = [
     icon: More,
   },
 ];
+
+export { tabs, clearHistory };

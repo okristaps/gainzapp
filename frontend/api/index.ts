@@ -23,6 +23,8 @@ interface DeleteBeParams {
 const getBe = async ({ path, params }: GetBeParams): Promise<any> => {
   const token = await getFirebaseAccessToken();
 
+  // console.log("API_URL", API_URL);
+
   const queryString = params
     ? `?${Object.entries(params)
         .map(([key, value]) => `${key}=${encodeURIComponent(value)}`)

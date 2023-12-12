@@ -2,13 +2,13 @@ import { AuthContext } from "auth/authManager";
 import LoginForm from "components/loginform/loginform";
 import ConfirmEmailModal from "components/modals/confirmEmailModal";
 import { Tabs } from "expo-router";
-import React, { memo, useContext, useEffect } from "react";
-import { tabs } from "./helpers/tabs";
 import { getAuth } from "firebase/auth";
+import React, { useContext } from "react";
+import { tabs } from "./helpers/tabs";
 
 const NavTabs = () => {
   return (
-    <Tabs>
+    <Tabs sceneContainerStyle={{ backgroundColor: "none" }}>
       {tabs.map((tab) => (
         <Tabs.Screen
           key={tab.name}

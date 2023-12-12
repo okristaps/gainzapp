@@ -9,8 +9,9 @@ import { calculateCompletedPercentage } from "components/flatlist/startedwo/help
 import { StartedWoItem } from "components/flatlist/startedwo/items/items";
 import ExerciseModal from "components/modals/exerciseModal/exerciseModal";
 import CardioModal from "components/modals/inputModal/cardioInputModal";
-import { View } from "react-native";
+import { Alert, View } from "react-native";
 import { Exercise } from "types/index";
+import { router } from "expo-router";
 
 const StartedWorkout: React.FC = () => {
   const [exercise, setExercise] = useState<Exercise | null>(null);
@@ -24,6 +25,7 @@ const StartedWorkout: React.FC = () => {
     setStartTime,
     loading,
     completeWorkout,
+    setProgress,
   } = useContext(StartedWorkoutContext);
 
   const initial = {
@@ -70,9 +72,37 @@ const StartedWorkout: React.FC = () => {
 
   const completedPercentage = calculateCompletedPercentage(progress);
 
+  const endWo = () =>
+    completedPercentage !== 100
+      ? Alert.alert("Do you want to end the workout?", "All exercises aren't completed yet", [
+          {
+            text: "Cancel",
+
+            style: "cancel",
+          },
+          { text: "OK", onPress: () => completeWorkout() },
+        ])
+      : completeWorkout();
+
+  const cancelWo = () =>
+    Alert.alert("Do you want to cancel the workout?", "All progress will be lost", [
+      {
+        text: "Cancel",
+        style: "cancel",
+      },
+      {
+        text: "OK",
+        onPress: () => {
+          router.replace("start");
+          setProgress({});
+        },
+      },
+    ]);
+
   return (
     <Wrapper>
       <StartedHeader
+        onCancel={cancelWo}
         progress={progress}
         finished={finished}
         startTime={startTime}
@@ -85,15 +115,18 @@ const StartedWorkout: React.FC = () => {
         renderItem={Item}
         extraData={progress}
       />
-      <View className="mt-[20px]">
-        <PirmaryButtonEmpty
-          loading={loading}
-          text="End workout"
-          onPress={completeWorkout}
-          extraClassName={`${completedPercentage !== 100 && "border-danger"}`}
-          extraTextClassName={`${completedPercentage !== 100 && "text-danger"}`}
-        />
-      </View>
+
+      {completedPercentage > 0 && (
+        <View className="mt-[20px]">
+          <PirmaryButtonEmpty
+            loading={loading}
+            text="End workout"
+            onPress={endWo}
+            extraClassName={`${completedPercentage !== 100 && "border-danger"}`}
+            extraTextClassName={`${completedPercentage !== 100 && "text-danger"}`}
+          />
+        </View>
+      )}
 
       {exercise !== null && (
         <ExerciseModal

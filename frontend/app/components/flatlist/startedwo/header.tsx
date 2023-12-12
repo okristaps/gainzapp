@@ -4,17 +4,20 @@ import { Dispatch, SetStateAction, useEffect } from "react";
 import useElapsedTime from "../../../hooks/timerHook";
 import moment from "moment";
 import { calculateCompletedPercentage } from "./helpers";
+import colors from "constants/colors";
 
 const StartedHeader = ({
   startTime,
   setStartTime,
   finished,
   progress,
+  onCancel,
 }: {
   startTime: number | undefined;
   setStartTime: Dispatch<SetStateAction<number | undefined>>;
   finished: boolean;
   progress: any;
+  onCancel: () => void;
 }) => {
   const elapsedTime = useElapsedTime(startTime, finished);
   const formattedTime = moment.utc(elapsedTime.asMilliseconds()).format("HH:mm:ss");
@@ -29,7 +32,14 @@ const StartedHeader = ({
 
   return (
     <>
-      <Header title={"Selected workout"} />
+      <Header
+        title={"Selected workout"}
+        iconLeft={{
+          text: "Cancel",
+          color: colors.danger,
+          onPress: () => onCancel(),
+        }}
+      />
       <ExerciseInfoContainer
         info1={{
           title: "Time spent",

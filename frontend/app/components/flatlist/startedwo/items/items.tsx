@@ -20,24 +20,32 @@ const StartedWoItem = ({
   onCardioEndPress,
   itemProgress,
   onEndPress,
+  displayAsFinished,
 }: {
   item: any;
   startedExercise: string;
-  onStartPress: () => void;
+  onStartPress?: () => void;
   opened: boolean;
   onPress: () => void;
-  onInfoPress: () => void;
-  onCardioEndPress: (payload: any) => void;
+  onInfoPress?: () => void;
+  onCardioEndPress?: (payload: any) => void;
   itemProgress: any;
-  onEndPress: (sets: any) => void;
+  onEndPress?: (sets: any) => void;
+  displayAsFinished?: boolean;
 }) => {
   const { category, _id } = item.item;
-  const { finished } = itemProgress || {};
-  const startPhase = !startedExercise.length && !finished;
+  const finished = displayAsFinished ?? itemProgress?.finished;
+  const startPhase = !startedExercise?.length && !finished && !displayAsFinished;
 
   const ContentItems = () => {
     if (category === Categories.Cardio) {
-      return <CardioItem itemProgress={itemProgress} onPress={onCardioEndPress} />;
+      return (
+        <CardioItem
+          itemProgress={itemProgress}
+          onPress={onCardioEndPress}
+          displayAsFinished={displayAsFinished}
+        />
+      );
     }
     if (reppedCategories.includes(category) || reppedWithoutWeightCategories.includes(category)) {
       return <OtherItem itemProgress={itemProgress} onEndPress={onEndPress} category={category} />;
