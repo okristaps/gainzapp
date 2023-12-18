@@ -16,6 +16,7 @@ interface AuthContext {
   signUp: (email: string, password: string) => void;
   signIn: (email: string, password: string) => void;
   logOut: () => void;
+  loading: boolean;
 }
 
 export const AuthContext = createContext<AuthContext>({
@@ -24,24 +25,30 @@ export const AuthContext = createContext<AuthContext>({
   signIn: async () => {},
   logOut: async () => {},
   googleSignIn: async () => {},
-
+  loading: false,
   userData: null,
 });
 
 const AuthManager: React.FC<AuthManagerProps> = ({ children }) => {
   const [userData, setUserData] = useState<MongoUser | null>(null);
+  const [loading, setLoading] = useState(false);
   const auth = getAuth(app);
-  console.log("auth", auth);
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      if (user) {
-        saveUserSession(user);
-      } else {
-        setUserData(null);
-      }
-    });
 
-    return () => unsubscribe();
+  useEffect(() => {
+    const fetchData = async () => {
+      setLoading(true);
+      const unsubscribe = onAuthStateChanged(auth, async (user) => {
+        if (user) {
+          await saveUserSession(user);
+        } else {
+          setUserData(null);
+        }
+        setLoading(false);
+      });
+      return () => unsubscribe();
+    };
+
+    fetchData();
   }, []);
 
   const saveUserSession = async (userData: User) => {
@@ -67,13 +74,14 @@ const AuthManager: React.FC<AuthManagerProps> = ({ children }) => {
   const values: AuthContext = useMemo(() => {
     return {
       userData,
+      loading,
       signUp: (email, password) => signUp(auth, email, password),
       signIn: (email, password) => signIn(auth, email, password),
       logOut: () => logOut(auth),
       googleSignIn: () => googleSignIn(auth),
       signInWithFB: () => signInWithFB(auth),
     };
-  }, [signUp, signIn, logOut, userData]);
+  }, [signUp, signIn, logOut, userData, loading]);
 
   return <AuthContext.Provider value={values}>{children}</AuthContext.Provider>;
 };

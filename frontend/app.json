@@ -11,9 +11,7 @@
     "scheme": "myapp",
     "userInterfaceStyle": "dark",
     "splash": {
-      "image": "./src/assets/images/temporary.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#212121"
     },
     "assetBundlePatterns": [
       "**/*"

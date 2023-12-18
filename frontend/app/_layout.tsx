@@ -1,13 +1,26 @@
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import { QueryClient, QueryClientProvider, focusManager } from "@tanstack/react-query";
-import AuthManager from "auth/authManager";
+import AuthManager, { AuthContext } from "auth/authManager";
 import { useFonts } from "expo-font";
 import { Stack } from "expo-router";
-import React, { useEffect } from "react";
-import { AppState, AppStateStatus, Platform } from "react-native";
-
+import React, { useContext, useEffect, useRef, useState } from "react";
+import {
+  Animated,
+  AppState,
+  AppStateStatus,
+  Easing,
+  Platform,
+  StyleSheet,
+  View,
+} from "react-native";
+import * as SplashScreen from "expo-splash-screen";
 import StartedWorkoutManager from "./contexts/startedWorkout/startedWorkoutContext";
+
+import { Image } from "expo-image";
+import { Text } from "react-native";
+import Splash from "components/splash/splash";
 export { ErrorBoundary } from "expo-router";
+SplashScreen.preventAutoHideAsync().catch(() => {});
 
 export default function RootLayout() {
   const [loaded, error] = useFonts({
@@ -26,29 +39,38 @@ export default function RootLayout() {
     return () => subscription.remove();
   }, []);
 
-  useEffect(() => {
-    if (error) throw error;
-  }, [error]);
-
   return (
-    <>
-      {/* {!loaded && <SplashScreen />} */}
-      {loaded && <RootLayoutNav />}
-    </>
+    <AuthManager>
+      <RootLayoutNav loaded={loaded} error={error} />
+    </AuthManager>
   );
 }
 const queryClient = new QueryClient();
 
-function RootLayoutNav() {
+function RootLayoutNav({ loaded, error }: { loaded: boolean; error?: Error | null }) {
+  const { loading } = useContext(AuthContext);
+  const [appIsReady, setAppIsReady] = useState(false);
+  console.log("loading", loading);
+  useEffect(() => {
+    if (loaded && !loading) {
+      setTimeout(() => {
+        SplashScreen.hideAsync();
+        setAppIsReady(true);
+      }, 3000);
+    }
+  }, [loaded, error, loading]);
+
+  if (!appIsReady) {
+    return <Splash />;
+  }
+
   return (
-    <AuthManager>
-      <QueryClientProvider client={queryClient}>
-        <StartedWorkoutManager>
-          <Stack>
-            <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-          </Stack>
-        </StartedWorkoutManager>
-      </QueryClientProvider>
-    </AuthManager>
+    <QueryClientProvider client={queryClient}>
+      <StartedWorkoutManager>
+        <Stack>
+          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+        </Stack>
+      </StartedWorkoutManager>
+    </QueryClientProvider>
   );
 }
