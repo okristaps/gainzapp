@@ -1,14 +1,13 @@
-import React, { useContext, useState } from "react";
-import { View, Text } from "react-native";
+import { FlashList } from "@shopify/flash-list";
 import { useQuery } from "@tanstack/react-query";
 import { getBe } from "api/index";
 import { AuthContext } from "auth/authManager";
-import Header from "components/header";
-import Wrapper from "components/layout/wrapper";
-import { RenderItem } from "components/flatlist/components";
-import { router } from "expo-router";
-import { FlashList } from "@shopify/flash-list";
 import SecondaryTitle from "components/common/secondaryTitle";
+import { RenderItem } from "components/flatlist/components";
+import Header from "components/header";
+import { router } from "expo-router";
+import React, { useContext, useState } from "react";
+import { Text, View } from "react-native";
 
 interface WorkoutSet {
   weight: string;
@@ -63,7 +62,7 @@ export default function PastWorkoutsScreen() {
   );
 
   return (
-    <Wrapper>
+    <View className="flex flex-1">
       <Header
         extraClassname="h-[50px]"
         title="Past Workouts"
@@ -114,6 +113,6 @@ export default function PastWorkoutsScreen() {
           estimatedItemSize={100}
         />
       </View>
-    </Wrapper>
+    </View>
   );
 }

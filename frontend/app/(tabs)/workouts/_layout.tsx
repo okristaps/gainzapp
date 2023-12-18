@@ -1,14 +1,25 @@
 import { Stack } from "expo-router";
 import WorkoutManager from "../../contexts/workoutsContext";
 
+const screens = ["index", "workoutInfo", "exercisesSelect", "workoutCreate"];
+
 export default function Layout() {
   return (
     <WorkoutManager>
       <Stack>
-        <Stack.Screen name="index" options={{ headerShown: false }} />
-        <Stack.Screen name="workoutInfo" options={{ headerShown: false }} />
-        <Stack.Screen name="exercisesSelect" options={{ headerShown: false }} />
-        <Stack.Screen name="workoutCreate" options={{ headerShown: false }} />
+        {screens.map((screen) => (
+          <Stack.Screen
+            key={screen}
+            name={screen}
+            options={{
+              headerShown: false,
+              contentStyle: {
+                backgroundColor: "#212121",
+                paddingHorizontal: 20,
+              },
+            }}
+          />
+        ))}
       </Stack>
     </WorkoutManager>
   );

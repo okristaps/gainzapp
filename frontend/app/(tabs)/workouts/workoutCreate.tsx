@@ -3,7 +3,6 @@ import { PirmaryButtonEmpty } from "components/common/primarybutton";
 import { EmptyComponent, RenderItem } from "components/flatlist/components";
 import Header from "components/header";
 import { Input } from "components/inputs/input";
-import Wrapper from "components/layout/wrapper";
 import { router, useNavigation } from "expo-router";
 import React, { useContext, useState } from "react";
 import { TouchableOpacity, View } from "react-native";
@@ -63,7 +62,7 @@ export default function TabWorkoutsCreate() {
   );
 
   return (
-    <Wrapper>
+    <View className="flex flex-1">
       <Header
         title={selectedWorkout ? "Edit" : "Create Workout"}
         iconLeft={{
@@ -141,6 +140,6 @@ export default function TabWorkoutsCreate() {
           exercise={exercise}
         />
       )}
-    </Wrapper>
+    </View>
   );
 }

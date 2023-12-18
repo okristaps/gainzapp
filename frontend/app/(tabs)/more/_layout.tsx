@@ -10,9 +10,9 @@ export default function TabMoreScreen() {
   };
 
   return (
-    <Wrapper>
+    <>
       <Text className="text-white"> More </Text>
       <Button title="Log out" onPress={logOutFunc} />
-    </Wrapper>
+    </>
   );
 }

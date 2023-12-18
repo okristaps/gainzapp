@@ -1,5 +1,4 @@
 import DefaultFlatlist from "components/flatlist/defaultFlatlist";
-import Wrapper from "components/layout/wrapper";
 import React, { useCallback, useContext, useState } from "react";
 import { StartedWorkoutContext } from "../../contexts/startedWorkout/startedWorkoutContext";
 
@@ -9,9 +8,9 @@ import { calculateCompletedPercentage } from "components/flatlist/startedwo/help
 import { StartedWoItem } from "components/flatlist/startedwo/items/items";
 import ExerciseModal from "components/modals/exerciseModal/exerciseModal";
 import CardioModal from "components/modals/inputModal/cardioInputModal";
+import { router } from "expo-router";
 import { Alert, View } from "react-native";
 import { Exercise } from "types/index";
-import { router } from "expo-router";
 
 const StartedWorkout: React.FC = () => {
   const [exercise, setExercise] = useState<Exercise | null>(null);
@@ -100,7 +99,7 @@ const StartedWorkout: React.FC = () => {
     ]);
 
   return (
-    <Wrapper>
+    <View className="flex flex-1">
       <StartedHeader
         onCancel={cancelWo}
         progress={progress}
@@ -147,7 +146,7 @@ const StartedWorkout: React.FC = () => {
           }}
         />
       )}
-    </Wrapper>
+    </View>
   );
 };
 

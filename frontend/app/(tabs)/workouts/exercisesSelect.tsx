@@ -2,13 +2,13 @@ import SecondaryTitle from "components/common/secondaryTitle";
 
 import Header from "components/header";
 import { Input } from "components/inputs/input";
-import Wrapper from "components/layout/wrapper";
 import { router } from "expo-router";
 import React, { useCallback, useContext, useState } from "react";
 
+import { View } from "react-native";
+import { ExerciseIdentifier } from "types/index";
 import { WorkoutsContext } from "../../contexts/workoutsContext";
 import RenderExerciseList from "./components/exerciseList";
-import { ExerciseIdentifier } from "types/index";
 
 export default function TabExercisesSelect() {
   const [searchText, setSearchText] = useState("");
@@ -26,7 +26,7 @@ export default function TabExercisesSelect() {
   }, [tempSelectedExercises]);
 
   return (
-    <Wrapper>
+    <View className="flex flex-1">
       <Header
         extraClassname="h-[50px]"
         title="Add Exercises"
@@ -56,6 +56,6 @@ export default function TabExercisesSelect() {
         setVisible={setVisible}
         debouncedSearchText={searchText}
       />
-    </Wrapper>
+    </View>
   );
 }

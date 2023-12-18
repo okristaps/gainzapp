@@ -4,7 +4,6 @@ import SecondaryTitle from "components/common/secondaryTitle";
 import { DefaultFlatlist } from "components/flatlist";
 import { RenderItem } from "components/flatlist/components";
 import Header from "components/header";
-import Wrapper from "components/layout/wrapper";
 import { router } from "expo-router";
 import React, { useContext, useEffect, useState } from "react";
 
@@ -45,7 +44,7 @@ const TabWorkoutInfo: React.FC<InfoProps> = ({ path = "workouts" }) => {
   }, [selectedWorkout]);
 
   return (
-    <Wrapper>
+    <View className="flex flex-1">
       <Header
         title={path === "workouts" ? "Workout info" : "Start"}
         iconLeft={{
@@ -94,7 +93,7 @@ const TabWorkoutInfo: React.FC<InfoProps> = ({ path = "workouts" }) => {
           />
         </View>
       )}
-    </Wrapper>
+    </View>
   );
 };
 

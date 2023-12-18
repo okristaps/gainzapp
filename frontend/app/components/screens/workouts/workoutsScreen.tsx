@@ -52,7 +52,7 @@ const TabWorkoutsScreen: React.FC<TabWorkoutsScreenProps> = ({ path = "workouts"
   }, []);
 
   return (
-    <Wrapper>
+    <View className="flex flex-1">
       <Header
         title={path === "workouts" ? "Workouts" : "Select workout"}
         iconLeft={
@@ -85,7 +85,7 @@ const TabWorkoutsScreen: React.FC<TabWorkoutsScreenProps> = ({ path = "workouts"
           renderItem={Item}
         />
       </View>
-    </Wrapper>
+    </View>
   );
 };
 export default TabWorkoutsScreen;

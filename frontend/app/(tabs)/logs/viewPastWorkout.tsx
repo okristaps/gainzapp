@@ -4,11 +4,11 @@ import { AuthContext } from "auth/authManager";
 import DefaultFlatlist from "components/flatlist/defaultFlatlist";
 import { StartedWoItem } from "components/flatlist/startedwo/items/items";
 import Header from "components/header";
-import Wrapper from "components/layout/wrapper";
 import Loader from "components/loader/loader";
 import ExerciseModal from "components/modals/exerciseModal/exerciseModal";
 import { router, useLocalSearchParams } from "expo-router";
 import React, { useCallback, useContext, useState } from "react";
+import { View } from "react-native";
 import { Exercise } from "types/index";
 
 export default function ViewPastWorkoutScreen() {
@@ -52,7 +52,7 @@ export default function ViewPastWorkoutScreen() {
   };
 
   return (
-    <Wrapper>
+    <View className="flex flex-1">
       {isLoading ? (
         <Loader />
       ) : (
@@ -83,6 +83,6 @@ export default function ViewPastWorkoutScreen() {
           exercise={exercise}
         />
       )}
-    </Wrapper>
+    </View>
   );
 }

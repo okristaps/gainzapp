@@ -1,11 +1,23 @@
 import { Stack } from "expo-router";
 
+const screens = ["index", "pastWorkouts", "viewPastWorkout"];
+
 export default function Layout() {
   return (
     <Stack>
-      <Stack.Screen name="index" options={{ headerShown: false }} />
-      <Stack.Screen name="pastWorkouts" options={{ headerShown: false }} />
-      <Stack.Screen name="viewPastWorkout" options={{ headerShown: false }} />
+      {screens.map((screen) => (
+        <Stack.Screen
+          key={screen}
+          name={screen}
+          options={{
+            headerShown: false,
+            contentStyle: {
+              backgroundColor: "#212121",
+              paddingHorizontal: 20,
+            },
+          }}
+        />
+      ))}
     </Stack>
   );
 }

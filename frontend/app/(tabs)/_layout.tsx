@@ -1,4 +1,5 @@
 import { AuthContext } from "auth/authManager";
+import Wrapper from "components/layout/wrapper";
 import LoginForm from "components/loginform/loginform";
 import ConfirmEmailModal from "components/modals/confirmEmailModal";
 import { Tabs } from "expo-router";
@@ -14,9 +15,16 @@ const NavTabs = () => {
           key={tab.name}
           name={tab.name}
           options={{
-            tabBarStyle: { backgroundColor: "#1E0000", borderTopWidth: 0 },
+            tabBarStyle: {
+              backgroundColor: "transparent",
+              // paddingTop: 20,
+              height: 55,
+              paddingBottom: 0,
+              borderTopWidth: 0,
+            },
             tabBarActiveTintColor: "#88BB46",
             tabBarInactiveTintColor: "#FFFFFF",
+
             headerShown: false,
             title: tab.title,
             tabBarIcon: ({ color }) => <tab.icon stroke={color} />,
@@ -37,9 +45,9 @@ export default function TabLayout() {
   }
 
   return (
-    <>
+    <Wrapper>
       <NavTabs />
       {!user?.emailVerified && <ConfirmEmailModal user={user} auth={auth} />}
-    </>
+    </Wrapper>
   );
 }
