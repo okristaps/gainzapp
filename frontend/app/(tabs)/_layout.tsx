@@ -2,23 +2,33 @@ import { AuthContext } from "auth/authManager";
 import Wrapper from "components/layout/wrapper";
 import LoginForm from "components/loginform/loginform";
 import ConfirmEmailModal from "components/modals/confirmEmailModal";
-import { Tabs } from "expo-router";
+import { Tabs, useNavigation, usePathname, useRouter } from "expo-router";
 import { getAuth } from "firebase/auth";
 import React, { useContext } from "react";
 import { tabs } from "./helpers/tabs";
 
 const NavTabs = () => {
+  const path = usePathname();
+
   return (
-    <Tabs sceneContainerStyle={{ backgroundColor: "none" }}>
+    <Tabs
+      sceneContainerStyle={{ backgroundColor: "none" }}
+      screenOptions={({ route }) => ({
+        tabBarStyle: {
+          display: route.name === "Start" ? "none" : "flex",
+        },
+      })}
+    >
       {tabs.map((tab) => (
         <Tabs.Screen
           key={tab.name}
           name={tab.name}
           options={{
+            href: path === "/start/startedwo" ? null : "/" + tab.name,
             tabBarStyle: {
               backgroundColor: "transparent",
-              // paddingTop: 20,
-              height: 55,
+              marginTop: path === "/start/startedwo" ? 0 : 20,
+              height: path === "/start/startedwo" ? 0 : 55,
               paddingBottom: 0,
               borderTopWidth: 0,
             },

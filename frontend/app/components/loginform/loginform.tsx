@@ -9,6 +9,7 @@ import { ForgotPassword, OtherMethods, Register } from "./components";
 import FormItems from "./formItems";
 import ResetPasswordModal from "./resetModal";
 import { FormData, FormType } from "./types";
+import { View } from "react-native";
 
 const LoginForm: React.FC = () => {
   const {
@@ -74,27 +75,35 @@ const LoginForm: React.FC = () => {
 
   return (
     <Wrapper>
-      <Text className="mt-[40px]  text-title text-center text-white font-bold "> Gainzapp </Text>
-      <Action />
-      <FormItems error={error} control={control} type={type} errors={errors} password={password} />
-      {Boolean(error) && <Text className="text-primary  text-danger mt-[10px]">{error}</Text>}
-      {type === FormType.LOGIN && (
-        <Animatable.View duration={2000} animation={"bounceInRight"}>
-          <ResetPasswordModal visible={visible} setVisible={setVisible} />
-          <ForgotPassword onPress={() => setVisible(true)} />
-        </Animatable.View>
-      )}
-      <Animatable.View animation={type === FormType.REG ? "slideInLeft" : "slideInRight"}>
-        <PirmaryButton
-          loading={loading}
-          text={`${type === FormType.LOGIN ? "Sign in" : "Register"}`}
-          onPress={handleSubmit(onSubmit)}
+      <View className="pr-[20px] pl-[20px]">
+        <Text className="mt-[40px]  text-title text-center text-white font-bold "> Gainzapp </Text>
+        <Action />
+        <FormItems
+          error={error}
+          control={control}
+          type={type}
+          errors={errors}
+          password={password}
         />
-        <OtherMethods onPress={handleOtherMethods} type={type} />
-      </Animatable.View>
-      <Animatable.View animation={type === FormType.REG ? "slideInRight" : "slideInLeft"}>
-        <Register type={type} setType={setType} />
-      </Animatable.View>
+        {Boolean(error) && <Text className="text-primary  text-danger mt-[10px]">{error}</Text>}
+        {type === FormType.LOGIN && (
+          <Animatable.View duration={2000} animation={"bounceInRight"}>
+            <ResetPasswordModal visible={visible} setVisible={setVisible} />
+            <ForgotPassword onPress={() => setVisible(true)} />
+          </Animatable.View>
+        )}
+        <Animatable.View animation={type === FormType.REG ? "slideInLeft" : "slideInRight"}>
+          <PirmaryButton
+            loading={loading}
+            text={`${type === FormType.LOGIN ? "Sign in" : "Register"}`}
+            onPress={handleSubmit(onSubmit)}
+          />
+          <OtherMethods onPress={handleOtherMethods} type={type} />
+        </Animatable.View>
+        <Animatable.View animation={type === FormType.REG ? "slideInRight" : "slideInLeft"}>
+          <Register type={type} setType={setType} />
+        </Animatable.View>
+      </View>
     </Wrapper>
   );
 };

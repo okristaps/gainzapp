@@ -13,6 +13,7 @@ export default function Layout() {
             name={screen}
             options={{
               headerShown: false,
+              gestureEnabled: screen === "workoutInfo",
               contentStyle: {
                 backgroundColor: "#212121",
                 paddingHorizontal: 20,

@@ -9,6 +9,7 @@ import { View } from "react-native";
 import { ExerciseIdentifier } from "types/index";
 import { WorkoutsContext } from "../../contexts/workoutsContext";
 import RenderExerciseList from "./components/exerciseList";
+import colors from "constants/colors";
 
 export default function TabExercisesSelect() {
   const [searchText, setSearchText] = useState("");
@@ -31,8 +32,9 @@ export default function TabExercisesSelect() {
         extraClassname="h-[50px]"
         title="Add Exercises"
         iconLeft={{
-          text: "Back",
-          hideText: true,
+          text: "Save",
+          color: colors.success,
+          hideText: false,
           onPress: () => handleRouterBack(),
         }}
         iconRight={{

@@ -99,7 +99,7 @@ const StartedWorkout: React.FC = () => {
     ]);
 
   return (
-    <View className="flex flex-1">
+    <View className="flex flex-1 justify-between">
       <StartedHeader
         onCancel={cancelWo}
         progress={progress}
@@ -113,10 +113,18 @@ const StartedWorkout: React.FC = () => {
         isLoading={false}
         renderItem={Item}
         extraData={progress}
+        ListFooterComponent={<View className="flex flex-1 items-end"></View>}
       />
 
+      {exercise !== null && (
+        <ExerciseModal
+          visible={Boolean(exercise)}
+          setVisible={() => setExercise(null)}
+          exercise={exercise}
+        />
+      )}
       {completedPercentage > 0 && (
-        <View className="mt-[20px]">
+        <View className="mt-[20px] items-end">
           <PirmaryButtonEmpty
             loading={loading}
             text="End workout"
@@ -125,14 +133,6 @@ const StartedWorkout: React.FC = () => {
             extraTextClassName={`${completedPercentage !== 100 && "text-danger"}`}
           />
         </View>
-      )}
-
-      {exercise !== null && (
-        <ExerciseModal
-          visible={Boolean(exercise)}
-          setVisible={() => setExercise(null)}
-          exercise={exercise}
-        />
       )}
 
       {modal.key === "Cardio" && (
