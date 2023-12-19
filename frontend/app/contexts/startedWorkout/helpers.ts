@@ -1,4 +1,4 @@
-import { Categories } from "types/filters";
+import { Categories, reppedCategories, reppedWithoutWeightCategories } from "types/filters";
 import { Workout } from "types/index";
 
 const parseWorkouts = (workout: Workout) =>
@@ -31,4 +31,33 @@ const parseWorkouts = (workout: Workout) =>
     return acc;
   }, {});
 
-export { parseWorkouts };
+const parseProgressData = (item: any, payload: any) => {
+  const baseProgress = {
+    category: item?.category,
+    equipment: item?.equipment,
+    finished: true,
+    started: false,
+  };
+
+  if (item?.category === Categories.Cardio) {
+    return {
+      ...baseProgress,
+      distance: payload?.distance,
+      time: payload?.time,
+    };
+  }
+
+  if (
+    reppedCategories.includes(item?.category) ||
+    reppedWithoutWeightCategories.includes(item?.category)
+  ) {
+    return {
+      ...baseProgress,
+      sets: payload,
+    };
+  }
+
+  return baseProgress;
+};
+
+export { parseWorkouts, parseProgressData };

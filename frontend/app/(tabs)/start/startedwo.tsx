@@ -8,7 +8,6 @@ import { calculateCompletedPercentage } from "components/flatlist/startedwo/help
 import { StartedWoItem } from "components/flatlist/startedwo/items/items";
 import ExerciseModal from "components/modals/exerciseModal/exerciseModal";
 import CardioModal from "components/modals/inputModal/cardioInputModal";
-import { router } from "expo-router";
 import { Alert, View } from "react-native";
 import { Exercise } from "types/index";
 
@@ -24,7 +23,7 @@ const StartedWorkout: React.FC = () => {
     setStartTime,
     loading,
     completeWorkout,
-    setProgress,
+    cancelWorkout,
   } = useContext(StartedWorkoutContext);
 
   const initial = {
@@ -92,8 +91,7 @@ const StartedWorkout: React.FC = () => {
       {
         text: "OK",
         onPress: () => {
-          router.replace("start");
-          setProgress({});
+          cancelWorkout();
         },
       },
     ]);
