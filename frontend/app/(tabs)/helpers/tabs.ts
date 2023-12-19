@@ -2,7 +2,7 @@ import Dashboard from "assets/images/dashboard.svg";
 import Workouts from "assets/images/workouts.svg";
 import Start from "assets/images/start.svg";
 import Logs from "assets/images/logs.svg";
-import More from "assets/images/more.svg";
+import User from "assets/images/user.svg";
 
 function clearHistory(navigation: any) {
   const state = navigation.getState();
@@ -39,10 +39,10 @@ const tabs = [
     path: "/logs",
   },
   {
-    name: "more",
-    title: "More",
-    icon: More,
-    path: "/more",
+    name: "profile",
+    title: "Profile",
+    icon: User,
+    path: "/profile",
   },
 ];
 
