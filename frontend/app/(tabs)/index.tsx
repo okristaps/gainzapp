@@ -3,9 +3,10 @@ import Header from "components/header";
 import ProfilePicture from "components/header/profile";
 import WeekNavigation from "components/header/weekSwitch";
 import WeekButtons from "components/weekButtons/weekButtons";
+import React from "react";
 import { ScrollView, View } from "react-native";
 
-export default function Layout() {
+const Dashboard = () => {
   return (
     <ScrollView showsVerticalScrollIndicator={false} className="flex flex-1 pr-[20px] pl-[20px]">
       <Header
@@ -22,4 +23,6 @@ export default function Layout() {
       <InfoBoxes />
     </ScrollView>
   );
-}
+};
+
+export default Dashboard;

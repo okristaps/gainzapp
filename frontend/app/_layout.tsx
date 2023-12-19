@@ -56,7 +56,7 @@ function RootLayoutNav({ loaded, error }: { loaded: boolean; error?: Error | nul
       setTimeout(() => {
         SplashScreen.hideAsync();
         setAppIsReady(true);
-      }, 3000);
+      });
     }
   }, [loaded, error, loading]);
 
@@ -68,7 +68,15 @@ function RootLayoutNav({ loaded, error }: { loaded: boolean; error?: Error | nul
     <QueryClientProvider client={queryClient}>
       <StartedWorkoutManager>
         <Stack>
-          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+          <Stack.Screen
+            name="(tabs)"
+            options={{
+              headerShown: false,
+              contentStyle: {
+                backgroundColor: "#212121",
+              },
+            }}
+          />
         </Stack>
       </StartedWorkoutManager>
     </QueryClientProvider>

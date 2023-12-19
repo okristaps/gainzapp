@@ -4,7 +4,7 @@ import SecondaryTitle from "components/common/secondaryTitle";
 import { DefaultFlatlist } from "components/flatlist";
 import { RenderItem } from "components/flatlist/components";
 import Header from "components/header";
-import { router } from "expo-router";
+import { router, usePathname } from "expo-router";
 import React, { useContext, useEffect, useState } from "react";
 
 import Info from "assets/images/info.svg";
@@ -24,6 +24,8 @@ const TabWorkoutInfo: React.FC<InfoProps> = ({ path = "workouts" }) => {
   const [exercise, setExercise] = useState<Exercise | null>(null);
   const { setStartedWorkout } = useContext(StartedWorkoutContext);
   const { setSelectedExercises, selectedWorkout } = useContext(WorkoutsContext);
+  const test = usePathname();
+  console.log("path", test);
 
   const { isLoading, data, refetch } = useQuery({
     retry: 3,

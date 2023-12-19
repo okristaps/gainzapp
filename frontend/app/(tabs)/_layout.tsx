@@ -9,6 +9,7 @@ import { tabs } from "./helpers/tabs";
 
 const NavTabs = () => {
   const path = usePathname();
+  console.log("path", path);
 
   return (
     <Tabs
@@ -19,12 +20,12 @@ const NavTabs = () => {
         },
       })}
     >
-      {tabs.map((tab) => (
+      {tabs.map((tab, index) => (
         <Tabs.Screen
           key={tab.name}
           name={tab.name}
           options={{
-            href: path === "/start/startedwo" ? null : "/" + tab.name,
+            href: path === "/start/startedwo" ? null : tab.path,
             tabBarStyle: {
               backgroundColor: "transparent",
               marginTop: path === "/start/startedwo" ? 0 : 20,
@@ -34,7 +35,6 @@ const NavTabs = () => {
             },
             tabBarActiveTintColor: "#88BB46",
             tabBarInactiveTintColor: "#FFFFFF",
-
             headerShown: false,
             title: tab.title,
             tabBarIcon: ({ color }) => <tab.icon stroke={color} />,
