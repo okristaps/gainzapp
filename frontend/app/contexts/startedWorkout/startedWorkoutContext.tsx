@@ -95,7 +95,6 @@ const StartedWorkoutManager: React.FC<StartedWorkoutContextProps> = ({ children 
           ...progress,
           [item._id]: parseProgressData(item, payload),
         };
-
         await saveWorkoutData(newProgress, startedWorkout, startTime);
         setProgress(newProgress);
         setStartedExercise("");
@@ -126,7 +125,7 @@ const StartedWorkoutManager: React.FC<StartedWorkoutContextProps> = ({ children 
   const cancelWorkout = async (replacePath: boolean) => {
     await clearWorkoutData();
     if (replacePath) {
-      router.replace("start");
+      clearHistory();
     }
     setStartedWorkout(null);
     setProgress({});

@@ -2,6 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { getBe } from "api/index";
 import { AuthContext } from "auth/authManager";
 import { ExerciseInfoContainer } from "components/common/infoContainer";
+import SecondaryTitle from "components/common/secondaryTitle";
 import DefaultFlatlist from "components/flatlist/defaultFlatlist";
 import { StartedWoItem } from "components/flatlist/startedwo/items/items";
 import Header from "components/header";
@@ -34,7 +35,7 @@ export default function ViewPastWorkoutScreen() {
     ? Object?.values(data?.workout?.progress)
         .map((i) => i?.finished)
         .filter((e) => e === true)
-    : []
+    : [];
 
   const Item = useCallback(
     (item: any) => {
@@ -73,6 +74,10 @@ export default function ViewPastWorkoutScreen() {
               onPress: () => (params.justFinished ? handleReset() : router.back()),
             }}
           />
+
+          <View className="mb-[10px]">
+            <SecondaryTitle text={"12.12.2022"} />
+          </View>
 
           <ExerciseInfoContainer
             info1={{
