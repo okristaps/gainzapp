@@ -3,21 +3,54 @@ import { Text, TouchableOpacity, View } from "react-native";
 
 import Triangle from "assets/images/thing.svg";
 import colors from "constants/colors";
-import Chart from "./chart";
+import moment from "moment";
 
-const InfoBoxes = () => {
+const formatTimeSpent = (seconds: number) => {
+  const duration = moment.duration(seconds, "seconds");
+  const hours = duration.hours();
+  const minutes = duration.minutes();
+  let formattedTime = "";
+  if (hours > 0) {
+    formattedTime += `${hours}hrs `;
+  }
+
+  formattedTime += `${minutes}min`;
+  return formattedTime;
+};
+
+const WeeklySummary = ({ summary }: { summary: any }) => {
+  const Item = ({ title, value }: { title: string; value: string }) => {
+    return (
+      <View className="items-center">
+        <Text className="text-primary font-bold mb-[15px]">{title}</Text>
+        <Text className="text-primary font-semibold text-20">{value}</Text>
+      </View>
+    );
+  };
   return (
-    <>
-      <PreviousWorkout />
-      <WeeklySummary />
-      <Chart />
-    </>
+    <View className="mt-6 px-4 pt-2 pb-4 bg-input rounded-lg  h-[110px]">
+      <Text className="text-secondary text-12 mb-3">Weekly Summary</Text>
+      {summary?.timeSpent > 0 ? (
+        <View className="flex-row justify-between items-center">
+          <Item title={"Workouts"} value={summary?.workoutsCount} />
+          <Item title={"Time Spent"} value={formatTimeSpent(summary?.timeSpent)} />
+          <Item title={"Exercises"} value={summary?.exercisesCount} />
+        </View>
+      ) : (
+        <View className="flex-col justify-between">
+          <Text className="text-white font-bold text-20">No workouts recorder this week :( </Text>
+          <Text className="text-white font-medium text-16 mt-[5px]">
+            Don't let this happen again!
+          </Text>
+        </View>
+      )}
+    </View>
   );
 };
 
 const PreviousWorkout = () => {
   return (
-    <View className="mt-6 mb-2 px-4 pt-2 pb-4 bg-input rounded-lg">
+    <View className=" my-3 mt-5 px-4 pt-2 pb-4 bg-input rounded-lg">
       <View className="flex-row justify-between items-center">
         <Text className="text-secondary text-12">Previous Workout</Text>
         <Text className="text-secondary text-11">1H 26Min</Text>
@@ -34,25 +67,4 @@ const PreviousWorkout = () => {
   );
 };
 
-const WeeklySummary = () => {
-  const Item = ({ title, value }: { title: string; value: string }) => {
-    return (
-      <View className="items-center">
-        <Text className="text-primary font-bold mb-[15px]">{title}</Text>
-        <Text className="text-primary font-semibold text-20">{value}</Text>
-      </View>
-    );
-  };
-  return (
-    <View className="my-2 px-4 pt-2 pb-4 bg-input rounded-lg">
-      <Text className="text-secondary text-12 mb-3">Weekly Summary</Text>
-      <View className="flex-row justify-between items-center">
-        <Item title={"Workouts"} value={"3"} />
-        <Item title={"Time Spent"} value={"3hrs 20min"} />
-        <Item title={"PR's Hit"} value={"3"} />
-      </View>
-    </View>
-  );
-};
-
-export default InfoBoxes;
+export { PreviousWorkout, WeeklySummary };

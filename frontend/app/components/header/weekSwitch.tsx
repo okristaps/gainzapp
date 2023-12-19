@@ -1,26 +1,12 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { View, Text, TouchableOpacity } from "react-native";
 import Thing from "assets/images/thing.svg";
 import moment from "moment";
+import { WeeklyInfoContext } from "../../contexts/weeklyInfoContext";
 
 const WeekNavigation = () => {
-  const [currentWeek, setCurrentWeek] = useState(moment());
-  const minWeek = 1;
-  const maxWeek = moment().isoWeek();
-
-  const goToPreviousWeek = () => {
-    const previousWeek = currentWeek.clone().subtract(1, "week");
-    if (previousWeek.isoWeek() >= minWeek) {
-      setCurrentWeek(previousWeek);
-    }
-  };
-
-  const goToNextWeek = () => {
-    const nextWeek = currentWeek.clone().add(1, "week");
-    if (nextWeek.isoWeek() <= maxWeek) {
-      setCurrentWeek(nextWeek);
-    }
-  };
+  const { minWeek, maxWeek, currentWeek, goToPreviousWeek, goToNextWeek } =
+    useContext(WeeklyInfoContext);
 
   const formattedWeek = currentWeek.format("w");
   const previousWeekStroke = currentWeek.isoWeek() <= minWeek ? "#7F8489" : "#FFFFFF";

@@ -1,29 +1,35 @@
-import React, { useState } from "react";
+import React, { useContext } from "react";
 import { TouchableOpacity, View, Text } from "react-native";
+import { WeeklyInfoContext } from "../../contexts/weeklyInfoContext";
+import moment from "moment";
 
-const days = ["M", "T", "W", "T", "F", "S", "S"];
+const days = ["M", "Tu", "W", "T", "F", "S", "Su"];
 
 const WeekButtons = () => {
-  //TODO: Make day selection show the correspoding graphs etc.
-  const [selectedDays, setSelectedDays] = useState<Boolean[]>(Array(7).fill(false));
+  const { currentWeek, data } = useContext(WeeklyInfoContext);
 
-  const toggleDay = (index: number) => {
-    const newSelectedDays = [...selectedDays];
-    newSelectedDays[index] = !newSelectedDays[index];
-    setSelectedDays(newSelectedDays);
-  };
+  const weekDays: string[] = [];
+  const givenDate = moment.utc(currentWeek, "YYYY-MM-DDTHH:mm:ss.SSSZ");
+  const startOfWeek = givenDate.clone().startOf("week");
+
+  for (let i = 0; i < 7; i++) {
+    const currentDate = startOfWeek.clone().add(i + 1, "days");
+    weekDays.push(currentDate.format("YYYY-MM-DD"));
+  }
+
+  const workoutDates = Object.keys(data?.workouts ?? {});
 
   return (
     <View className="flex-row justify-between items-center  mt-2">
-      {days.map((day, index) => (
+      {weekDays.map((day, index) => (
         <TouchableOpacity
-          key={`${day + index}`}
-          className={`w-10 h-10 justify-center items-center ${
-            selectedDays[index] ? "border border-success bg-success" : "border border-primary"
-          } rounded`}
-          onPress={() => toggleDay(index)}
+          key={day}
+          disabled
+          className={`w-10 h-10 justify-center items-center border rounded ${
+            workoutDates.includes(day) ? "border-success bg-success" : "border-primary"
+          }`}
         >
-          <Text className="text-sm font-bold text-primary">{day}</Text>
+          <Text className="text-sm font-bold text-primary">{days[index]}</Text>
         </TouchableOpacity>
       ))}
     </View>
