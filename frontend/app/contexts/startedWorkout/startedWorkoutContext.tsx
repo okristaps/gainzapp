@@ -14,9 +14,10 @@ import React, {
 } from "react";
 import { reppedCategories, reppedWithoutWeightCategories } from "types/filters";
 import { Workout } from "types/index";
-import { parseProgressData, parseWorkouts } from "./helpers";
+import { getDuration, parseProgressData, parseWorkouts } from "./helpers";
 
 import * as SecureStore from "expo-secure-store";
+import useElapsedTime from "../../hooks/timerHook";
 
 interface StartedWorkoutContextProps {
   children: React.ReactNode;
@@ -35,7 +36,7 @@ interface StartedWorkoutContext {
   loading?: boolean;
   completeWorkout: () => Promise<any>;
   setProgress: Dispatch<SetStateAction<any>>;
-  cancelWorkout: () => Promise<any>;
+  cancelWorkout: (replacePath: boolean) => Promise<any>;
 }
 
 export const StartedWorkoutContext = createContext<StartedWorkoutContext>({
@@ -60,7 +61,8 @@ const StartedWorkoutManager: React.FC<StartedWorkoutContextProps> = ({ children 
   const [startedExercise, setStartedExercise] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
   const [progress, setProgress] = useState<any>({});
-  const [startTime, setStartTime] = useState<number | undefined>(undefined);
+  const [startTime, setStartTime] = useState<number>(0);
+
   const navigation = useNavigation();
 
   useEffect(() => {
@@ -68,10 +70,10 @@ const StartedWorkoutManager: React.FC<StartedWorkoutContextProps> = ({ children 
   }, []);
 
   useEffect(() => {
-    if (!progress && startedWorkout) {
+    if (startedWorkout && !Object.keys(progress).length) {
       setProgress(parseWorkouts(startedWorkout));
     }
-  }, [startedWorkout, progress]);
+  }, [startedWorkout]);
 
   const startExercise = (_id: string) => {
     setStartedExercise(_id);
@@ -121,18 +123,20 @@ const StartedWorkoutManager: React.FC<StartedWorkoutContextProps> = ({ children 
     }
   };
 
-  const cancelWorkout = async () => {
+  const cancelWorkout = async (replacePath: boolean) => {
     await clearWorkoutData();
-    router.replace("start");
+    if (replacePath) {
+      router.replace("start");
+    }
+    setStartedWorkout(null);
     setProgress({});
-    setStartTime(undefined);
+    setStartTime(0);
   };
 
   const setOngoingWorkout = useCallback(async () => {
     const data = await SecureStore.getItemAsync("workoutData");
     if (data?.length) {
       const parsedData = JSON.parse(data ?? "");
-
       if (parsedData.progress && parsedData.startedWorkout) {
         setProgress(parsedData.progress);
         setStartedWorkout(parsedData.startedWorkout);
@@ -150,27 +154,31 @@ const StartedWorkoutManager: React.FC<StartedWorkoutContextProps> = ({ children 
     });
   }
 
-  const completeWorkout = async () => {
+  const completeWorkout = useCallback(async () => {
     setLoading(true);
-    await putBe({
-      path: `/completed/${userData?.uid}`,
-      body: {
-        workoutId: startedWorkout?._id,
-        name: startedWorkout?.name,
-        progress,
-      },
-    }).then((res) => {
-      setStartedWorkout(null);
-      setProgress({});
+
+    try {
+      const res = await putBe({
+        path: `/completed/${userData?.uid}`,
+        body: {
+          workoutId: startedWorkout?._id,
+          name: startedWorkout?.name,
+          progress,
+          duration: getDuration(startTime),
+        },
+      });
+      cancelWorkout(false);
       clearHistory();
-      clearWorkoutData();
       router.push({
         pathname: "logs/viewPastWorkout",
         params: { workoutId: res?._id, justFinished: true },
       });
-    });
-    setLoading(false);
-  };
+    } catch (error) {
+      console.error("Error completing workout:", error);
+    } finally {
+      setLoading(false);
+    }
+  }, [startTime, userData, startedWorkout, progress, cancelWorkout, clearHistory, router]);
 
   const values: StartedWorkoutContext = useMemo(() => {
     return {

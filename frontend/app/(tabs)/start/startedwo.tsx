@@ -91,7 +91,7 @@ const StartedWorkout: React.FC = () => {
       {
         text: "OK",
         onPress: () => {
-          cancelWorkout();
+          cancelWorkout(true);
         },
       },
     ]);

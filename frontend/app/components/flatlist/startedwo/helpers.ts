@@ -3,7 +3,6 @@ const calculateCompletedPercentage = (progress: any) => {
   const totalExercises = exerciseKeys?.length ?? 0;
 
   if (!exerciseKeys || totalExercises === 0) {
-    // Return 0% if there are no exercises
     return 0;
   }
 

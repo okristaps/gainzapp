@@ -1,3 +1,4 @@
+import moment from "moment";
 import { Categories, reppedCategories, reppedWithoutWeightCategories } from "types/filters";
 import { Workout } from "types/index";
 
@@ -60,4 +61,10 @@ const parseProgressData = (item: any, payload: any) => {
   return baseProgress;
 };
 
-export { parseWorkouts, parseProgressData };
+const getDuration = (startTime: number) => {
+  const currentTime = new Date().getTime();
+  const elapsedDuration = moment.duration(currentTime - startTime);
+  return moment.utc(elapsedDuration.asMilliseconds()).format("HH:mm:ss");
+};
+
+export { parseWorkouts, parseProgressData, getDuration };

@@ -1,6 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { getBe } from "api/index";
 import { AuthContext } from "auth/authManager";
+import { ExerciseInfoContainer } from "components/common/infoContainer";
 import DefaultFlatlist from "components/flatlist/defaultFlatlist";
 import { StartedWoItem } from "components/flatlist/startedwo/items/items";
 import Header from "components/header";
@@ -28,6 +29,12 @@ export default function ViewPastWorkoutScreen() {
   });
 
   const [opened, setOpened] = useState(data?.exercises[0]._id);
+
+  const finishedCount = data?.workout?.progress
+    ? Object?.values(data?.workout?.progress)
+        .map((i) => i?.finished)
+        .filter((e) => e === true)
+    : []
 
   const Item = useCallback(
     (item: any) => {
@@ -64,6 +71,17 @@ export default function ViewPastWorkoutScreen() {
               text: params.justFinished ? "Close" : "Back",
               hideText: !params.justFinished,
               onPress: () => (params.justFinished ? handleReset() : router.back()),
+            }}
+          />
+
+          <ExerciseInfoContainer
+            info1={{
+              title: "Time spent",
+              sub: data.workout?.duration,
+            }}
+            info2={{
+              title: "Completed",
+              sub: finishedCount.length + " / " + data?.exercises?.length,
             }}
           />
 
