@@ -125,6 +125,7 @@ const StartedWorkoutManager: React.FC<StartedWorkoutContextProps> = ({ children 
     await clearWorkoutData();
     router.replace("start");
     setProgress({});
+    setStartTime(undefined);
   };
 
   const setOngoingWorkout = useCallback(async () => {
