@@ -3,14 +3,16 @@
     "platforms": [
       "ios"
     ],
-    "name": "gainzapp",
+    "name": "Gainz App",
     "slug": "gainzapp",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./src/assets/images/temporary.png",
+    "icon": "./src/assets/images/logo1x.png",
     "scheme": "myapp",
     "userInterfaceStyle": "dark",
     "splash": {
+      "image": "./src/assets/images/splashimg.png",
+      "resizeMode": "contain",
       "backgroundColor": "#212121"
     },
     "assetBundlePatterns": [
@@ -39,7 +41,7 @@
         {
           "appID": "1361828924685068",
           "clientToken": "546e1b4d550badf2e6241e959583cdc8",
-          "displayName": "Gainzapp",
+          "displayName": "Gainz App",
           "advertiserIDCollectionEnabled": false,
           "autoLogAppEventsEnabled": false,
           "isAutoInitEnabled": true

@@ -9,7 +9,6 @@ import { tabs } from "./helpers/tabs";
 
 const NavTabs = () => {
   const path = usePathname();
-  console.log("path", path);
 
   return (
     <Tabs

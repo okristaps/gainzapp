@@ -76,7 +76,7 @@ const LoginForm: React.FC = () => {
   return (
     <Wrapper>
       <View className="pr-[20px] pl-[20px]">
-        <Text className="mt-[40px]  text-title text-center text-white font-bold "> Gainzapp </Text>
+        <Text className="mt-[40px]  text-title text-center text-white font-bold "> GainzApp </Text>
         <Action />
         <FormItems
           error={error}

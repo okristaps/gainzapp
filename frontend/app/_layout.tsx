@@ -3,24 +3,13 @@ import { QueryClient, QueryClientProvider, focusManager } from "@tanstack/react-
 import AuthManager, { AuthContext } from "auth/authManager";
 import { useFonts } from "expo-font";
 import { Stack } from "expo-router";
-import React, { useContext, useEffect, useRef, useState } from "react";
-import {
-  Animated,
-  AppState,
-  AppStateStatus,
-  Easing,
-  Platform,
-  StyleSheet,
-  View,
-} from "react-native";
 import * as SplashScreen from "expo-splash-screen";
+import React, { useContext, useEffect, useState } from "react";
+import { AppState, AppStateStatus, Platform, View } from "react-native";
 import StartedWorkoutManager from "./contexts/startedWorkout/startedWorkoutContext";
 
-import { Image } from "expo-image";
-import { Text } from "react-native";
-import Splash from "components/splash/splash";
 export { ErrorBoundary } from "expo-router";
-SplashScreen.preventAutoHideAsync().catch(() => {});
+SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
   const [loaded, error] = useFonts({
@@ -50,18 +39,16 @@ const queryClient = new QueryClient();
 function RootLayoutNav({ loaded, error }: { loaded: boolean; error?: Error | null }) {
   const { loading } = useContext(AuthContext);
   const [appIsReady, setAppIsReady] = useState(false);
-  console.log("loading", loading);
+
   useEffect(() => {
     if (loaded && !loading) {
-      setTimeout(() => {
-        SplashScreen.hideAsync();
-        setAppIsReady(true);
-      });
+      SplashScreen.hideAsync();
+      setAppIsReady(true);
     }
   }, [loaded, error, loading]);
 
   if (!appIsReady) {
-    return <Splash />;
+    return null;
   }
 
   return (
