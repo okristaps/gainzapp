@@ -45,6 +45,7 @@ const CardioModal: React.FC<CardioModalProps> = ({ visible, setVisible, onSave, 
         <View className="flex-1">
           <Text className="text-secondary mb-[5px] "> Distance </Text>
           <Input
+            maxLength={6}
             keyboardType={"numeric"}
             ref={distanceInputRef}
             placeholder="0000m"

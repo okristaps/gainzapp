@@ -1,8 +1,8 @@
+import { useQuery } from "@tanstack/react-query";
 import { getBe } from "api/index";
 import { AuthContext } from "auth/authManager";
-import { WeeklySummary } from "components/dashboard/dashboardScreen";
 import moment from "moment";
-import React, { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react";
+import React, { createContext, useContext, useMemo, useState } from "react";
 
 interface WeekInfoManagerProps {
   children: React.ReactNode;
@@ -36,8 +36,7 @@ export const WeeklyInfoContext = createContext<WeeklyContext>({
 
 const WeeklyInfoManager: React.FC<WeekInfoManagerProps> = ({ children }) => {
   const { userData } = useContext(AuthContext);
-  const [loading, setLoading] = useState(false);
-  const [data, setData] = useState(null);
+
   const [animationDirection, setAnimationDirection] = useState("");
   const [currentWeek, setCurrentWeek] = useState(moment());
   const minWeek = 1;
@@ -67,22 +66,16 @@ const WeeklyInfoManager: React.FC<WeekInfoManagerProps> = ({ children }) => {
     }
   };
 
-  const getWorkoutData = useCallback(async () => {
-    setLoading(true);
-    await getBe({
-      path: `/completed/${userData?.uid}`,
-      params: { startDate: startOfWeekStr, endDate: endOfWeekStr, weeklySummary: true },
-    })
-      .then((res) => setData(res))
-      .catch((err) => {
-        setData(null);
-      })
-      .finally(() => setLoading(false));
-  }, [startOfWeekStr, endOfWeekStr, currentWeek]);
-
-  useEffect(() => {
-    getWorkoutData();
-  }, [currentWeek]);
+  const { isLoading, data } = useQuery({
+    retry: 0,
+    staleTime: 1000,
+    queryKey: ["pastWorkouts", startOfWeekStr, endOfWeekStr, currentWeek],
+    queryFn: async () =>
+      await getBe({
+        path: `/completed/${userData?.uid}`,
+        params: { startDate: startOfWeekStr, endDate: endOfWeekStr, weeklySummary: true },
+      }),
+  });
 
   const values: WeeklyContext = useMemo(() => {
     return {
@@ -93,11 +86,11 @@ const WeeklyInfoManager: React.FC<WeekInfoManagerProps> = ({ children }) => {
       goToNextWeek,
       weekStart: startOfWeekStr,
       weekEnd: endOfWeekStr,
-      loading,
+      loading: isLoading,
       data,
       animationDirection,
     };
-  }, [currentWeek, startOfWeekStr, endOfWeekStr, loading, data, animationDirection]);
+  }, [currentWeek, startOfWeekStr, endOfWeekStr, isLoading, data, animationDirection]);
 
   return <WeeklyInfoContext.Provider value={values}>{children}</WeeklyInfoContext.Provider>;
 };

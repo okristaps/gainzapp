@@ -21,6 +21,7 @@ interface InputProps {
   debounceEnabled?: boolean;
   customValue?: string;
   initialValue?: string;
+  maxLength?: number;
 }
 
 export const Input: React.FC<InputProps> = forwardRef(
@@ -37,6 +38,7 @@ export const Input: React.FC<InputProps> = forwardRef(
       onValueChange,
       debounceEnabled,
       initialValue,
+      maxLength,
     },
     ref
   ) => {
@@ -56,6 +58,7 @@ export const Input: React.FC<InputProps> = forwardRef(
             {type === "book" && <Book />}
             {type === "time" && <StopWatch height={20} width={20} stroke={colors.primary} />}
             <TextInput
+              maxLength={maxLength}
               ref={ref}
               keyboardType={keyboardType}
               id="input"

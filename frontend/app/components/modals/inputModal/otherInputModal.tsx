@@ -36,6 +36,7 @@ const OtherInputModal: React.FC<OtherModalProps> = ({
               keyboardType={"numeric"}
               type="search"
               placeholder="12kg"
+              maxLength={3}
               onValueChange={setValue}
               extraInputClass="w-[80px]"
             />
@@ -45,6 +46,7 @@ const OtherInputModal: React.FC<OtherModalProps> = ({
         <View className="flex-1">
           <Text className="text-secondary mb-[5px] "> Reps x </Text>
           <Input
+            maxLength={3}
             keyboardType={"numeric"}
             placeholder="12"
             onValueChange={(value) => setReps(value)}

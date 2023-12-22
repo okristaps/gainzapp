@@ -53,6 +53,7 @@ const RenderItem = ({
     <View
       className={`border-[1px] rounded-[12px] pl-[15px] pr-[12.5px]
     border-${disabled ? "none" : "secondary"}
+
     ${extraClassname}`}
     >
       <TouchableOpacity

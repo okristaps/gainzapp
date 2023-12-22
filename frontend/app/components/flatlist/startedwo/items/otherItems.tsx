@@ -6,6 +6,7 @@ import useElapsedTime from "../../../../hooks/timerHook";
 import moment from "moment";
 import { End } from "./components";
 import { Categories, noWeightEquipment, reppedWithoutWeightCategories } from "types/filters";
+import Speed from "assets/images/speed.svg";
 
 const metersToKilometers = (meters: number) => {
   const kilometers = meters / 1000;
@@ -80,7 +81,9 @@ const OtherItem = ({
               }
               onLongPress={() => !itemProgress.finished && handleDelete(index)}
               key={index}
-              className="w-[80px] border border-secondary items-center rounded-[12px] mb-[16px] p-[8px] "
+              className={`w-[${
+                withoutWeight ? "80" : "100"
+              }px] border border-secondary items-center rounded-[12px] mb-[16px] p-[8px]  bg-input`}
             >
               <InfoItem
                 title={"Set " + (index + 1)}
@@ -151,6 +154,7 @@ const CardioItem = ({
         title="Time"
         subtitle={!finished ? formattedTime : time}
       />
+      {finished && <Speed stroke="white" />}
       <InfoItem
         extraClassname="flex-[0.33]"
         title="Distance"
@@ -175,8 +179,11 @@ const InfoItem = ({
   return (
     <View className={`flex-col items-center gap-y-[8px] ` + extraClassname}>
       <Text className="text-white text-16 underline"> {title} </Text>
-      <Text className="text-white text-14"> {subtitle ?? "-"}</Text>
-      {subsubtitle && <Text className="text-white text-14"> {subsubtitle ?? "-"} </Text>}
+      <View className="flex-row justify-between">
+        <Text className="text-white text-14">{subtitle ?? "-"}</Text>
+        {subsubtitle && <Text className="text-white text-14">{" / "}</Text>}
+        {subsubtitle && <Text className="text-white text-14">{subsubtitle ?? "-"}</Text>}
+      </View>
     </View>
   );
 };
