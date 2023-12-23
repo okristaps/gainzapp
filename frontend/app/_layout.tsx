@@ -7,6 +7,7 @@ import * as SplashScreen from "expo-splash-screen";
 import React, { useContext, useEffect, useState } from "react";
 import { AppState, AppStateStatus, Platform, View } from "react-native";
 import StartedWorkoutManager from "./contexts/startedWorkout/startedWorkoutContext";
+import GeneralContexManager from "./contexts/generalContext";
 
 export { ErrorBoundary } from "expo-router";
 SplashScreen.preventAutoHideAsync();
@@ -54,17 +55,19 @@ function RootLayoutNav({ loaded, error }: { loaded: boolean; error?: Error | nul
   return (
     <QueryClientProvider client={queryClient}>
       <StartedWorkoutManager>
-        <Stack>
-          <Stack.Screen
-            name="(tabs)"
-            options={{
-              headerShown: false,
-              contentStyle: {
-                backgroundColor: "#212121",
-              },
-            }}
-          />
-        </Stack>
+        <GeneralContexManager>
+          <Stack>
+            <Stack.Screen
+              name="(tabs)"
+              options={{
+                headerShown: false,
+                contentStyle: {
+                  backgroundColor: "#212121",
+                },
+              }}
+            />
+          </Stack>
+        </GeneralContexManager>
       </StartedWorkoutManager>
     </QueryClientProvider>
   );

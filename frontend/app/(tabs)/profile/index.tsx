@@ -3,31 +3,43 @@ import { PirmaryButtonEmpty } from "components/common/primarybutton";
 import { RenderItem } from "components/flatlist/components";
 import ProfilePicture from "components/header/profile";
 import { Divider } from "components/loginform/components";
-import React, { useContext } from "react";
+import TermsAndConditionsModal from "components/modals/termsModal";
+import React, { useContext, useState } from "react";
 import { ScrollView, Text, View } from "react-native";
 
+const menuItems = [
+  { _id: "0", name: "General", category: "Divider" },
+  // { _id: "1", name: "Achievements", category: "General" },
+  { _id: "2", name: "Account Info", category: "General" },
+  { _id: "12", name: "Preferences", category: "Divider" },
+  { _id: "3", name: "App Settings", category: "Preferences" },
+  { _id: "4", name: "Give us feedback", category: "Preferences" },
+  { _id: "5", name: "Reviews", category: "Preferences" },
+  { _id: "033", name: "Data Management", category: "Divider" },
+  { _id: "6", name: "Terms and Conditions", category: "Data Management", type: "modal" },
+  { _id: "7", name: "Privacy Policy", category: "Data Management", type: "modal" },
+];
+
 export default function TabMoreScreen() {
+  const [modalVisible, setModalVisible] = useState("Terms and Conditions");
   const { logOut, userData } = useContext(AuthContext);
   const logOutFunc = () => logOut();
 
-  const menuItems = [
-    { _id: "0", name: "General", category: "Divider" },
-    { _id: "1", name: "Achievements", category: "General" },
-    { _id: "2", name: "Account Info", category: "General" },
-    { _id: "12", name: "Preferences", category: "Divider" },
-    { _id: "3", name: "App Settings", category: "Preferences" },
-    { _id: "4", name: "Give us feedback", category: "Preferences" },
-    { _id: "5", name: "Reviews", category: "Preferences" },
-    { _id: "033", name: "Data Management", category: "Divider" },
-    { _id: "6", name: "Terms and Conditions", category: "Data Management" },
-    { _id: "7", name: "Privacy Policy", category: "Data Management" },
-  ];
-
+  const handlePress = (name: string, type: string) => {
+    if (type === "modal") {
+      setModalVisible(name);
+    }
+  };
   const renderMenuItems = menuItems.map((item) =>
     item.category === "Divider" ? (
       <Divider text={item.name} key={item._id} extraClassName="mt-[25px]" />
     ) : (
-      <RenderItem key={item._id} item={item} extraClassname="bg-[#282C30] mt-[12px]" />
+      <RenderItem
+        onPress={() => handlePress(item?.name, item?.type)}
+        key={item._id}
+        item={item}
+        extraClassname="bg-[#282C30] mt-[12px]"
+      />
     )
   );
 
@@ -57,6 +69,10 @@ export default function TabMoreScreen() {
         extraTextClassName="color-secondary"
         text="Log out"
         onPress={logOutFunc}
+      />
+      <TermsAndConditionsModal
+        visible={modalVisible === "Terms and Conditions"}
+        setVisible={() => setModalVisible("")}
       />
 
       <View className="flex items-center mt-[20px]">
