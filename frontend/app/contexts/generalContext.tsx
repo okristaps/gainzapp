@@ -10,11 +10,13 @@ interface GeneralContexProps {
 
 interface GeneralContextInt {
   termsData: any;
+  policyData: any;
   loading: boolean;
 }
 
 export const GeneralContex = createContext<GeneralContextInt>({
   termsData: {},
+  policyData: {},
   loading: false,
 });
 
@@ -31,7 +33,8 @@ const GeneralContexManager: React.FC<GeneralContexProps> = ({ children }) => {
 
   const values: GeneralContextInt = useMemo(() => {
     return {
-      termsData: data,
+      termsData: data?.termsAndConditions,
+      policyData: data?.privacyPolicy,
       loading: isLoading,
     };
   }, [data, isLoading]);

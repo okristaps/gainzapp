@@ -4,15 +4,18 @@ import { ScrollView, Text, TouchableOpacity, View } from "react-native";
 import { GeneralContex } from "../../../contexts/generalContext";
 
 interface TermsAndConditionsModalProps {
+  id: number;
   visible: boolean;
   setVisible: (visible: boolean) => void;
 }
 
 const TermsAndConditionsModal: React.FC<TermsAndConditionsModalProps> = ({
+  id,
   visible,
   setVisible,
 }) => {
-  const { termsData } = useContext(GeneralContex);
+  const { termsData, policyData } = useContext(GeneralContex);
+  const dataSet = id === 1 ? termsData : policyData;
 
   const DataBox = ({ data, index }: { data?: string[]; index: number }) => {
     return (
@@ -27,14 +30,14 @@ const TermsAndConditionsModal: React.FC<TermsAndConditionsModalProps> = ({
   };
 
   return (
-    <ModalWrapper visible={visible} setVisible={setVisible} title={termsData.title}>
+    <ModalWrapper visible={visible} setVisible={setVisible} title={dataSet.title}>
       <ScrollView className="mt-[20px]">
         <TouchableOpacity>
-          {Object.keys(termsData.data).map((key: any, index) => {
-            const { data, subtitle, title, subdata } = termsData?.data[key] ?? {};
+          {Object.keys(dataSet.data).map((key: any, index) => {
+            const { data, subtitle, title, subdata } = dataSet?.data[key] ?? {};
 
             return (
-              <View key={key}>
+              <View key={title}>
                 <Text
                   className={`text-white  text-[20px] font-bold mb-[10px]
                     ${index === 1 ? "mt-[0]" : "mt-[10px]"}`}

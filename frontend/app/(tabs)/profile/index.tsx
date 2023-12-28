@@ -21,7 +21,7 @@ const menuItems = [
 ];
 
 export default function TabMoreScreen() {
-  const [modalVisible, setModalVisible] = useState("Terms and Conditions");
+  const [modalVisible, setModalVisible] = useState("");
   const { logOut, userData } = useContext(AuthContext);
   const logOutFunc = () => logOut();
 
@@ -71,7 +71,8 @@ export default function TabMoreScreen() {
         onPress={logOutFunc}
       />
       <TermsAndConditionsModal
-        visible={modalVisible === "Terms and Conditions"}
+        id={modalVisible === "Terms and Conditions" ? 1 : 0}
+        visible={Boolean(modalVisible.length)}
         setVisible={() => setModalVisible("")}
       />
 
