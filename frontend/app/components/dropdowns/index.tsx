@@ -7,6 +7,7 @@ import colors from "constants/colors";
 import { DropDownData } from "types/components";
 
 import Close from "assets/images/close.svg";
+import { DropdownItem } from "./components/item";
 
 interface DropdownComponentProps {
   title?: string;
@@ -20,7 +21,7 @@ interface DropdownComponentProps {
 }
 
 const DropdownComponent: React.FC<DropdownComponentProps> = ({
-  title = "Categorie",
+  title = "",
   data,
   renderLeftIcon = undefined,
   clearDisabled = false,
@@ -29,33 +30,14 @@ const DropdownComponent: React.FC<DropdownComponentProps> = ({
   isFocus,
   setIsFocus,
 }) => {
-  const Item = (item: { label: string; _index: number }): React.JSX.Element | null => {
-    return (
-      <View
-        key={item.label}
-        className={`
-              h-[45px] 
-              justify-center 
-              pl-[10px] 
-              border-0
-              bg-[#1E1E1E]
-              ${item._index !== data.length - 1 && "border-b-[0.5px]"}
-              border-secondary
-            `}
-      >
-        <Text className={`text-primary text-16 capitalize`}>{item.label.replace("+", " ")}</Text>
-      </View>
-    );
-  };
-
   return (
     <View className="flex flex-row items-center">
-      <Text className="text-secondary text-15 text-center w-[100px]  "> {title} </Text>
+      {title && <Text className="text-secondary text-15 text-center w-[100px]  "> {title} </Text>}
       <View className="flex flex-1">
         <InputGradient>
           <Dropdown
             renderLeftIcon={renderLeftIcon}
-            renderItem={Item}
+            renderItem={(item: DropDownData) => <DropdownItem data={data} item={item} />}
             mode="modal"
             style={[styles.dropdown, isFocus && { borderColor: colors.secondary }]}
             selectedTextStyle={[

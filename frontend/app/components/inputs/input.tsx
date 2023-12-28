@@ -17,11 +17,12 @@ interface InputProps {
   keyboardType?: any;
   onChangeText?: (text: string) => void;
   extraInputClass?: string;
-  onValueChange: (text: string) => void;
+  onValueChange?: (text: string) => void;
   debounceEnabled?: boolean;
   customValue?: string;
   initialValue?: string;
   maxLength?: number;
+  editable?: boolean;
 }
 
 export const Input: React.FC<InputProps> = forwardRef(
@@ -39,6 +40,7 @@ export const Input: React.FC<InputProps> = forwardRef(
       debounceEnabled,
       initialValue,
       maxLength,
+      editable = true,
     },
     ref
   ) => {
@@ -46,18 +48,23 @@ export const Input: React.FC<InputProps> = forwardRef(
     const debouncedSearchText = useDebounce(value, 300);
 
     useEffect(() => {
-      if (debounceEnabled) onValueChange(debouncedSearchText ?? "");
-      else onValueChange(value ?? "");
+      if (debounceEnabled) onValueChange?.(debouncedSearchText ?? "");
+      else onValueChange?.(value ?? "");
     }, [debouncedSearchText, onValueChange]);
 
     return (
       <View className={`flex  ${extraClass}`}>
         <InputGradient extraClassName="flex items-center">
           <View className="flex-row">
-            {type === "search" && <Search height={20} width={20} />}
-            {type === "book" && <Book />}
-            {type === "time" && <StopWatch height={20} width={20} stroke={colors.primary} />}
+            {type && (
+              <View className="mr-[14px]">
+                {type === "search" && <Search height={20} width={20} />}
+                {type === "book" && <Book />}
+                {type === "time" && <StopWatch height={20} width={20} stroke={colors.primary} />}
+              </View>
+            )}
             <TextInput
+              editable={editable}
               maxLength={maxLength}
               ref={ref}
               keyboardType={keyboardType}
@@ -66,7 +73,7 @@ export const Input: React.FC<InputProps> = forwardRef(
               onChangeText={(text) => (onChangeText ? onChangeText(text) : setValue(text))}
               defaultValue={defaultValue}
               aria-hidden={true}
-              className={`h-[100%] w-[250px] color-input text-base pr-[13px]  ml-[14px] mt-[2px] pt-[2px] 
+              className={`h-[100%] w-[250px] color-input text-base pr-[13px]   mt-[2px] pt-[2px] 
               ${extraInputClass}
               `}
               placeholder={placeholder ?? ""}

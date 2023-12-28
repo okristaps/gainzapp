@@ -30,13 +30,17 @@ export const Input: React.FC<InputProps> = forwardRef(
           render={({ field: { onChange, value } }) => (
             <InputGradient>
               <View className="flex-row">
-                {type === "emailAddress" && <Email />}
-                {type === "password" && <Key />}
+                {type && (
+                  <View className="mr-[13px]">
+                    {type === "emailAddress" && <Email />}
+                    {type === "password" && <Key />}
+                  </View>
+                )}
                 <TextInput
                   ref={ref}
                   aria-hidden={true}
                   secureTextEntry={showPassword}
-                  className={`h-[100%] w-[250px] color-input text-base pr-[13px] ml-[14px] mt-[2px]  `}
+                  className={`h-[100%] w-[250px] color-input text-base pr-[13px]  mt-[2px]  `}
                   placeholder={placeholder ?? ""}
                   value={value}
                   onChangeText={onChange}

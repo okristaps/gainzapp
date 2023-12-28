@@ -22,7 +22,7 @@ const DefaultFlatlist: React.FC<Props> = ({
   isLoading,
   emptyText,
   renderItem,
-  title = "Title",
+  title,
   ListFooterComponent,
   onEndReached,
   onEndReachedThreshold,
@@ -42,7 +42,7 @@ const DefaultFlatlist: React.FC<Props> = ({
 
   return (
     <View className="flex flex-1">
-      <Divider text={title} textSize={28} extraClassName="mt-[25px]" />
+      {title && <Divider text={title} textSize={28} extraClassName="mt-[25px]" />}
       <FlatList
         extraData={extraData}
         onStartReached={onStartReached}
