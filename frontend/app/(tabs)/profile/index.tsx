@@ -7,8 +7,8 @@ import { Divider } from "components/loginform/components";
 import TermsAndConditionsModal from "components/modals/termsModal";
 import { router } from "expo-router";
 import React, { useContext, useState } from "react";
-import { FlatList, ScrollView, Text, View } from "react-native";
-
+import { Text, View } from "react-native";
+import * as Linking from "expo-linking";
 const menuItems = [
   { _id: "0", name: "General", category: "Divider" },
   // { _id: "1", name: "Achievements", category: "General" },
@@ -16,8 +16,8 @@ const menuItems = [
   // { _id: "23", name: "Measurments", category: "General", link: "measurments" },
   { _id: "12", name: "Help", category: "Divider" },
   // { _id: "3", name: "App Settings", category: "Preferences" },
-  { _id: "4", name: "Give us feedback", category: "Help" },
-  { _id: "5", name: "Reviews", category: "Help" },
+  { _id: "4", name: "Give us feedback", category: "Help", url: "https://expo.dev" },
+  { _id: "5", name: "Reviews", category: "Help", url: "https://expo.dev" },
   { _id: "033", name: "Data Management", category: "Divider" },
   { _id: "6", name: "Terms and Conditions", category: "Data Management", type: "modal" },
   { _id: "7", name: "Privacy Policy", category: "Data Management", type: "modal" },
@@ -29,11 +29,12 @@ export default function TabMoreScreen() {
   const logOutFunc = () => logOut();
 
   const handlePress = (item: any) => {
-    const { name, link, type } = item;
+    const { name, link, type, url } = item;
     if (type === "modal") {
       setModalVisible(name);
     }
     if (link) router.push("/profile/" + link);
+    if (url) Linking.openURL(url);
   };
 
   const Item = (item: any) => {
