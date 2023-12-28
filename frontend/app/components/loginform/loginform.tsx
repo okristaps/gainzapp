@@ -3,13 +3,12 @@ import { PirmaryButton } from "components/common/primarybutton";
 import Wrapper from "components/layout/wrapper";
 import React, { memo, useCallback, useContext, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { Text } from "react-native";
+import { Text, View } from "react-native";
 import * as Animatable from "react-native-animatable";
 import { ForgotPassword, OtherMethods, Register } from "./components";
 import FormItems from "./formItems";
 import ResetPasswordModal from "./resetModal";
 import { FormData, FormType } from "./types";
-import { View } from "react-native";
 
 const LoginForm: React.FC = () => {
   const {
@@ -24,6 +23,7 @@ const LoginForm: React.FC = () => {
   // const isDevelopment = __DEV__;
   const [type, setType] = useState<string>(FormType.LOGIN);
   const [visible, setVisible] = useState<boolean>(false);
+
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string>("");
   const { signIn, signUp, googleSignIn, signInWithFB } = useContext(AuthContext);

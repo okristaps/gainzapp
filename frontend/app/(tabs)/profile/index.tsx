@@ -4,13 +4,14 @@ import { RenderItem } from "components/flatlist/components";
 import ProfilePicture from "components/header/profile";
 import { Divider } from "components/loginform/components";
 import TermsAndConditionsModal from "components/modals/termsModal";
+import { router } from "expo-router";
 import React, { useContext, useState } from "react";
 import { ScrollView, Text, View } from "react-native";
 
 const menuItems = [
   { _id: "0", name: "General", category: "Divider" },
   // { _id: "1", name: "Achievements", category: "General" },
-  { _id: "2", name: "Account Info", category: "General" },
+  { _id: "2", name: "Account Info", category: "General", link: "profileInfo" },
   { _id: "12", name: "Preferences", category: "Divider" },
   { _id: "3", name: "App Settings", category: "Preferences" },
   { _id: "4", name: "Give us feedback", category: "Preferences" },
@@ -25,17 +26,19 @@ export default function TabMoreScreen() {
   const { logOut, userData } = useContext(AuthContext);
   const logOutFunc = () => logOut();
 
-  const handlePress = (name: string, type: string) => {
+  const handlePress = (item: any) => {
+    const { name, link, type } = item;
     if (type === "modal") {
       setModalVisible(name);
     }
+    if (link) router.push("/profile/" + link);
   };
   const renderMenuItems = menuItems.map((item) =>
     item.category === "Divider" ? (
       <Divider text={item.name} key={item._id} extraClassName="mt-[25px]" />
     ) : (
       <RenderItem
-        onPress={() => handlePress(item?.name, item?.type)}
+        onPress={() => handlePress(item)}
         key={item._id}
         item={item}
         extraClassname="bg-[#282C30] mt-[12px]"

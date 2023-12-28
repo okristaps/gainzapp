@@ -1,6 +1,6 @@
 import { Stack } from "expo-router";
 
-const screens = ["index"];
+const screens = ["index", "profileInfo"];
 
 export default function Layout() {
   return (
