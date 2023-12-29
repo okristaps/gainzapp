@@ -17,6 +17,7 @@ interface AuthContext {
   signIn: (email: string, password: string) => void;
   logOut: () => void;
   loading: boolean;
+  setUserData: React.Dispatch<React.SetStateAction<MongoUser>>;
 }
 
 export const AuthContext = createContext<AuthContext>({
@@ -27,6 +28,7 @@ export const AuthContext = createContext<AuthContext>({
   googleSignIn: async () => {},
   loading: false,
   userData: null,
+  setUserData: () => {},
 });
 
 const AuthManager: React.FC<AuthManagerProps> = ({ children }) => {
@@ -80,6 +82,7 @@ const AuthManager: React.FC<AuthManagerProps> = ({ children }) => {
       logOut: () => logOut(auth),
       googleSignIn: () => googleSignIn(auth),
       signInWithFB: () => signInWithFB(auth),
+      setUserData,
     };
   }, [signUp, signIn, logOut, userData, loading]);
 

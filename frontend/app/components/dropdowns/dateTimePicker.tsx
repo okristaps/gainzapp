@@ -11,8 +11,8 @@ export const DateTimePickerComponent = ({
   setDate,
   title = "Date",
 }: {
-  date: Date;
-  setDate: React.Dispatch<React.SetStateAction<Date>>;
+  date: Date | null;
+  setDate: React.Dispatch<React.SetStateAction<Date | null>>;
   title?: string;
 }) => {
   const dateRef = useRef(new Date(1598051730000));
@@ -32,8 +32,15 @@ export const DateTimePickerComponent = ({
     <View className="mt-[10px]">
       <Text className="color-input text-base mb-[5px]"> {title} </Text>
       <InputGradient>
-        <TouchableOpacity className="flex flex-1" onPress={() => setVisible(true)}>
-          <Text className="color-input"> {moment(date).format("DD-MM-YYYY")}</Text>
+        <TouchableOpacity
+          className="flex flex-1"
+          onPress={() => {
+            setVisible(true);
+          }}
+        >
+          <Text className="color-input">
+            {date ? moment(date).format("DD-MM-YYYY") : "Select Date"}
+          </Text>
         </TouchableOpacity>
         <ModalWrapper visible={visible} setVisible={setVisible} title={"Select Date"}>
           <DateTimePicker
@@ -41,9 +48,10 @@ export const DateTimePickerComponent = ({
               display: "flex",
               width: "100%",
             }}
+            placeholderText="Select birth date"
             display="spinner"
             testID="dateTimePicker"
-            value={date}
+            value={date ?? new Date()}
             mode={"date"}
             is24Hour={true}
             minimumDate={new Date(1950, 0, 1)}

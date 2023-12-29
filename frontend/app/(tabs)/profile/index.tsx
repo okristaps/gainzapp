@@ -55,35 +55,43 @@ export default function TabMoreScreen() {
   };
 
   return (
-    <View className="pl-[20px] pr-[20px] mt-[20px] flex flex-1 justify-between">
-      <View className="flex flex-row">
-        <ProfilePicture width={52} height={52} />
-        <View className="flex-col ml-[20px]">
-          <Text className="text-white text-19 font-bold"> {userData?.display_name} </Text>
-          <Text className="text-secondary mt-[0px]"> {userData?.email} </Text>
+    <DefaultFlatlist
+      isLoading={false}
+      ListHeaderComponent={
+        <View>
+          <View className="flex   flex-row">
+            <View>
+              <ProfilePicture />
+            </View>
+            <View className="flex-col ml-[10px]">
+              <Text className="text-white text-19 font-bold"> {userData?.display_name} </Text>
+              <Text className="text-secondary mt-[0px]"> {userData?.email} </Text>
+            </View>
+          </View>
         </View>
-      </View>
+      }
+      renderItem={Item}
+      data={menuItems}
+      ListFooterComponent={
+        <View>
+          <PirmaryButtonEmpty
+            extraClassName="border-secondary mt-[50px]"
+            extraTextClassName="color-secondary"
+            text="Log out"
+            onPress={logOutFunc}
+          />
+          <TermsAndConditionsModal
+            id={modalVisible === "Terms and Conditions" ? 1 : 0}
+            visible={Boolean(modalVisible.length)}
+            setVisible={() => setModalVisible("")}
+          />
 
-      <DefaultFlatlist renderItem={Item} data={menuItems} />
-
-      <View>
-        <PirmaryButtonEmpty
-          extraClassName="border-secondary mt-[50px]"
-          extraTextClassName="color-secondary"
-          text="Log out"
-          onPress={logOutFunc}
-        />
-        <TermsAndConditionsModal
-          id={modalVisible === "Terms and Conditions" ? 1 : 0}
-          visible={Boolean(modalVisible.length)}
-          setVisible={() => setModalVisible("")}
-        />
-
-        <View className="flex items-center mt-[20px]">
-          <Text className="text-secondary mt-[0px]"> App Version: 1.20.1 </Text>
-          <Text className="text-secondary mt-[5px]"> Remote ID: 131234 </Text>
+          <View className="flex items-center mt-[20px]">
+            <Text className="text-secondary mt-[0px]"> App Version: 1.20.1 </Text>
+            <Text className="text-secondary mt-[5px]"> Remote ID: 131234 </Text>
+          </View>
         </View>
-      </View>
-    </View>
+      }
+    />
   );
 }

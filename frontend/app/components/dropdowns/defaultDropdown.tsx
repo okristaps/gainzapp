@@ -9,6 +9,8 @@ import { DropdownItem } from "./components/item";
 
 interface DropdownComponentProps {
   data?: DropDownData[];
+  value: string;
+  setValue: React.Dispatch<React.SetStateAction<string>>;
 }
 
 const mockData = [
@@ -16,9 +18,11 @@ const mockData = [
   { label: "Female", value: "female", _index: 2 },
 ];
 
-const DefaultDropdown: React.FC<DropdownComponentProps> = ({ data = mockData }) => {
-  const [value, setValue] = useState("male");
-
+const DefaultDropdown: React.FC<DropdownComponentProps> = ({
+  data = mockData,
+  value,
+  setValue,
+}) => {
   return (
     <View className="flex flex-row items-center">
       <View className="flex flex-1">

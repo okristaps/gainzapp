@@ -14,6 +14,8 @@ export default function Layout() {
             gestureEnabled: screen !== "exercisesSelect",
             contentStyle: {
               backgroundColor: "#212121",
+              paddingLeft: 20,
+              paddingRight: 20,
             },
           }}
         />

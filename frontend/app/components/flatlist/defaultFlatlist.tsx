@@ -10,6 +10,7 @@ interface Props {
   renderItem: (item: any) => React.ReactElement;
   title?: string;
   ListFooterComponent?: React.ReactElement;
+  ListHeaderComponent?: React.ReactElement;
   onEndReached?: () => void;
   onEndReachedThreshold?: number;
   showsVerticalScrollIndicator?: boolean;
@@ -25,6 +26,7 @@ const DefaultFlatlist: React.FC<Props> = ({
   title,
   ListFooterComponent,
   onEndReached,
+  ListHeaderComponent,
   onEndReachedThreshold,
   showsVerticalScrollIndicator = false,
   onStartReached,
@@ -48,6 +50,7 @@ const DefaultFlatlist: React.FC<Props> = ({
         onStartReached={onStartReached}
         alwaysBounceVertical={true}
         ListFooterComponent={ListFooterComponent}
+        ListHeaderComponent={ListHeaderComponent}
         getItemLayout={getItemLayout}
         ItemSeparatorComponent={() => <View className="h-[10px]" />}
         ListEmptyComponent={<EmptyComponent isLoading={isLoading} text={emptyText} />}

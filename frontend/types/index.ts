@@ -13,6 +13,8 @@ export interface MongoUserBody {
   metric_units?: boolean | null;
   display_name?: string | null;
   photoURL?: string | null;
+  birthDate?: Date | null;
+  sex?: string | null;
 }
 
 export interface MongoUser extends MongoUserBody {
