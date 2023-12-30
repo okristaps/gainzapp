@@ -10,14 +10,29 @@ interface Workout {
   data: number[];
 }
 
-const mockData = [
-  Math.random() * 100,
-  Math.random() * 100,
-  Math.random() * 100,
-  Math.random() * 100,
-  Math.random() * 100,
-  Math.random() * 100,
+const data = [
+  { date: "2023-01-01", weight: 15, reps: 10 },
+
+  // Add more entries as needed
 ];
+
+const filteredLabels = data.filter((entry, index) => index % 5 === 0).map((entry) => entry.date);
+
+const mockData = {
+  labels: filteredLabels,
+  datasets: [
+    {
+      data: data.map((entry) => entry.weight),
+      color: (opacity = 1) => `rgba(255, 0, 0, ${opacity})`, // Red for weight
+      strokeWidth: 2,
+    },
+    {
+      data: data.map((entry) => entry.reps),
+      color: (opacity = 1) => `rgba(0, 0, 255, ${opacity})`, // Blue for reps
+      strokeWidth: 2,
+    },
+  ],
+};
 
 const workouts: Workout[] = [
   {
@@ -70,20 +85,18 @@ const Chart = () => {
             ))}
           </View>
         )}
-        <View className="mt-[20px]">
+        <View className="mt-[20px] ">
           <LineChart
-            data={{
-              labels: ["J", "F", "M", "A", "M", "J"],
-              datasets: [
-                {
-                  data: selectedWorkout.data,
-                },
-              ],
-            }}
+            xLabelsOffset={0}
+            height={250}
+            withVerticalLines={true}
+            // onDataPointClick={(e) => console.log("asdsad", e)}
+            data={mockData}
             width={screenWidth - 70}
-            height={220}
-            yAxisSuffix="%"
-            yAxisInterval={1}
+            yAxisSuffix="kg"
+            segments={5}
+            yAxisInterval={5}
+            style={{ paddingBottom: 0 }}
             chartConfig={{
               backgroundColor: colors.background,
               backgroundGradientFrom: colors.background,
@@ -93,6 +106,10 @@ const Chart = () => {
               labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
               style: {
                 borderRadius: 16,
+                paddingBottom: 0,
+                marginBottom: 0,
+                paddingLeft: 0,
+                padding: 0,
               },
               propsForDots: {
                 r: "5",
