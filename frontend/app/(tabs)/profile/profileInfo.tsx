@@ -39,9 +39,7 @@ export default function TabProfilePreferences() {
   }, [display_name, date, sex]);
 
   const createTwoButtonAlert = () =>
-    Alert.alert("Failed to save", "Something went wrong", [
-      { text: "OK", onPress: () => console.log("OK Pressed") },
-    ]);
+    Alert.alert("Failed to save", "Something went wrong", [{ text: "OK" }]);
 
   const saveData = async () => {
     const body = {

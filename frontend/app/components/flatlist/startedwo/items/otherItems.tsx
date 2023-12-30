@@ -1,12 +1,12 @@
 import { useCallback, useState } from "react";
 import { Alert, ScrollView, Text, TouchableOpacity, View } from "react-native";
 
-import OtherInputModal from "components/modals/inputModal/otherInputModal";
-import useElapsedTime from "../../../../hooks/timerHook";
-import moment from "moment";
-import { End } from "./components";
-import { Categories, noWeightEquipment, reppedWithoutWeightCategories } from "types/filters";
 import Speed from "assets/images/speed.svg";
+import OtherInputModal from "components/modals/inputModal/otherInputModal";
+import moment from "moment";
+import { Categories, noWeightEquipment, reppedWithoutWeightCategories } from "types/filters";
+import useElapsedTime from "../../../../hooks/timerHook";
+import { End } from "./components";
 
 const metersToKilometers = (meters: number) => {
   const kilometers = meters / 1000;
@@ -72,7 +72,7 @@ const OtherItem = ({
 
   const Items = useCallback(() => {
     return (
-      <ScrollView horizontal scrollEnabled className="gap-x-[8px] justiffy-center ">
+      <ScrollView bounces={false} horizontal scrollEnabled className="gap-x-[8px] justiffy-center ">
         {sets.map((item: any, index: number) => {
           return (
             <TouchableOpacity
@@ -188,4 +188,4 @@ const InfoItem = ({
   );
 };
 
-export { OtherItem, CardioItem, InfoItem };
+export { CardioItem, InfoItem, OtherItem };

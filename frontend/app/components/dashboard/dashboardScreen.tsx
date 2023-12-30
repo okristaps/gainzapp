@@ -1,8 +1,13 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Text, TouchableOpacity, View } from "react-native";
 
+import { useQuery } from "@tanstack/react-query";
+import { getBe } from "api/index";
 import Triangle from "assets/images/thing.svg";
+import { AuthContext } from "auth/authManager";
+import Loader from "components/loader/loader";
 import colors from "constants/colors";
+import { router } from "expo-router";
 import moment from "moment";
 
 const formatTimeSpent = (seconds: number) => {
@@ -49,20 +54,68 @@ const WeeklySummary = ({ summary }: { summary: any }) => {
 };
 
 const PreviousWorkout = () => {
-  return (
-    <View className=" my-3 mt-5 px-4 pt-2 pb-4 bg-input rounded-lg">
-      <View className="flex-row justify-between items-center">
-        <Text className="text-secondary text-12">Previous Workout</Text>
-        <Text className="text-secondary text-11">1H 26Min</Text>
+  const { userData } = useContext(AuthContext);
+  const { data, isLoading } = useQuery({
+    retry: 0,
+    queryKey: ["latestWorkout"],
+    queryFn: async () => await getBe({ path: `/completed/${userData?.uid}/latest` }),
+  });
+
+  const durationArray = data?.duration?.split(":");
+
+  const duration = durationArray
+    ? moment.duration({
+        hours: parseInt(durationArray[0], 10),
+        minutes: parseInt(durationArray[1], 10),
+        seconds: parseInt(durationArray[2], 10),
+      })
+    : [];
+
+  const Info = () => {
+    return (
+      <View>
+        <View className="flex-row justify-between items-center">
+          <Text className="text-secondary text-12">Previous Workout</Text>
+          <Text className="text-secondary text-11">
+            {moment(data?.timestamp).format("ddd. MMMM Do")}
+          </Text>
+        </View>
+        <Text className="text-lg text-primary font-bold ">{data?.name}</Text>
+        <View className="flex-row justify-between items-center mt-6">
+          <Text className="text-12 text-primary">{formatTimeSpent(duration)}</Text>
+          <TouchableOpacity
+            className="flex-row items-center"
+            onPress={() => {
+              router.push({
+                pathname: "logs/viewPastWorkout",
+                params: { workoutId: data?._id, justFinished: false },
+              });
+            }}
+          >
+            <Text className="text-primary text-12 mr-1 underline"> See Details</Text>
+            <Triangle className="rotate-180 " fill={colors.primary} />
+          </TouchableOpacity>
+        </View>
       </View>
-      <Text className="text-lg text-primary font-bold ">Workout 1</Text>
-      <View className="flex-row justify-between items-center mt-6">
-        <Text className="text-12 text-primary">Thurs. June 22nd</Text>
-        <TouchableOpacity className="flex-row items-center">
-          <Text className="text-primary text-12 mr-1 underline"> See Details</Text>
-          <Triangle className="rotate-180 " fill={colors.primary} />
+    );
+  };
+
+  const NoData = () => {
+    return (
+      <View>
+        <Text className="text-white font-bold text-20">Create and start your first workout! </Text>
+        <TouchableOpacity onPress={() => router.replace("/workouts")}>
+          <Text className="text-white font-medium text-16 mt-[5px] underline">
+            Create a workout here{" "}
+          </Text>
         </TouchableOpacity>
       </View>
+    );
+  };
+
+  return (
+    <View className=" my-3 mt-5 px-4 pt-2 pb-4 bg-input rounded-lg">
+      {isLoading ? <Loader /> : data?.duration ? <Info /> : <NoData />}
     </View>
   );
 };

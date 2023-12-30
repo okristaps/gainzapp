@@ -3,18 +3,20 @@ import { PreviousWorkout, WeeklySummary } from "components/dashboard/dashboardSc
 import Header from "components/header";
 import ProfilePicture from "components/header/profile";
 import WeekNavigation from "components/header/weekSwitch";
+import Loader from "components/loader/loader";
 import WeekButtons from "components/weekButtons/weekButtons";
 import React, { useCallback, useContext } from "react";
-import { ScrollView, View } from "react-native";
-import WeeklyInfoManager, { WeeklyInfoContext } from "../contexts/weeklyInfoContext";
-import Loader from "components/loader/loader";
+import { Pressable, ScrollView, View } from "react-native";
 import * as Animatable from "react-native-animatable";
+import WeeklyInfoManager, { WeeklyInfoContext } from "../contexts/weeklyInfoContext";
+
 const Dashboard = () => {
   return (
-    <ScrollView showsVerticalScrollIndicator={false} className="flex flex-1 pr-[20px] pl-[20px]">
-      <WeeklyStuff />
-      <PreviousWorkout />
-      <Chart />
+    <ScrollView showsVerticalScrollIndicator={false} bv className="flex flex-1 pr-[20px] pl-[20px]">
+      <Pressable className="flex flex-1">
+        <WeeklyStuff />
+        <Chart />
+      </Pressable>
     </ScrollView>
   );
 };
@@ -33,6 +35,7 @@ const WeeklyStuff = () => {
         }
       />
       <Comp />
+      <PreviousWorkout />
     </WeeklyInfoManager>
   );
 };
@@ -42,10 +45,14 @@ const Comp = () => {
 
   const Summary = useCallback(() => {
     return (
-      <Animatable.View duration={300} animation={animationDirection}>
-        <WeekButtons />
-        <WeeklySummary summary={data?.summary} />
-      </Animatable.View>
+      <View>
+        <View>
+          <Animatable.View duration={300} animation={animationDirection}>
+            <WeekButtons />
+            <WeeklySummary summary={data?.summary} />
+          </Animatable.View>
+        </View>
+      </View>
     );
   }, [data, currentWeek]);
 
