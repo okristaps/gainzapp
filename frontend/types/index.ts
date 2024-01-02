@@ -51,3 +51,34 @@ export interface Exercise {
   category: string;
   instructions: string[];
 }
+
+export interface ExerciseSet {
+  reps: number;
+  weight: number | null;
+  _id: string;
+}
+
+export interface ExerciseProgress {
+  date: string; // Change this to the actual type for date if necessary
+  sets: ExerciseSet[];
+  _id: string;
+}
+
+export interface ExerciseData {
+  name: string;
+  progress: ExerciseProgress[];
+  leveledAverageData: { avg: number; date: string }[];
+  avgData: { avg: number; date: string }[];
+}
+
+export interface FavouriteExercise {
+  exerciseId: string;
+  name: string;
+  progress: ExerciseProgress[];
+}
+
+export interface FavouriteExerciseResponse {
+  _id: string;
+  exerciseProgress: Record<string, ExerciseData>;
+  dropdownData: { id: string; name: string }[];
+}

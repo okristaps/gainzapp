@@ -9,6 +9,7 @@ const parseWorkouts = (workout: Workout) =>
       equipment: curr?.equipment,
       finished: false,
       inProgrss: false,
+      name: curr?.name,
     };
 
     if (curr?.category === Categories.Cardio) {
@@ -38,6 +39,7 @@ const parseProgressData = (item: any, payload: any) => {
     equipment: item?.equipment,
     finished: true,
     started: false,
+    name: item?.name,
   };
 
   if (item?.category === Categories.Cardio) {

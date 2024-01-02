@@ -1,4 +1,4 @@
-import { Auth, User, getAuth, onAuthStateChanged } from "firebase/auth";
+import { User, getAuth, onAuthStateChanged } from "firebase/auth";
 import React, { createContext, useEffect, useMemo, useState } from "react";
 import { getBe, putBe } from "../api/index";
 import app from "../firebaseConfig";

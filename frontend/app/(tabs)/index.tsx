@@ -9,13 +9,26 @@ import React, { useCallback, useContext } from "react";
 import { Pressable, ScrollView, View } from "react-native";
 import * as Animatable from "react-native-animatable";
 import WeeklyInfoManager, { WeeklyInfoContext } from "../contexts/weeklyInfoContext";
+import { useQuery } from "@tanstack/react-query";
+import { getBe } from "api/index";
+import { AuthContext } from "auth/authManager";
 
 const Dashboard = () => {
+  const { userData } = useContext(AuthContext);
+  const { isLoading: chartLoading, data: chartData } = useQuery({
+    retry: false,
+    queryKey: ["exerciseProgress"],
+    queryFn: async () =>
+      await getBe({
+        path: `/progress/favourite/${userData?.uid}`,
+      }),
+  });
+
   return (
-    <ScrollView showsVerticalScrollIndicator={false} bv className="flex flex-1 pr-[20px] pl-[20px]">
+    <ScrollView showsVerticalScrollIndicator={false} className="flex flex-1 pr-[20px] pl-[20px]">
       <Pressable className="flex flex-1">
         <WeeklyStuff />
-        <Chart />
+        {chartLoading ? <Loader /> : <Chart data={chartData} loading={chartLoading} />}
       </Pressable>
     </ScrollView>
   );
