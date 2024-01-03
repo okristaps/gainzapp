@@ -7,6 +7,7 @@ import colors from "constants/colors";
 import { FavouriteExerciseResponse } from "types/index";
 import Loader from "components/loader/loader";
 import moment from "moment";
+import ChartProgressModal from "components/modals/chartProgressModal/chartProgressModal";
 
 interface ChartProps {
   data: FavouriteExerciseResponse;
@@ -15,7 +16,7 @@ interface ChartProps {
 
 const Chart: React.FC<ChartProps> = ({ data, loading }) => {
   const [chartData, setChartData] = useState({});
-
+  const [selectedDot, setSelectedDot] = useState({ name: "", data: [] });
   const [selectedWorkout, setSelectedWorkout] = useState({ id: "", name: "" });
 
   useEffect(() => {
@@ -25,7 +26,7 @@ const Chart: React.FC<ChartProps> = ({ data, loading }) => {
   }, [data]);
 
   useEffect(() => {
-    const temp = data.exerciseProgress[selectedWorkout?.id];
+    const temp = data?.exerciseProgress[selectedWorkout?.id];
 
     const mockChartData = {
       labels: temp?.leveledAverageData
@@ -87,6 +88,22 @@ const Chart: React.FC<ChartProps> = ({ data, loading }) => {
     );
   };
 
+  const handlePointClick = (e: any) => {
+    console.log("e", e.index);
+    const exercise = data.exerciseProgress[selectedWorkout?.id];
+    const date = exercise.leveledAverageData[e.index].date;
+    const prog = exercise.progress;
+    console.log("date", date);
+
+    const progreessByDate = prog.filter(
+      (item) => moment(item.date).format("DD-MM-YYYY") === moment(date).format("DD-MM-YYYY")
+    );
+    setSelectedDot({
+      name: exercise.name,
+      data: progreessByDate ?? [],
+    });
+  };
+
   const ChartComponent = () => {
     return (
       <LineChart
@@ -94,7 +111,7 @@ const Chart: React.FC<ChartProps> = ({ data, loading }) => {
         verticalLabelRotation={45}
         height={300}
         withVerticalLines={true}
-        // onDataPointClick={(e) => console.log("asdsad", e)}
+        onDataPointClick={(e) => handlePointClick(e)}
         data={chartData}
         width={screenWidth - 50}
         segments={5}
@@ -102,7 +119,6 @@ const Chart: React.FC<ChartProps> = ({ data, loading }) => {
         style={{
           marginLeft: -10,
           marginTop: 20,
-          // paddingBottom: -30,
           paddingBottom: -5,
         }}
         chartConfig={{
@@ -122,20 +138,38 @@ const Chart: React.FC<ChartProps> = ({ data, loading }) => {
     );
   };
 
-  return (
-    <View className="my-2 py-[20px] bg-input rounded-lg">
-      <Text className="text-secondary text-12 mb-3 ml-[20px]">Progress</Text>
+  const renderContent = () => {
+    if (loading) {
+      return <Loader />;
+    }
 
-      {loading ? (
-        <Loader />
-      ) : (
+    if (Boolean(chartData?.datasets?.length)) {
+      return (
         <View>
+          <Text className="text-secondary text-12 mb-3 ml-[20px]">Progress</Text>
           <Dropdown />
-          <Text className="text-secondary text-12  ml-[20px]">Weight / Reps</Text>
-          {Boolean(chartData?.datasets?.length) && <ChartComponent />}
+          <Text className="text-secondary text-12 ml-[20px]">Weight / Reps</Text>
+          <ChartComponent />
+
+          <ChartProgressModal
+            visible={Boolean(selectedDot?.data?.length)}
+            data={selectedDot}
+            setVisible={() => setSelectedDot({})}
+          />
         </View>
-      )}
-    </View>
-  );
+      );
+    }
+
+    return (
+      <View className="pl-[20px] pr-[20px]">
+        <Text className="text-white font-bold text-20">Progress chart</Text>
+        <Text className="text-primary font-bold mb-[15px] mt-[10px]">
+          Not enough data to display yet, do some workouts!
+        </Text>
+      </View>
+    );
+  };
+
+  return <View className="my-2 pt-[20px] bg-input rounded-lg">{renderContent()}</View>;
 };
 export default Chart;

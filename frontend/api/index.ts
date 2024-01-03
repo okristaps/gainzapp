@@ -31,8 +31,6 @@ const getBe = async ({ path, params }: GetBeParams): Promise<any> => {
         .join("&")}`
     : "";
 
-  console.log(`${API_URL}${path}${queryString}`);
-
   try {
     const response = await fetch(`${API_URL}${path}${queryString}`, {
       method: "GET",

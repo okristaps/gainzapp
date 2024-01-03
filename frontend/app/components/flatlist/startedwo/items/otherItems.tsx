@@ -27,10 +27,12 @@ const OtherItem = ({
   itemProgress,
   onEndPress,
   category,
+  disabled,
 }: {
   itemProgress: any;
   onEndPress?: (sets: any) => void;
-  category: Categories;
+  category?: Categories;
+  disabled?: boolean;
 }) => {
   const [sets, setSets] = useState(itemProgress?.sets ?? [initial]);
   const [modal, setModal] = useState(modalInitial);
@@ -76,6 +78,7 @@ const OtherItem = ({
         {sets.map((item: any, index: number) => {
           return (
             <TouchableOpacity
+              disabled={disabled}
               onPress={() =>
                 !itemProgress.finished && setModal({ visible: true, payload: { ...item, index } })
               }
