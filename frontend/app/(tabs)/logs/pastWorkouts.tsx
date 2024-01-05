@@ -5,6 +5,7 @@ import { AuthContext } from "auth/authManager";
 import SecondaryTitle from "components/common/secondaryTitle";
 import { RenderItem } from "components/flatlist/components";
 import Header from "components/header";
+import Loader from "components/loader/loader";
 import { router } from "expo-router";
 import React, { useContext, useState } from "react";
 import { Text, View } from "react-native";
@@ -54,7 +55,11 @@ export default function PastWorkoutsScreen() {
   });
 
   if (isLoading) {
-    return <Text>Loading...</Text>;
+    return (
+      <View className="flex flex-1 items-center justify-center">
+        <Loader />
+      </View>
+    );
   }
 
   const sections: WorkoutSection[] = Object.entries(data?.workouts || {}).map(

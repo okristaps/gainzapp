@@ -12,7 +12,11 @@ export default function TabLogsScreen() {
         item={{ _id: "1", name: "Past Workouts" }}
         onPress={() => router.push({ pathname: "logs/pastWorkouts" })}
       />
-      <RenderItem item={{ _id: "2", name: "Exercise Progress" }} extraClassname="mt-[10px]" />
+      <RenderItem
+        item={{ _id: "2", name: "Exercise Progress" }}
+        extraClassname="mt-[10px]"
+        onPress={() => router.push({ pathname: "logs/exerciseProgress" })}
+      />
       <RenderItem item={{ _id: "3", name: "Measurments" }} extraClassname="mt-[10px]" />
     </View>
   );

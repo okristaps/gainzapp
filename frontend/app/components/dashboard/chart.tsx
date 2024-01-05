@@ -30,7 +30,7 @@ const Chart: React.FC<ChartProps> = ({ data, loading }) => {
 
     const mockChartData = {
       labels: temp?.leveledAverageData
-        .filter((entry, index) => index % 3 === 0)
+        .filter((entry, index) => index % 2 === 0)
         .map((entry) => moment(entry.date).format("D.M.YY")),
 
       datasets: [
@@ -89,11 +89,9 @@ const Chart: React.FC<ChartProps> = ({ data, loading }) => {
   };
 
   const handlePointClick = (e: any) => {
-    console.log("e", e.index);
     const exercise = data.exerciseProgress[selectedWorkout?.id];
     const date = exercise.leveledAverageData[e.index].date;
     const prog = exercise.progress;
-    console.log("date", date);
 
     const progreessByDate = prog.filter(
       (item) => moment(item.date).format("DD-MM-YYYY") === moment(date).format("DD-MM-YYYY")

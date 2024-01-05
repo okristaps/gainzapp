@@ -11,7 +11,6 @@ interface ChartModalProps {
 }
 
 const ChartProgressModal: React.FC<ChartModalProps> = ({ visible, setVisible, data }) => {
-  console.log("data", data);
   return (
     <ModalWrapper visible={visible} setVisible={setVisible} title={data?.name}>
       <ScrollView>

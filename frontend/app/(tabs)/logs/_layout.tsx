@@ -1,6 +1,6 @@
 import { Stack } from "expo-router";
 
-const screens = ["index", "pastWorkouts", "viewPastWorkout"];
+const screens = ["index", "pastWorkouts", "viewPastWorkout", "exerciseProgress"];
 
 export default function Layout() {
   return (
