@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Dimensions, Text, TouchableOpacity, View } from "react-native";
+import { Dimensions, Pressable, ScrollView, Text, TouchableOpacity, View } from "react-native";
 import Triangle from "assets/images/thing.svg";
 
 import { LineChart } from "react-native-chart-kit";
@@ -31,12 +31,12 @@ const Chart: React.FC<ChartProps> = ({ data, loading }) => {
     const mockChartData = {
       labels: temp?.leveledAverageData
         .filter((entry, index) => index % 2 === 0)
-        .map((entry) => moment(entry.date).format("D.M.YY")),
+        .map((entry) => moment(entry.date).format("DD.MM.YYYY")),
 
       datasets: [
         {
           data: temp?.leveledAverageData.flatMap((item) => item.avg),
-          color: (opacity = 1) => `rgba(255, 0, 0, ${opacity})`, // Red for weight
+          color: (opacity = 1) => `rgba(255, 0, 0, ${opacity})`,
           strokeWidth: 2,
         },
       ],
@@ -68,7 +68,7 @@ const Chart: React.FC<ChartProps> = ({ data, loading }) => {
         {dropdownVisible && (
           <View
             className="absolute bg-input rounded-lg mt-5 border border-success p-2"
-            style={{ zIndex: 1, left: "27%" }}
+            style={{ zIndex: 4, left: "27%" }}
           >
             {data?.dropdownData.map((item, index) => (
               <TouchableOpacity
@@ -104,35 +104,37 @@ const Chart: React.FC<ChartProps> = ({ data, loading }) => {
 
   const ChartComponent = () => {
     return (
-      <LineChart
-        fromZero={true}
-        verticalLabelRotation={45}
-        height={300}
-        withVerticalLines={true}
-        onDataPointClick={(e) => handlePointClick(e)}
-        data={chartData}
-        width={screenWidth - 50}
-        segments={5}
-        yAxisInterval={5}
-        style={{
-          marginLeft: -10,
-          marginTop: 20,
-          paddingBottom: -5,
-        }}
-        chartConfig={{
-          backgroundGradientFromOpacity: 0,
-          backgroundGradientToOpacity: 0,
-          decimalPlaces: 1,
-          color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
-          labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
-          propsForDots: {
-            r: "5",
-            strokeWidth: "2",
-            stroke: "#88BB46",
-          },
-        }}
-        bezier
-      />
+      <View className="flex flex-1">
+        <LineChart
+          fromZero={true}
+          verticalLabelRotation={0}
+          height={300}
+          withVerticalLines={true}
+          onDataPointClick={(e) => handlePointClick(e)}
+          data={chartData}
+          width={screenWidth * (3 / chartData?.datasets?.length)}
+          segments={5}
+          yAxisInterval={5}
+          style={{
+            marginLeft: -30,
+            marginTop: 20,
+            paddingBottom: -5,
+          }}
+          chartConfig={{
+            backgroundGradientFromOpacity: 0,
+            backgroundGradientToOpacity: 0,
+            decimalPlaces: 1,
+            color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
+            labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
+            propsForDots: {
+              r: "5",
+              strokeWidth: "2",
+              stroke: "#88BB46",
+            },
+          }}
+          bezier
+        />
+      </View>
     );
   };
 
@@ -147,7 +149,18 @@ const Chart: React.FC<ChartProps> = ({ data, loading }) => {
           <Text className="text-secondary text-12 mb-3 ml-[20px]">Progress</Text>
           <Dropdown />
           <Text className="text-secondary text-12 ml-[20px]">Weight / Reps</Text>
-          <ChartComponent />
+          <ScrollView
+            horizontal
+            className={` pr-[20px] mr-[20px] ml-[20px] z-[2] flex flex-1`}
+            contentContainerStyle={{
+              zIndex: 20,
+            }}
+            showsHorizontalScrollIndicator={false}
+          >
+            <Pressable>
+              <ChartComponent />
+            </Pressable>
+          </ScrollView>
 
           <ChartProgressModal
             visible={Boolean(selectedDot?.data?.length)}
